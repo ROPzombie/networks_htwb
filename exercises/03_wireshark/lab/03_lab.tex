@@ -1,0 +1,208 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+
+\usepackage{amsmath}%get math done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{tasks}
+\usepackage{csquotes}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (WiSe 2019/20)}
+\rhead{Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 03 -- Wireshark}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 03 -- Wireshark}}\\
+\end{center}
+
+
+\begin{center}
+\Large{\textbf{Aufgabe A - Unencrypted Password Sniffing}}
+\end{center}\vskip0.25in
+
+Nachdem Sie nun auch praktisch mit Wireshark Ihre ersten Erfahrungen gesammelt haben, sollen Sie mithilfe des Sniffers Passwörter im unverschlüsselte Traffic "'dumpen". Dazu ist ein kleines Setup notwendig.
+\begin{enumerate}
+	\item Um das Passwort-Sniffing etwas zu erleichtern, soll der Netzwerkverkehr über einen neugierigen Router erfolgen. Passen Sie die Routing-Tabelle und das Forwarding wie folgt an:
+	\begin{itemize}
+		\item In einer Bankreihe agieren je zwei Web-Server. Diese sollen ein­fach­heits­hal­ber Ihr Default-Gateway auf den sniffenden Rechner legen. Mit folgenden Kommando könne Sie dies realisieren:
+		\item Die IP-Adresse können Sie mithilfe folgenden Befehls in Erfahrung bringen:
+		\begin{lstlisting}[style=Bash, language=Bash]
+ip a s DEV | awk '/inet/ {print $2}'
+\end{lstlisting}
+		\item Stoppen des Network-Mangers:
+\begin{lstlisting}[style=Bash, language=Bash]
+sudo systemctl stop network-manager
+sudo systemctl stop network-manager
+\end{lstlisting}		
+		\item Ändern der Default-Route:
+\begin{lstlisting}[style=Bash, language=Bash]
+# anzeigen der devices
+ip l
+# anzeigen des routing tables
+ip r
+# loeschen der default route
+sudo ip r del default
+# setzen einer neuen default route
+sudo ip r add default via XXX.XXX.XXX.XXX dev DEV
+\end{lstlisting}
+Wobei XXX.XXX.XXX.XXX der IP-Adresse des Sniffers entspricht. DEV bezeichnet den Identifier des verwendeten Geräts.
+		\item Der Sniffer muss das Forwarding aktivieren, sodass Daten weiterhin an Ihre Ziel-Adressen ankommen:
+\begin{lstlisting}[style=Bash, language=Bash]
+sudo sysctl -w net.ipv4.ip_forward=1
+\end{lstlisting}		
+	\end{itemize}
+	\item Der Apache Webserver liefert Ihnen nur die Default-Seite.
+	\begin{tasks}(1)
+		\task Nehmen Sie für die Konfiguration des Webservers ein Backup vor! Alle Dateien die Sie ändern müssen, sollen zuvor gesichert werden. Kopieren Sie entsprechend die Dateien mit den Ihnen bekannten Kommandozeilenbefehlen im gleichen Ordner. Folglich sollen sich im gleichen Ordner die Backups wie auch die Originaldateien befinden.\\
+	Die Kopie kann beispielsweise die Dateiendung \emph{.bck} tragen. \footnote{Es gibt anschließend also eine \path{/etc/apache2/apache2.conf} und eine \path{/etc/apache2/apache2.conf.bck} Datei.}	
+		\task Nicht jeder Nutzer soll auf den Inhalt Ihrer Webseite zugreifen dürfen, daher soll eine einfache Passwortabfrage den Inhalt Ihrer Website sichern.\\
+	Richten Sie eine Passwortauthentifizierung ein, die auf dem Webserver $A$ dem Nutzer \texttt{web} und auf Webserver $B$ dem User \texttt{bew} Zugriff gewährt. Allen anderen Nutzern soll kein Zugriff erlaubt sein!
+	\end{tasks}
+	\item Als Hilfestellung für den Webserver können Sie wie folgt vorgehen:
+	\begin{itemize}
+	\item Für das Binding des Webservers muss in der Apache Konfiguration (s. \path{/etc/apache2/apache2.conf}) die IP-Adresse und optional der Port mit dem Befehl \emph{Listen} gesetzt werden. 
+	\begin{lstlisting}[style=Bash, language=Bash]
+Listen IP:Port 
+\end{lstlisting} \label{apache}
+	\item Die Passwortauthentifizierung kann mithilfe des Kommandos \emph{htpasswd} eingeleitet werden.
+\begin{lstlisting}[style=Bash, language=Bash]
+sudo htpasswd -c /etc/apache2/.htpasswd YOURUSERNAME
+\end{lstlisting} \label{htpasswd}
+	\item Anschließend kann in der Datei \path{/etc/apache2/apache2.conf} entsprechend der Inhalt Ihrer Website geschützt werden.
+\begin{lstlisting}[style=Bash, language=Bash]
+<Directory "/var/www/html">
+  AuthType Basic
+  AuthName "Speak, friend and enter"
+  AuthUserFile "/etc/apache2/.htpasswd"
+  Require user YOURUSERNAME
+
+  Order allow,deny
+  Allow from all
+</Directory>
+\end{lstlisting} \label{conf}
+	\item Mit dem Tool \emph{apachectl} kann die Konfiguration des Webservers überprüft und anschließend der Apache hochgefahren werden.
+\begin{lstlisting}[style=Bash, language=Bash]
+sudo apachectl configtest
+sudo apachectl start
+\end{lstlisting} \label{apchectl}
+	\end{itemize}
+	\item Der Administrator des Sniffers ist überaus neugierig und soll die verwendeten Nutzernamen/Passwort Kombinationen ausschließlich durch Analyse des Netzwerkverkehrs in Erfahrung bringen. \footnote{Dieses Szenario ist sehr fingiert, soll aber nur verdeutlichen, dass ohne Schutz unverschlüsselte Daten leicht einsehbar sind! Dies ist auch der Fall, wenn Daten nicht direkt über einen Rechner gehen -- s. Promiscous-Mode oder im WiFi-Verkehr}
+		\begin{tasks}(1)
+			\task Analysieren Sie den Traffic! Nach welchem Protokoll müssen Sie suchen?
+			\task Stellen Sie entsprechen den Filter in Wireshark ein.
+			\task Finden Sie das Tupel aus Nutzernamen und Passwort.\\
+		Wie können Sie im gesamten Verkehr noch weiter filtern, sodass Sie das Paket mitsamt Nutzernamen und Passwort finden?\\
+		\textbf{Hinweis:} Es kann passieren, dass der Browser die Website im Zwischenspeicher behält (cached), sodass Ressourcen gespart werden können. Möglicherweise müssen Sie entsprechend den Browser-Cache leeren, bevor Sie Änderungen im Browser sehen können.
+		\end{tasks}
+	\item Setzen Sie die vorgenommenen Änderungen wieder zurück. Schalten Sie auch den Apache ab
+	\begin{lstlisting}[style=Bash, language=Bash]
+# abschalten des Apaches
+sudo apachectl graceful-stop
+# löschen der default route
+sudo ip r del default
+# dhcp neu starten
+sudo systemctl restart dhcpcd
+# Forwarding deaktivieren
+sudo sysctl -w net.ipv4.ip_forward=0
+\end{lstlisting}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- TCP: 3-Way-Handshake}}\end{center}\vskip0.2in
+Nachdem Sie sich bereits theoretisch mit dem 3-Way-Handshake auseinandergesetzt haben, sollen Sie nun schauen, ob der TCP-Handshake tatsächlich wie theoretisch beschrieben arbeitet.
+\begin{enumerate}
+	\item Überlegen Sie sich eine Anfragen an eine Website (dies sollte TCP nutzen, wie HTTP!), die Sie noch nicht von der VM aus getätigt haben. Da ansonsten bestimmte Inhalte bereits gecacht vorliegen könnten oder über andere Verfahren eine TCP-Handshake vereiteln könnten.
+	\item Starten Sie Wireshark, richten Sie Interface und Protokoll-Type ein. Filtern Sie nur auf eine speziellen Request!
+	\item Lösen Sie den Handshake durch aufrufen der Website (oder Ressource) aus, während Wireshark den Netzverkehr mitschneidet.
+	\item Analysieren Sie den 3-Way-Handshake!
+	\item Zum Vergleich: Analysieren Sie ihren Mitschnitt mit folgender Aufzeichnung: \url{https://wiki.wireshark.org/TCP_3_way_handshaking?action=AttachFile&do=view&target=3-way+handshake.pcap}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- ICMP}}\end{center}\vskip0.2in
+Da die Befehle \emph{ping} und \emph{traceroute} \emph{ICMP} nutzen, sollen Sie mit Wireshark solche Request mitverfolgen.
+\begin{enumerate}
+	\item Setzen Sie alle notwendigen Parameter um Wireshark mitlaufen zu lassen, sodass Sie die ICMP-Nachrichten mitverfolgen können.
+	\item Pingen Sie einen Rechner mit seinem Namen an (bspw.: \url{mi.fu-berlin.de}).
+	\item Ping auf eine IP-Adresse (bspw.: 160.45.117.199).
+	\item Ping auf die IP-Adresse des Laborrouters (IP: 10.10.10.254).
+	\item Ping auf meine eigene IP-Adresse.
+	\item Starten Sie traceroute auf eine beliebige Adresse und verfolgen Sie dabei den Ausgabe auf der Konsole als auch in Wireshark. Spiegeln sich die Einträge in Wireshark mit denen auf der Kommandozeile?
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe D -- Routing \& Traceroute}}\end{center}\vskip0.25in
+Nachdem Sie recherchiert haben, wie \emph{traceroute} arbeitet, welche Kritik an Traceroute geäußert wurde und wie diese mit dem Tool Paris-Traceroute abgestellt wurden, sollen beide Tools hier kurz erprobt werden.
+\begin{enumerate}
+	\item Überlegen Sie sich zunächst anhand Ihrer Recherche was \emph{traceroute} in etwa ausgeben müsste, wenn Sie im Labor eine Route von einem Rechner $A$ zu einem Rechner $B$ verfolgen würden. Wobei beide Rechner zu unterschiedlichen Netzwerken gehören (d.h. unterschiedlichen Tischreihen). 
+	\item Nutzen Sie anschließend \emph{traceroute} um sich die Router zwischen zwei Laborrechnern anzeigen zu lassen. Stimmen Ihre theoretische Überlegungen mit denen von \emph{traceroute} überein? Falls nicht, sollten Sie analysieren woran dies liegen könnte.
+	\item Vergleichen Sie die Ausgaben von \emph{traceroute} und \emph{paris-traceroute} für folgende IP-Adressen:
+	\begin{enumerate}
+		\item 41.231.21.44
+		\item 91.198.174.192
+		\item 37.220.21.130
+		\item 80.239.142.229
+	\end{enumerate}
+	\textbf{Hinweis}: Für \emph{paris-traceroute} sollten Sie den \enquote{exhaustive algorithm} Nutzen (in machen Versionen als Parameter: \texttt{-na exhaustive})
+	\item Analysieren Sie anschließend die Ausgabe beider Tools.
+	\item Warum wurde Ihnen eine Liste von IP-Adressen genannt anstelle von Domainnamen? Nennen Sie mindestens zwei Gründe!
+\end{enumerate}
+
+\end{document}

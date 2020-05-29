@@ -111,10 +111,9 @@ Sollte es beim Import einer VM (VirtualBox Manager Program -- Menü: Machine -- 
 \begin{center}
 \Large{\textbf{Importieren der VM}}
 \end{center}
-\paragraph{Für das Labor} liegt das Stamm-Image unter \path{/vm/nw_lab} bereit. Diese VM ist nur lesend verfügbar (Read-Only), sodass von Ihnen keine Änderungen vorgenommen werden können.\\
-\paragraph{Für zu Hause} unter folgender URI können Sie das Image herunterladen: \url{https://cloud.htw-berlin.de/s/DTo4f26xk5W4Y9W}, das Passwort für den Download lautet: \emph{nw\_sose\_2020}.\\
-Voraussetzung ist, dass sie VirtualBox oder ähnliches bereits installiert haben. Anschließend können sie die VM importieren. Im Menü \emph{Datei/File} gibt es den Eintrag \emph{Importieren (Import Appliance)}, worauf sich eine Dialogbox öffnet in der Sie den Import vornehmen können. \textbf{Im Labor} müssen sie für das zu importierende System \path{/vm/nw_lab/networks.ova} angeben. \textbf{Zu Hause} müssen sie den Download-Pfad des Image angeben. Unter Windows wahrscheinlich \path{Dokumente\Downloads}, bei OSx und Linux zumeist \path{~/Downloads}.\\
-Anschließend müssen sie nur noch angeben, wo die VM abzulegen ist und dass die MAC-Adressen neu generiert werden. Beispielhaft ist dies in Abb. \ref{import_vm} zu sehen.
+Das Stamm-Image für die Übungen steht unter \path{/vm/nw_lab} bereit. Diese VM ist nur lesend verfügbar (Read-Only), sodass von Ihnen keine Änderungen vorgenommen werden können.\\
+Zunächst sollten Sie einen Ordner mit Ihrer Matrikelnummer im Order \path{/vm/} anlegen. Ihre Matrikel ist ein eindeutige Identifier, nutzen Sie bitte keine anderen Ordnernamen. Nun sollte \path{/vm/s0xxxxxx} als Ordner zum ablegen der VM bereit stehen. \\
+Im Menü Datei/File gibt es den Eintrag Importieren (Import Appliance), worauf sich eine Dialogbox öffnet in der Sie den Import vornehmen können. Wählen Sie als Pfad des zu importierende Systems \path{/vm/nw_lab/networks.ova}. Anschließend müssen Sie nur noch angeben, wo die VM abzulegen ist und dass die MAC-Adressen neu generiert werden. Beispielhaft ist die im Abb. \ref{import_vm}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.3]{vm_import}
@@ -168,20 +167,11 @@ Im Modus Bridge werden alle von der VM erzeugten Pakete sofort ohne eine Änderu
 \begin{center}
 \Large{\textbf{Login \& Admin}}
 \end{center}
-Wenn die VM korrekt importiert wurde, sollte diese ohne weitere Schwierigkeiten hochfahren. Sie können sich als Nutzer \emph{student} mit dem Passwort \emph{student} anmelden. Der Wechsel des Passworts ist sinnvoll, mit folgenden Befehl können Sie das Standardpasswort ändern. Öffnen sie ein Terminal (via Str+Alt+t).
+Wenn die VM korrekt importiert wurde, sollte diese ohne weitere Schwierigkeiten hochfahren. Sie können sich als Nutzer \emph{student} mit dem Passwort \emph{student} anmelden. Der Wechsel des Passworts ist sinnvoll, mit folgenden Befehl können Sie das Standardpasswort ändern.
 \begin{lstlisting}[style=Bash, language=Bash]
 passwd
 \end{lstlisting}
-Anschließend werden Sie aufgefordert das alte Passwort anzugeben und anschließend ein neues zu vergeben. Wundern Sie sich nicht, wenn beim Eintippen nichts auf dem Bildschirm zu sehen ist, dies ist ein Sicherheitsfeature.\\
-Das Standardpasswort für \emph{root} ist \emph{toor}. Der Root-Nutzer ist in Unix-Systemen der Administrator, dieser hat die höchsten Privilegien und darf im System grundsätzlich alles. Sie sollten also aufpassen, was Sie machen. Viele Befehle nehmen Kommandos ohne weitere Fragen entgegen und führen diese aus.\\
-Im Normalfall sollte der Student-Account ausreichend sein, da dieser der Gruppe \emph{wheel} und \emph{sudo} angehört. Somit kann der Student-Nutzer alle notwendigen Befehle ausführen, die root-Rechte brauchen. Wenn ihnen das System sagt, dass sie nicht ausreichend Rechte zum Ausführen eines Befehls haben, nutzen sie das Präfix \emph{sudo}. Bspw.\\
-\begin{lstlisting}[style=Bash, language=Bash]
-sudo paris-traceroute 9.9.9.9
-\end{lstlisting}
-Wenn sie update durchführen wollen, müssen sie wie folgt vorgehen:
-\begin{lstlisting}[style=Bash, language=Bash]
-sudo apt update
-sudo apt upgrade -y
-\end{lstlisting}
-Der erste Befehlt sorgt dafür, dass der Paketkatalog der installierten Software abgeglichen und aktualisiert wird. Der zweite Befehl führt das eigentliche Update durch. 
+anschließend werden Sie aufgefordert das alte Passwort anzugeben und anschließen ein neues zu vergeben. Wundern Sie sich nicht, wenn beim Eintippen nichts auf dem Bildschirm zu sehen ist, dies ist ein Sicherheitsfeature.\\
+Das Standardpasswort für \emph{root} ist toor. Der Root-Nutzer ist in Unix-Systemen der Administrator, dieser hat die höchsten Privilegien und darf im System grundsätzlich alles. Sie sollten also aufpassen, was Sie machen. Viele Befehle nehmen Kommandos ohne weitere Fragen entgegen und führen diese aus.\\
+Im Normalfall sollte der Student-Account ausreichend sein, da dieser der Gruppe \emph{wheel} und \emph{sudo} angehört. Somit kann der Student-Nutzer alle notwendigen Befehle ausführen, die root-Rechte brauchen.
 \end{document}

@@ -42,7 +42,7 @@
 }
 
 \pagestyle{fancy}
-\lhead{Netzwerke Übung (SoSe 2020)}
+\lhead{Netzwerke Übung (WiSe 2019/20)}
 \rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
 \lfoot{Übungsblatt 02 -- Application Layer}
 \cfoot{}
@@ -64,8 +64,20 @@
   %xleftmargin=0.5\linewidth
 }
 
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+
 %%here begins the actual document%%
 \newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
 
 \begin{document}
 \begin{center}
@@ -104,20 +116,20 @@ sudo apachectl start
 	\item Nachdem die Verbindung hergestellt wurde, tippen Sie die Befehle ein, die auch durch den Browser gesendet wurden und schauen Sie, ob Sie als Antwort die Startseite des Webservers erhalten.
 	\item Welche der vom Browser gesendeten Befehle müssen Sie mindestens eingeben, um die Webseite zu sehen?
 	\item Wenn Sie zu einem Server eine Verbindung aufbauen, wird serverseitig ein Timeout gestartet, so das, wenn nicht innerhalb einer gewissen Zeitspanne eine Anfrage kommt, der Server die Verbindung beendet. Wenn Sie etwas umfangreichere Befehle an den Server senden müssen, oder das Ganze ohne manuellem Eintippen automatisieren wollen, können Sie das Tool \emph{netcat} nutzen.
-	\begin{enumerate}
-		\item Schreiben Sie dieselben HTTP-Befehle zum Abruf der Webseite jetzt in eine lokale Textdatei (alle Zeilenumbrüche beachten!).
-		\item Lassen Sie sich den Inhalt der Datei auf der Kommandozeile nach Std-Out ausgeben (\emph{cat}).
-		\item Leiten Sie diese Ausgabe mittels einer Pipe als Eingabe in den Befehl \emph{netcat} um. Rufen Sie \emph{netcat} dabei mit  Parametern so auf, dass es eine Verbindung wieder zum gleichen Webserver und Port wie bisher aufbaut.\\
+	\begin{tasks}(1)
+		\task Schreiben Sie dieselben HTTP-Befehle zum Abruf der Webseite jetzt in eine lokale Textdatei (alle Zeilenumbrüche beachten!).
+		\task Lassen Sie sich den Inhalt der Datei auf der Kommandozeile nach Std-Out ausgeben (\emph{cat}).
+		\task Leiten Sie diese Ausgabe mittels einer Pipe als Eingabe in den Befehl \emph{netcat} um. Rufen Sie \emph{netcat} dabei mit  Parametern so auf, dass es eine Verbindung wieder zum gleichen Webserver und Port wie bisher aufbaut.\\
  Wenn Sie alles richtig gemacht haben, sehen Sie wieder die Startseite des Webservers.
-	\end{enumerate}
+	\end{tasks}
 	\item Damit bei Klartext-Protokollen keine Nutzerdaten durch Fremde mitgelesen werden können, werden von vielen Diensten die eigentlich originalen Protokolle in eine TLS-Verbindung verpackt, um die Daten für die Anwendung transparente zu verschlüsseln.\\
 Ein Programm um beliebige Verbindungen nachträglich mit SSL/TLS zu versehen ist Teil des \emph{OpenSSL}-Toolkits. \footnote{Als Sicherheitsbewusste Informatiker sollten Sie jedoch eher auf LibreSSL setzen!} Mit dem Befehl \emph{openssl s\_server} können Sie Serveranwendungen, welche kein TLS unterstützen aber über Std-In Befehle entgegennehmen darüber absichern. Mit dem Befehl \texttt{openssl s\_client} wiederum können Sie Client-Verbindungen mit TLS-Unterstützung aufbauen oder auch manuell ausführen.
-	\begin{enumerate}
-		\item Zeichnen Sie alle Abrufe der Webseite mit mit Wireshark auf und prüfen Sie, was sie dort sehen können.
-		\item Bauen Sie noch einmal testweise eine HTTP-Verbindung mit \emph{telnet} oder \emph{netcat} zum Webserver des Rechenzentrums der HTW (\url{www.rz.htw-berlin.de}) auf und fragen Sie die Startseite an.
- 		\item Nutzen Sie nun anstelle von \emph{telnet} das Programm \texttt{openssl s\_client} um eine Verbindung zum gleichen Webserver aber auf dem \emph{HTTPS} Port aufzubauen (Welcher Port wird für HTTPS genutzt?). Rufen Sie nach erfolgreichem Verbindungsaufbau wieder die Startseite ab.
- 		\item Welche Informationen über den TLS-gesicherten Server bekommen Sie mit \texttt{openssl s\_client}? Wo sehen Sie z.B. die Gültigkeit des Zertifikates? Den Zeitraum der Gültigkeit? Wer hat das Zertifikat ausgestellt?
-	\end{enumerate}
+	\begin{tasks}(1)
+		\task Zeichnen Sie alle Abrufe der Webseite mit mit Wireshark auf und prüfen Sie, was sie dort sehen können.
+		\task Bauen Sie noch einmal testweise eine HTTP-Verbindung mit \emph{telnet} oder \emph{netcat} zum Webserver des Rechenzentrums der HTW (\url{www.rz.htw-berlin.de}) auf und fragen Sie die Startseite an.
+ \item Nutzen Sie nun anstelle von \emph{telnet} das Programm \texttt{openssl s\_client} um eine Verbindung zum gleichen Webserver aber auf dem \emph{HTTPS} Port aufzubauen (Welcher Port wird für HTTPS genutzt?). Rufen Sie nach erfolgreichem Verbindungsaufbau wieder die Startseite ab.
+ 	\task Welche Informationen über den TLS-gesicherten Server bekommen Sie mit \texttt{openssl s\_client}? Wo sehen Sie z.B. die Gültigkeit des Zertifikates? Den Zeitraum der Gültigkeit? Wer hat das Zertifikat ausgestellt?
+	\end{tasks}
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe B -- E-Mail mit POP3, IMAPv4 \& SMTP}}\end{center}\vskip0.25in
@@ -139,14 +151,14 @@ Zum Abruf von E-Mails gibt es die beiden Protokolle \emph{POP3} und \emph{IMAPv4
 \begin{center}\Large{\textbf{Aufgabe C -- Domain Name System (DNS)}}\end{center}\vskip0.25in
 \begin{enumerate}
 	\item DNS-Requests:
-\begin{enumerate}
-		\item Fragen Sie mit jedem der Kommando der Hausaufgaben jeweils einmal einen Hostnamen (bspw. \url{www.htw-berlin.de}), einen Domainnamen (htw-berlin.de) und eine IP-Adresse (141.45.5.100) ab.
-		\item Schauen Sie sich die Ausgabe von \emph{dig} bei der Abfrage der IP-Adresse genauer an -- dort werden Sie in der \enquote{Question Section} sehen, das nach dem A-Resource-Record mit dem Namen 141.45.5.100 gefragt wurde. Wenn Sie den Namen zu dieser IP-Adresse suchen -- welchen Resource-Record müssen Sie dann anstelle des A-Records erfragen? 
-		\item In welcher Form müssen Sie dann die IP-Adresse angeben? (Test mit dig -t <record-type> <richtiges-format-ip-adresse>).
-		\item Denken Sie sich einen Domainnamen aus, den es wahrscheinlich geben könnte, aber den noch niemand vom Netzwerk der HTW-Berlin aus innerhalb der letzten Stunden angefragt hat (z.B. \url{www.uriminzokkiri.com} oder \url{www.northkoreatech.org}). Erfragen Sie diesen Namen zweimal kurz hintereinander via \emph{dig} und vergleichen Sie die beiden Ausgaben. Worin unterscheiden sich beide Einträge? Begründen Sie diese Unterschiede!
-		\item Erfragen Sie mit \emph{dig} und \emph{nslookup} den zuständigen Mail-Server für die Domain \url{htw-berlin.de}.
-		\item Erzwingen Sie mit \emph{dig} und \emph{nslookup}, das die Namensauflösung nicht mit dem Standard-Nameserver des Betriebssystems, sondern mit einem öffentlichen Nameserver (bspw.: 9.9.9.9) erfolgt. Testen Sie am Besten zuerst mit dig, da dies Ihnen immer sagt, welche Nameserver sie genutzt haben.
-	\end{enumerate}
+\begin{tasks}(1)
+		\task Fragen Sie mit jedem der Kommando der Hausaufgaben jeweils einmal einen Hostnamen (bspw. \url{www.htw-berlin.de}), einen Domainnamen (htw-berlin.de) und eine IP-Adresse (141.45.5.100) ab.
+		\task Schauen Sie sich die Ausgabe von \emph{dig} bei der Abfrage der IP-Adresse genauer an -- dort werden Sie in der \enquote{Question Section} sehen, das nach dem A-Resource-Record mit dem Namen 141.45.5.100 gefragt wurde. Wenn Sie den Namen zu dieser IP-Adresse suchen -- welchen Resource-Record müssen Sie dann anstelle des A-Records erfragen? 
+		\task In welcher Form müssen Sie dann die IP-Adresse angeben? (Test mit dig -t <record-type> <richtiges-format-ip-adresse>).
+		\task Denken Sie sich einen Domainnamen aus, den es wahrscheinlich geben könnte, aber den noch niemand vom Netzwerk der HTW-Berlin aus innerhalb der letzten Stunden angefragt hat (z.B. \url{www.uriminzokkiri.com} oder \url{www.northkoreatech.org}). Erfragen Sie diesen Namen zweimal kurz hintereinander via \emph{dig} und vergleichen Sie die beiden Ausgaben. Worin unterscheiden sich beide Einträge? Begründen Sie diese Unterschiede!
+		\task Erfragen Sie mit \emph{dig} und \emph{nslookup} den zuständigen Mail-Server für die Domain \url{htw-berlin.de}.
+		\task Erzwingen Sie mit \emph{dig} und \emph{nslookup}, das die Namensauflösung nicht mit dem Standard-Nameserver des Betriebssystems, sondern mit einem öffentlichen Nameserver (bspw.: 9.9.9.9) erfolgt. Testen Sie am Besten zuerst mit dig, da dies Ihnen immer sagt, welche Nameserver sie genutzt haben.
+	\end{tasks}
 	\item DNS-Resolver: Das Listing zeigt die \enquote{resolv.conf} eines Servers. 
 	\begin{lstlisting}[style=Bash, language=Bash]
 # Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)

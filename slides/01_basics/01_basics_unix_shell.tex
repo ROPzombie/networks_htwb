@@ -24,6 +24,7 @@
 \usepackage{multicol}
 \usepackage{menukeys}
 
+
 \definecolor{pblue}{rgb}{0.13,0.13,1}
 \definecolor{pgreen}{rgb}{0,0.5,0}
 \definecolor{pred}{rgb}{0.9,0,0}
@@ -118,7 +119,7 @@ morestring=[b]",
 
 \begin{document}
 \bibliographystyle{alpha}
-\title{Netzwerke -- Übung SoSe 2020}
+\title{Netzwerke -- Übung WiSe 2019/20}
 \subtitle{Grundlagen *nix \& Shell\\
 \href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
 		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
@@ -131,19 +132,6 @@ morestring=[b]",
 \titlepage
 \end{frame}
 
-\begin{frame}{Kurze Einführung zu Betriebssysteme}
-	\begin{itemize}
-		\item Wir arbeiten das Semester über mit Debian -- Linux-Derivat
-		\item Warum?\qquad Guter Support der Tools, Großteil der Netzwerkinfrastruktur basiert auf Linux/UNIX
-		\item Warum dann eine Einführung zu Betriebssysteme?\qquad Hintergrundwissen!
-		\item Kurze Einführung zu den Themen
-		\begin{itemize}
-			\item Betriebssysteme
-			\item Shell
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
 \section*{Road-Map}
 \begin{frame}
 \frametitle{Road-Map}
@@ -151,7 +139,28 @@ morestring=[b]",
   \tableofcontents
 \end{multicols}
 \end{frame}
-\section{Historisches zu Unix}
+
+\section{Laborhardware}
+\subsection{Laborrechner \& Infrastruktur}
+\begin{frame}
+	\frametitle{Laborrechner \& Infrastruktur}
+\begin{itemize}
+	\item WH C 625
+	\item 21 Dell Optiplex
+	\begin{itemize}
+		\item Intel Core i5-7500 -- 4 Cores/ 4 Threads, 3.40 - 3.80 GHz
+		\item 16 GB RAM -- 2 $\times$ 8 GB @2400MHz DDR4 Memory
+		\item 256 GB SATA-SSD
+		\item Ubuntu 18.04 / Windows 10
+	\end{itemize}
+	\item GBit-\ac{lan}
+	\item GBit-\ac{wan} ins \ac{dfn} -- IPv4 Only
+\end{itemize}
+\end{frame}
+
+\section{Unixoide Betriebssysteme}
+\subsection{Historisches zu Unix}
+
 \begin{frame}
 	\frametitle{Historisches zu Unix}
  \begin{tabular}{cc}
@@ -177,47 +186,38 @@ morestring=[b]",
 
 \begin{frame}
 \begin{figure}
-\centering
- \vspace*{-.2
- cm} 
-\includegraphics[scale=0.18]{unix_hist}
-\caption{Zeitliche Einordnung der Unix-Historie. (s. \url{https://en.wikipedia.org/wiki/History_of_Unix}) }
+ \vspace*{-.25cm} 
+\includegraphics[scale=0.22]{unix_hist}
 \end{figure}
 \end{frame}
 
 \subsection{Linux}
-\begin{frame}{Linux}
-\begin{tabular}{lc}
+
+\begin{frame}
+	\frametitle{Linux}
+ \begin{tabular}{lc}
 \hspace{-1.3cm}
  \parbox{0.65\linewidth}{
- \vspace{-0.25cm}
+ \vspace{-1cm}
 \begin{itemize}
 	\item 1991 im Usenet \footnote{\url{https://de.wikipedia.org/wiki/Usenet}} veröffentlicht von Linus Torvalds
 	\item Linux im wesentlichen Kernel (Betriebssystemkern) + GNU-Tools (Compiler, Debugger etc.)
-	\begin{itemize}
-		\item Kernel übernimmt die elementarsten Aufgaben im BS (s. \url{https://en.wikipedia.org/wiki/Kernel_(operating_system)})
-	\end{itemize}
-	\item Distributionen nutzen (angepassten) Linux Kernel + (eigene) Standardsoftware -- Paketmanager etc.
+	\item Distributionen nutzen (angepassten) Linux Kernel + (eigene) Standardsoftware -- wie Paketmanager etc.
 	\item Bekannte Linux Distributionen:
 	\begin{itemize}
-	\item Slackware, Red Hat, Debian, Gentoo, Arch
-	\item Mehr unter: \url{https://www.kernel.org/}
+	\item Slackware, Red Hat, Debian, Gentoo, Arch Linux
+	\item \url{https://de.wikipedia.org/wiki/Linux}
+	\item \url{https://www.kernel.org/}
 	\end{itemize}
 \end{itemize} } 
 & \begin{tabular}{c}
- \hspace{1.5cm}
+ \hspace{-0.5cm}
            \includegraphics[scale=0.215]{linus}
            \end{tabular}
 \end{tabular}
 \end{frame}
 
-\section{Unixoide Betriebssysteme}
-\subsection{Aufgaben des OS'}
-
-\begin{frame}{}
-  \tableofcontents[currentsection,hideothersubsections]
-\end{frame}
-
+\subsection{Aufgaben des OS}
 \begin{frame}
 	\frametitle{Hauptaufgaben des Betriebssystems}
 	\begin{itemize}
@@ -238,7 +238,8 @@ morestring=[b]",
 \end{frame}
 
 \subsection{Architektur (monolithischer Kernel)}
-\begin{frame}{Aufbau eines Betriebssystems: Ringmodell}
+\begin{frame}
+	\frametitle{Aufbau eines Betriebssystems: Ringmodell}
 	\vspace{-.7cm}
  \begin{tabular}{cc} 
  \hspace*{-1.3cm} 
@@ -274,83 +275,86 @@ morestring=[b]",
 \end{frame}
 
 
-\subsection{Dateisysteme}
-\begin{frame}{Dateisysteme}
+\subsection{Aufbau Filesystem}
+\begin{frame}
+	\frametitle{Dateisystem}
 	\begin{itemize}
 		\item Dateisystem ist die Abstraktion der eigentlichen physischen Ressource (HDDs, SSDs,...)
 		\item Dateien sind logische Ressourcen $\rightarrow$ Kollektion von logischen Dateneinheiten -- Records
 		\item Dateisysteme richten sich (wie Betriebssystem) nach den Anforderungen
 		\item Beispiele:
 		\begin{itemize}
+			\item UFS -- Unix File System
 			\item FAT -- File Allocation Table
 			\item NTFS -- New Technology File System
-			\item UFS -- Unix File System
 			\item ZFS -- Zettabyte File System
+			\item CEPH
 		\end{itemize}
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Bäume}
-\begin{tabular}{lc}
-\hspace{-1.3cm}
- \parbox{0.65\linewidth}{
- \vspace{-0.25cm}
-	\begin{itemize}
-	\item Mathematische Struktur -- spezieller, zusammenhängender, azyklischer Graph (Graphentheoreie)
-	\item In Unix-Dateisystem: Es gibt ein Wurzelelement:\\ "\path{/}" -- sprich: \emph{root}
-	\item Alle anderen Einträge (Ordner, Dateien etc.) sind dem Wurzelelement untergeordnet
-\end{itemize} } 
-& \begin{tabular}{c}
- \hspace{1.5cm}
-           \includegraphics[scale=0.1]{Directed-tree}
-           \end{tabular}
-\end{tabular}
-\end{frame}
-
 \begin{frame}
 \begin{figure}
-  \vspace*{-0.17cm}
+  \vspace*{-0.225cm}
 \includegraphics[scale=0.4]{filesystem}
 \end{figure}
 \end{frame}
 
-\begin{frame}{Dateisystem cnt.}
-\vspace{-.5cm}
-In Linux/Unix ist grundsätzlich alles eine Datei!\\
-\textbf{Baumstruktur -- statt separate Massenspeicher}\\
+\begin{frame}
+In Linux/ Unix ist grundsätzlich alles eine Datei!\\
+\textbf{Baumstruktur -- statt separate Massenspeicher}
 Exemplarisch:
 \begin{itemize}
 	\item / -- Wurzelverzeichnis
 	\item /bin -- wichtigste Programme in Binäreformat
 	\item /boot -- Boot-Loader
 	\item /etc -- System Konfiguration
+
+	\item /usr -- Konfiguration, Shared-Software
 	\begin{itemize}
 		\item /usr/local -- lokale Software
-		\item /usr/bin -- User-Land-Software
+		\item /usr/share -- statische Daten
+		\item /usr/bin -- User-Land-Software/ Commands
 		\item /usr/include -- Standard-Bibliotheken für C/C++
 		\item /usr/lib -- Bibliotheken für Programmiersprachen
+		\item /usr/sbin -- andere Binaries
 	\end{itemize}
-	\item ...
+
 \end{itemize}
 \end{frame}
-
-
-\subsection{User \& Gruppen}
 \begin{frame}
-Linux/Unix sind Mehrbenutzersysteme, d.h. mehrere Nutzer können simultan auf einem Rechner arbeiten
+\begin{itemize}
+\item /var -- Variable Daten
+	\begin{itemize}
+		\item /var/log -- zentrale Log-File-Stelle
+	\end{itemize}
+	\item /sbin -- System Binaries
+	\item /tmp -- Temporäre Dateien
+	\item /dev -- Geräte
+	\item /home -- User-Bereich
+	\item /lib -- Bibliotheken \& Kernel-Module
+	\item /opt -- zusätzliche Software -- Add Ons
+	\item /root -- Verzeichnis vom Root-User
+\end{itemize}
+Ausführlicher: \url{https://en.wikipedia.org/wiki/Unix_filesystem\#Conventional_directory_layout}
+\end{frame}
+
+\subsection{User, Gruppen}
+\begin{frame}
+Linux/ Unix sind Mehrbenutzersysteme, d.h. mehrere Nutzer können simultan auf einem Rechner arbeiten
 \begin{itemize}
 	\item Zuordnung der Nutzer zu User \& Group
 	\item Regelt Zugangskontrolle im System auf
 	\begin{itemize}
 	\item  Dateien, Ordner \& Peripheriegeräte
 	\end{itemize}
-	\item Unterschiedliche Nutzer/Gruppen $\rightarrow$ unterschiedliche Rechte
+	\item Unterschiedliche Nutzer/ Gruppen $\rightarrow$ unterschiedliche Rechte
 	\item Im Labor:
 	\begin{itemize}
 		\item Benutzername: Matrikelnummer
 		\item Gruppen: student, domain, users,...
 	\end{itemize}
-	\item Virtual Machine (Debian):
+	\item Raspberry Pi:
 	\begin{itemize}
 		\item Benutzername: student
 		\item Gruppen: student, users, wireshark,...
@@ -358,35 +362,10 @@ Linux/Unix sind Mehrbenutzersysteme, d.h. mehrere Nutzer können simultan auf ei
 \end{itemize}
 \end{frame}
 
-\subsection{Ziffer- und Positionssysteme}
-\begin{frame}{Ziffer- und Positionssysteme}
-\vspace{-0.5cm}
-\begin{itemize}
-	\item Dezimalsystem -- Basis 10
-	\begin{itemize}
-		\item Werte 0 - 9 
-		\item Beispiel: $42_{10}$
-	\end{itemize}
-	\item Dualsystem/ Binärsystem -- Basis 2
-	\begin{itemize}
-		\item Werte 0 oder 1
-		\item Bit-Darstellung in der Informatik/ Rechnertechnik
-		\item Beispiel: $42_{10} = 0010~1010_2$
-	\end{itemize}
-	\item Oktalsystem -- Basis 8
-	\begin{itemize}
-		\item Werte 0 - 7
-		\item Für Darstellung der Zahlen 0 - 7 $\rightarrow$ 3 Bit notwendig, $2^3 = 8$
-		\item Beispiel: $42_{10} = 52_8 = 0010~1010_2$
-	\end{itemize}
-	\item Sehr schöne Aufarbeitung, Kapitel 1.1.2ff: \url{http://numerik.mi.fu-berlin.de/matheon-G8/comaBuch.pdf}
-\end{itemize}
-\end{frame}
-
-\subsection{DAC}
-\begin{frame}{Discretionary Access Control}
-Zugriff auf Dateien allein anhand der Identität.\\
-Ressourcenzugriff haben Eigentümer \& Gruppe -- regeln Abbildung auf Nutzer
+\subsection{Nutzerrechte}
+\begin{frame}
+Um die Zugriffsrechte der jeweiligen Nutzer zu regeln bietet Linux/ Unix ein Berechtigungsmodell\\
+Abbildung der Nutzer, Gruppen auf Zugriffsmöglichkeiten der Dateien
 \begin{itemize}
 	\item Grundsätzlich in drei Kategorien:
 	\begin{itemize}
@@ -403,7 +382,28 @@ Ressourcenzugriff haben Eigentümer \& Gruppe -- regeln Abbildung auf Nutzer
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Discretionary Access Control}
+\begin{frame}
+Zahlensystem:
+\begin{itemize}
+	\item Dezimalsystem -- Basis 10
+	\begin{itemize}
+		\item Werte 0 - 9 
+	\end{itemize}
+	\item Dualsystem/ Binärsystem -- Basis 2
+	\begin{itemize}
+		\item Werte 0 oder 1
+		\item Bit-Darstellung in der Informatik/ Rechnertechnik
+	\end{itemize}
+	\item Oktalsystem -- Basis 8
+	\begin{itemize}
+		\item Werte 0 - 7
+		\item Für Darstellung der Zahlen 0 - 7 $\rightarrow$ 3 Bit notwendig, $2^3 = 8$
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
 Darstellung im System via Oktalzahlen:
 \begin{itemize}
 	\item Zuordnung der Berechtigung r,w,x bestimmten Werten
@@ -423,12 +423,12 @@ Darstellung im System via Oktalzahlen:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Discretionary Access Control}
+\begin{frame}
 Zusammensetzung der Berechtigung
 \begin{itemize}
-	\item 3er-Oktett gibt Zugriffsmodalitäten an
+	\item 3er-Oktett gibt Zugriffmodalitäten an
 	\begin{enumerate}
-		\item user r,w,x -- erstes Oktett
+		\item User r,w,x -- erstes Oktett
 		\item group r,w,x -- zweites Oktett
 		\item other r,w,x -- drittes Oktett
 	\end{enumerate}
@@ -438,60 +438,36 @@ Zusammensetzung der Berechtigung
 \end{figure}
 \end{frame}
 
-\section{Systemcalls \& Daemons}
-\begin{frame}{Systemcalls \& Daemons -- !Short Version}
-	\begin{itemize}
-		\item Systemcalls -- Methode für Anwendungsprogramme, um Funktionalitäten des BS' nutzen zu können
-		\item Systemcalls vollführen Wechsel von Anwenderebene auf BS-Kern 
-		\item Übergabe der Kontrolle von Anwender an das Betriebssystem
-		\begin{itemize}
-			\item Bspw.: anlegen von Dateien auf SSD, Verbindung des Browsers zu einer Webseite etc.
-		\end{itemize}
-		\item Daemons -- Hintergrunddienste
-		\item Stellen Dienste des BS bereit, auf die Programme zugreifen können
-		\begin{itemize}
-			\item Bsp: Netzwerkdienste, Sockets ...
-		\end{itemize} 
-	\end{itemize}
-\end{frame}
-
-\section{Unix-Philosophie}
-
-\begin{frame}{}
-  \tableofcontents[currentsection,hideothersubsections]
-\end{frame}
-
-\begin{frame}{Unix-Philosophie}
-	Nach Douglas McIlroy \footnote{\url{https://en.wikipedia.org/wiki/Douglas_McIlroy}} \footnote{\url{https://homepage.cs.uri.edu/~thenry/resources/unix_art/ch01s06.html}}
-	\begin{itemize}
-		\item Schreibe Computerprogramme so, dass sie nur eine Aufgabe erledigen und diese gut machen.
-		\item Schreibe Programme so, dass sie zusammenarbeiten.
-		\item Schreibe Programme so, dass sie Textströme verarbeiten, denn das ist eine universelle Schnittstelle.
-	\end{itemize}
-	\textbf{Bottom-Line:} Baue Programme derart das Interoperabilität besteht, sodass komplexere Probleme lösbar sind!
-\end{frame}
-
 \section{Shell}
-
-\begin{frame}{}
-  \tableofcontents[currentsection,hideothersubsections]
-\end{frame}
-
 \subsection{Einführung}
-\begin{frame}{Einführung Shell}
+\begin{frame}
+	\frametitle{Shell}
 	\begin{itemize}
 		\item Textbasierte Schnittstelle
-		\item Schnittstelle zwischen BS-Kern, Werkzeugen des BS' \& User
+		\item Schnittstelle zwischen OS-Kernel \& OS-Util. \& User
 		\item Shell ist ein Kommando-Interpreter $\rightarrow$ führt Schrittweise Befehle aus
 		\begin{itemize}
-			\item Kommandos sind oft Binärdateien, Programmskripte
+			\item Kommandos können auch Binärdatei aufgerufen werden
 			\item Kommandos können direkt aufgerufen werden
 			\item Aufruf von Systemcalls möglich $\rightarrow$ Administration des Systems
 		\end{itemize}
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Shells}
+\subsection{Unix-Philosophie}
+\begin{frame}
+	\frametitle{Unix-Philosophie}
+	Nach Douglas McIlroy:
+	\begin{itemize}
+		\item Schreibe Computerprogramme so, dass sie nur eine Aufgabe erledigen und diese gut machen.
+		\item Schreibe Programme so, dass sie zusammenarbeiten.
+		\item Schreibe Programme so, dass sie Textströme verarbeiten, denn das ist eine universelle Schnittstelle.
+	\end{itemize}
+	Bottom-Line: Einfach Programme die zusammenarbeiten können, sodass komplexere Probleme lösbar sind
+\end{frame}
+
+\begin{frame}
+	\frametitle{Shells}
 	\begin{itemize}
 		\item Ur-Shell: Thompson Shell -- OSH
 		\item SH -- Bourne Shell 
@@ -504,18 +480,37 @@ Zusammensetzung der Berechtigung
 	\end{itemize}
 \end{frame}
 
-\subsection{Shell 101}
-\begin{frame}{Shell 101}
+\section{Systemcalls}
+\begin{frame}
+	\frametitle{Systemcalls \& Daemons -- !Short Version}
 	\begin{itemize}
-		\item In der VM: \keys{\winmenu} (Windowstaste) und dann einfach Terminal eingeben
+		\item Systemcalls -- Methode für Anwendungsprogramme, um Funktionalitäten des BS nutzen zu können
+		\item Systemcalls vollführen Wechsel von Anwenderebene auf BS-Kern 
+		\item Übergabe der Kontrolle von Anwender an das Betriebssystem
+		\begin{itemize}
+			\item Bsp.: anlegen von Dateien auf SSD, Verbindung des Browsers zu einer Webseite ...
+		\end{itemize}
+		\item Daemons -- Hintergrunddienste
+		\item Stellen Dienste des BS bereit, auf die Programme zugreifen können
+		\begin{itemize}
+			\item Bsp: Netzwerkdienste, Sockets ...
+		\end{itemize} 
+	\end{itemize}
+\end{frame}
+
+\section{Shell 101}
+\begin{frame}
+	\frametitle{Shell 101}
+	\begin{itemize}
+		\item Auf den Laborrechner: \keys{\winmenu} (Windowstaste) und dann einfach Terminal eingeben
 		\item Alternativ: \keys{\ctrl + \Alt + t} (Str + Alt + t)
 		\item Abbrechen eines Kommandos: \keys{\ctrl + c} (Str + c)
 		\item Beenden/Schließen des Terminals: \keys{\ctrl + d} (Str + d) oder einfach \emph{exit} eintippen
 	\end{itemize}
 \end{frame}
 
-\subsection{Shell Input/Output}
-\begin{frame}{Shell Input/Output}
+\begin{frame}
+	\frametitle{Shell Input/Output}
 	\begin{itemize}
 		\item Kommandozeile hat drei Standardkanäle:
 		\begin{enumerate}
@@ -530,7 +525,6 @@ Zusammensetzung der Berechtigung
 		\begin{itemize}
 			\item Ausgabe eines Programms wird Eingabe des anderen Programms
 		\end{itemize}
-		\item Schauen Sie sich die Links im Moodle-Kurs an!
 	\end{itemize}
 \end{frame}
 
@@ -543,7 +537,7 @@ Zusammensetzung der Berechtigung
 			\item Datei wird dabei vollständig neu geschrieben
 			\item Alter Inhalt geht verloren
 		\end{itemize}
-	\item Anfügen einer Datei: \keys{> >}
+	\item Anfügen einer Datei: \keys{>>}
 	\begin{itemize}
 		\item Hängt Ausgabe an das Ende der Datei 
 	\end{itemize}
@@ -558,7 +552,7 @@ Zusammensetzung der Berechtigung
 	\frametitle{Piping}
 \begin{itemize}
 	\item Verbinden mehrerer Kommandos durch eine \emph{Pipe}
-	\item Pipe: Datenstruktur -- Folgt dem First-In-First-Out-Prinzip (FIFO)
+	\item Pipe: Datenstruktur -- Folgt dem First In - First Out Prinzip
 	\item Wirkt wie ein Puffer, eingehende Daten werde gepuffert und bei Bedarf wieder ausgegeben
 	\item Piping ermöglicht es Programme zu verbinden
 	\item Ausgabestrom eines Programm wird Eingabestrom des nächsten Programms
@@ -567,12 +561,13 @@ Zusammensetzung der Berechtigung
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Beispiele}
+\begin{frame}[fragile]
+	\frametitle{Beispiele}
 	\begin{lstlisting}[style=Bash, language=Bash]
 date > foo.txt
-echo "student name" >> studi_list_1.csv
-head < studi_list_1.csv
-sort studi_list_1.csv studi_list_2.csv | uniq -u > clean_list.csv
+cat id_rsa.pub >> authorized_keys
+head < index.html
+sort studi_list_1.csv studi_list_2.csv | uniq -u > drop_out_list.txt
 	\end{lstlisting}
 \end{frame}
 
