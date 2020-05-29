@@ -1,0 +1,222 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+\usepackage{multicol}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (SoSe 2019)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 2 -- Netzwerke Grundlagen}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+  upquote=true,
+  columns=fullflexible,
+  literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}
+
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+\pdfpkresolution=2400%higher resolution
+
+%settings colors for links
+%\hypersetup{
+ %   colorlinks,
+  %  linkcolor={blue!50!black},
+   % citecolor={blue},
+    %urlcolor={blue!80!black}
+%}
+
+%\usepackage[pagetracker=true]{biblatex}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+
+\DeclareMathOperator{\id}{id}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Übungsblatt 2}
+}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 02 -- Netzwerkgrundlagen}}
+\end{center}
+\textbf{Zusammenfassung:}\\
+Sie lernen die Raspberry Pis kennen und bauen ein eigenes Netzwerk auf. Hierfür untersuchen Sie zunächst einen bereits vorkonfigurierten Netzwerkadapter, anschließend nehmen Sie die Konfiguration des Netzwerkes auf Grundlage Ihrer Hausaufgaben händisch vor.
+\begin{center}\Large{\textbf{Aufgabe A - Raspberry Pi}}\end{center}\vskip0.25in
+\textbf{Kommandos:}
+\begin{multicols}{3}
+\begin{itemize}
+	\item ifconfig/ip addr
+	\item systemctl
+	\item sudo
+\end{itemize}
+\end{multicols}
+\begin{itemize}
+	\item[0.)] Bauen Sie Ihren Raspberry Pi zusammen. Vergewissern Sie sich, dass alle Komponenten korrekt zusammengesetzt wurden!
+	\item[1.)] Schalten Sie Ihre Raspberry Pis an! Sie werden automatisch eingeloggt.
+	\item[2.)] Finden sich kurz auf der Kommandozeile zurecht. \glqq Wer bin ich, wo bin ich, auf welchem Gerät bin ich?\grqq
+	\item[3.)] Lassen Sie sich den Status des DHCP und Networking-Service anzeigen.
+	\item[4.)] Falls der DHCP-Service ausgeschaltet sein sollte, können Sie diesen mit dem Script \emph{nw\_default.sh} wie folgt einschalten:
+	\begin{lstlisting}[style=Bash, language=Bash]
+sudo ./nw_default.sh
+		\end{lstlisting}	
+	\item[5.)] \textbf{Wenn Sie ihre eigene $\mu$-SD-Karte (Micro-SD) nutzen, können Sie das Standardpasswort ändern. (Wie das funktioniert steht in der passwd-Man-Page.)}
+	\item[6.)] Lassen Sie sich mit den Kommandos:
+			\begin{lstlisting}[style=Bash, language=Bash]
+uname -or
+		\end{lstlisting} und
+				\begin{lstlisting}[style=Bash, language=Bash]
+cat /etc/os-release
+		\end{lstlisting} anzeigen, welcher Betriebssystemkern (Kernel) und welche Distribution auf dem Raspberry Pi läuft.
+	\item[7.)] Nutzen Sie diese Information um im Falle von Fehlern/ Fehlkonfigurationen für das Betriebssystem nach möglichen Lösungen zu recherchieren. Es ist schlau in einer Suche den Namen des Betriebssystems vorkommen zu lassen. Sie wollen keine Lösungen für Windows finden.
+	\item[8.)] In der letzten Laborübung haben Sie bereits begonnen sich ein Cheat-Sheet zu schreiben. Dieses können Sie weiterentwickeln. Mit folgendem Befehl kopieren Sie den Ordner der letzten Übung. 
+	\begin{lstlisting}[style=Bash, language=Bash]
+scp -r s0xxxxxx@uranus-ai.f4.htw-berlin.de:~/exercise_notes/tutorials/ ~/
+		\end{lstlisting}
+		Darüber hinaus sind einige Cheat-Sheets im Ordner \path{~/share/lehrende/troester/netzwerke/exercises/cheat_sheets/} verfügbar.
+\end{itemize}
+	
+\begin{center}
+\Large{\textbf{Aufgabe B - Anzeige der bestehenden Netzwerkkonfiguration}}
+\end{center}\vskip0.25in
+\textbf{Kommandos}
+\begin{multicols}{3}
+\begin{itemize}
+	\item ifconfig/ip addr
+	\item ip link
+	\item systemctl
+	\item ping
+\end{itemize}
+\end{multicols}
+Bevor Sie ein eigenes kleines Netzwerk einrichten, sollen Sie sich mit den dafür Notwendigen Tools vertraut machen. Daher soll zunächst die bestehende Netzwerkkonfiguration untersucht werden.\\
+Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen Rechnern in einem Netzwerk. Jeder Rechner muss hierfür eine passende IP-Adresse haben, mit der er andere Rechner bzw. Zwischenknoten im Netz erreichen kann.
+\begin{itemize}
+	\item[1.)] Lassen Sie sich die aktuelle IP-Adresskonfiguration anzeigen.
+	\item[2.)] Wo finden Sie in der Ausgabe die folgenden Informationen:
+	\begin{tasks}(1)
+		\task~ MAC-Adresse der Netzwerkkarte
+		\task~ Aktuelle IP-Adresse des Systems
+		\task~ Subnetzmaske
+		\task~ Besteht eine aktive Verbindung mit dem Netzwerk (also Kabel mit dem Switch verbunden)?
+		\task~ Qualität der Verbindung? (Anzahl fehlerhafter Pakete)
+		\task~ Übertragene Datenmenge?
+	\end{tasks}
+	\item[3.)] Prüfung ob ein Netzwerkverbindung besteht. Zum Prüfen können Sie folgende Aktionen durchführen:
+	\begin{tasks}
+		\task~ Webbrowser öffnen und versuchen eine Seite anzuzeigen (dazu muss der Rechner eine IP-Adresse
+haben, sein Gateway kennen und das DNS richtig konfiguriert sein, der Webserver muss aktiv sein, keine Firewall darf die Pakete blocken).
+		\task~ Auf der Kommandozeile einen Rechner mit seinem Namen anpingen (bspw.: \url{mi.fu-berlin.de}).
+		\task~ Ping auf eine IP-Adresse (bspw.: 160.45.117.199).
+		\task~ Ping auf die IP-Adresse des Laborrouters (IP: 10.10.10.254) -- funktioniert die Kommunikation im lokalen Netz (LAN)?
+		\task~ Ping auf meine eigene IP-Adresse -- wurde der lokale Netzwerkstack richtig gestartet?
+	\end{tasks}
+	\item[4.)] Schalten Sie den DHCP-Dienst permanent aus.
+	\item[5.)] Schalten Sie den Networking-Service permanent ein und starten Sie den Raspberry Pi neu.
+\end{itemize}
+
+
+\begin{center}\Large{\textbf{Aufgabe C - Switched LAN}}\end{center}\vskip0.25in
+In der Hausaufgabe haben Sie ein kleines Netzwerk geplant, dies soll in Vierergruppen mit der vorhandenen Hardware umgesetzt werden.
+\begin{itemize}
+	\item[1.)] Beschriften Sie die Skizze aus der Planungsphase mit Gerätename und evtl. den Namen der Gruppenmitglieder.
+	\item[2.)] Legen Sie für die Gruppe eine Netzwerkadresse samt Subnetzmaske fest.\\
+	Das Netzwerk sollte der IP-Range 10.0.$X.Y$ genügen. D.h. $X$ ist durch ihre Bankreihe bestimmt und $Y$ entspricht dem Host.\\
+	Die IP-Adressen 10.0.0.0 und 10.0.0.255 können nicht belegt werden.
+	\item[3.)] Vergeben Sie für jeden Raspberry Pi eine \emph{IPv4}-Adresse, tragen Sie diese auf Ihrer Skizze ein.
+	\item[4.)] Umsetzen der Konfiguration:
+\begin{tasks}(1)
+	\task Lassen Sie sich im Terminal die aktuelle Netzwerkkonfiguration mit \emph{ifconfig} und \emph{ip addr} anzeigen. Haben Sie eine IP-Adresse (\emph{inet}) und Subnetzmaske (\emph{netmask})?
+	\task Richten Sie die Raspberry Pis mit den Ihnen bekannten Befehlen ein und notieren Sie sich die Kommandos in Ihrem Cheat-Sheet. D.h. Sie müssen nun manuell \emph{IPv4}-Adressen vergeben, sodass Ihre Raspberry Pis miteinander kommunizieren können. Nutzen Sie hierfür Werkzeuge aus beiden Werkzeugkästen (\emph{iproute2}, \emph{net-tools}).
+	\task Lassen Sie sich im Terminal die neue Netzwerkkonfiguration mit \emph{ifconfig} oder \emph{ip addr} anzeigen.
+\end{tasks}
+\item[4.)] Testen des Netzes
+\begin{tasks}(1)
+	\task Testen Sie, ob sich Ihre Raspberry Pis gegenseitig mit dem Befehl \emph{ping} \glqq anpingen\grqq\ können. Lassen Sie dabei einen der drei anderen Raspberry Pis außen vor und merken Sie sich welcher das war.
+	\task Starten Sie Ihren Raspberry Pi per Kommandozeile neu. Pingen Sie einen der beiden bereits \glqq angepingten\grqq\ Raspberry Pis erneut an. Funktioniert es immer noch?
+	\task Lassen Sie sich die Netzwerkkonfiguration erneut anzeigen.
+	\task Setzen Sie eine persistente Netzwerkkonfiguration mittels Dateien um.
+	\task Setzen Sie alle vorgenommenen Konfigurationen zurück. D.h. Sie müssen veränderte Systemdateien in den ursprünglichen Zustand zurücksetzen. Es stehen einige Shell-Skripte bereit. Diese laufen mit root-Rechten und müssen daher mit dem Schlüsselwort \emph{sudo} ausgeführt werden.
+	\begin{itemize}
+		\item Mithilfe des Scripts \emph{reset\_network\_config.sh} können Sie die \path{/etc/network/interfaces} zurücksetzten
+		\item Das Kommando \emph{systemctl enable dhcpcd} sorgt dafür, dass der DHCP-Client-Dämon dauerhaft aktiviert wird.
+	\end{itemize}
+\end{tasks}
+\end{itemize}
+
+\begin{center}\Large{\textbf{Fakultativ -- Here be Dragons... Network-Discovery}}\end{center}\vskip0.25in
+Nachdem Sie Ihr System wieder in die Ausgangslage versetzt haben, sollen Sie im nächsten Schritt das Labornetzwerk erkunden. Frei nach dem Motto \glqq Here be dragons\grqq \footnote{\url{https://en.wikipedia.org/wiki/Here_be_dragons}} sind im Labor neben den Raspberry Pis auch andere Maschinen Online. In späteren Übungen werden Sie diese fragwürdigen Geräte genauer begutachten.
+\begin{enumerate}
+	\item Ein Tool um Informationen über Geräte im LAN zu sammeln sind \emph{arping} und \emph{arp-scan}. Schauen Sie in der Manpage oder in der Hilfe nach, wie diese Tools zu nutzen sind. 
+	\item Erstellen Sie sich eine kurze Übersicht über die aktiven Maschinen im Netzwerk. Neben Ihren Raspberry Pis sollten auch andere Systeme auftauchen. Die Unterscheidung kann mithilfe der Adressen als auch anhand der Hostnamen erfolgen.
+	\item Sie sollen noch ein wenig mehr über die dubiosen Maschinen in Erfahrung bringen. Mit dem Tool \emph{nmap} können Sie einen Port-Scan starten. Dies ermöglicht Ihnen herauszufinden, welche Dienste auf den jeweiligen Maschinen laufen.\\
+	Starten Sie einen Port-Scan!\\
+	Die Ausgabe liefert Ihnen einige Informationen -- offene Ports sind Dienste die das System im Netzwerk für andere Teilnehmer anbietet. Manche können auch direkt im Webbrowser aufgerufen werden, beispielsweise die Ports 80 und 443 (viele andere auch, diese beiden sind jedoch die Standardports für HTTP-Websites).
+	\item Rufen Sie die Maschinen mit den offenen Ports 80 oder 443 via Browser auf.\footnote{Sie könne auch andere Tools hierfür verwenden.}
+\end{enumerate}
+\end{document}

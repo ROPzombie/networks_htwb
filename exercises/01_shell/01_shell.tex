@@ -1,13 +1,16 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%LaTeX template for papers && theses									%%
+%%Done by the incredible ||Z01db3rg||									%%
+%%Under the do what ever you want license								%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
 %start preamble
 \documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
-
-\usepackage{fontspec}
-\defaultfontfeatures{Ligatures=TeX}
-%\setsansfont{Liberation Sans}
-\usepackage{polyglossia}	
-\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
-\usepackage{csquotes}
-		
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
 \usepackage{amsmath}%get math done
 \usepackage{amsthm}%get theorems and proofs done
 \usepackage{graphicx}%get pictures & graphics done
@@ -45,7 +48,7 @@
 \definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
 \pagestyle{fancy}
-\lhead{Netzwerke Übung (WiSe 2019/20)}
+\lhead{Netzwerke Übung (SoSe 2019)}
 \rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
 \lfoot{Übungsblatt 1 -- Grundlagen Linux \& Shell}
 \cfoot{}
@@ -81,6 +84,17 @@
 \setlist[enumerate]{% (
 labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
 
+\pdfpkresolution=2400%higher resolution
+
+%settings colors for links
+%\hypersetup{
+ %   colorlinks,
+  %  linkcolor={blue!50!black},
+   % citecolor={blue},
+    %urlcolor={blue!80!black}
+%}
+
+%\usepackage[pagetracker=true]{biblatex}
 
 %%here begins the actual document%%
 \newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
@@ -90,50 +104,55 @@ labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
 
 \title{	
 \normalfont \normalsize 
-\textsc{Übungsblatt 01 -- Shell Grundlagen}
+\textsc{Übungsblatt 1 -- Shell Grundlagen}
 }
 
 \begin{document}
 \begin{center}
 \Large{\textbf{Übungsblatt 1 -- Shell Grundlagen}}
 \end{center}
-Sie finden die Übungsblätter im Moodle-Kurs und auf den Laborrechnern unter \path{~/share/lehrende/troester/netzwerke/exercises/}.\\
+\large{\textbf{\textcolor{red}{Hinweis:} Versuchen Sie die Übungsblätter soweit wie möglich ohne Hilfe von Google, Stackoverflow, Stackexchange etc. zu lösen. Sie sollen eigene Lösungswege finden und nicht professionell Suchmaschinen bedien können. Ausnahmen sind natürlich Aufgaben, in denen explizit recherchiert werden soll.}\\
 \linebreak[4]
-Diese Übung soll Sie zunächst mit dem Umgang unixoider Betriebssysteme vertraut machen, sodass der Einstieg etwas leichter fällt. Im speziellen ist hier der Umgang mit der Kommandozeile gemeint, da Server-Systeme i.A. keine grafische Schnittstelle anbieten.\\
-Die Erfahrung zeigt, dass einige Studierende zunächst überfordert sind. Keine Sorge: Sie sind nicht allein. Generell hilft es am Ball zu bleiben und sich kontinuierlich mit den Aufgaben zu beschäftigen -- das heißt auch: selber recherchieren, Literatur lesen, sich Unklarheiten bewusst machen und entsprechend Fragen zu stellen.
+Sie finden die Übungsblätter im Moodle-Kurs, auf den Laborrechnern unter \path{~/share/lehrende/troester/netzwerke/exercises/} und auf den Rasp\-berry Pi unter \path{~/network_exercises/}\\
+\linebreak[4]
+Diese Übung soll Sie zunächst mit dem Umgang unixoider Betriebssysteme vertraut machen, sodass der Einstieg etwas leichter fällt.\\
+Die Erfahrung zeigt, dass einige Studierende zunächst überfordert sind, keine Sorge: Sie sind nicht allein. Generell hilft es am Ball zu bleiben und sich kontinuierlich mit den Aufgaben zu beschäftigen -- das heißt auch: selber recherchieren, Literatur lesen, sich Unklarheiten bewusst machen etc. und entsprechend Fragen zu stellen.\\
+Wenn Sie mit Linux/Unix bereits firm sind, können Sie auch ein erweitertes Übungsblatt lösen.
 \begin{center}\Large{\textbf{Aufgabe A -- Shell Basics}}\end{center}\vskip0.25in
 %\setlist[enumerate, 1]{itemsep=\baselineskip}
 \begin{enumerate}
 \item Navigation:\\
-Ziel dieser Aufgabe ist die grundlegende Navigation in der Shell zu verstehen.
+Ziel dieser Aufgabe ist die grundlegende Navigation unter Linux zu verstehen.
 	\begin{itemize}
-		\item[a)] Starten Sie die Kommandozeile (Shell)! Entweder via Tastenkombination \keys{\ctrl + \Alt + t} (STRG + ALT + T) oder über das Menü bzw. das Icon im Panel.\\
-		Lassen Sie sich anschließend Ihr aktuelles Verzeichnis auf der Kommandozeile ausgeben! Dies ist standardmäßig Ihr Heimatverzeichnis \footnote{Auch \enquote{home directory}: $\sim$ oder ausgeschrieben \path{/home/student/} auf der VM bzw. \path{/home/s0xxxxxx} auf den Laborrechnern}.
-		\item[b)] Lassen Sie sich den Inhalt des Verzeichnisses ausgeben.
-		\item[c)] Navigieren Sie via \emph{cd} in den Ordner \path{/var}
-		\item[d)] Springen Sie vom vorherigen Ordner in den übergeordneten Ordner (\emph{/}).
-		\item[e)] Navigieren Sie in Ihr Heimatverzeichnis (Dies sollte durch genau ein Kommando erfolgen!)
-		\item[f)] Recherchieren Sie kurz den Unterschied zwischen relativen und absoluten Pfaden in Dateisystemen. Sie können folgende Quelle hierfür nutzen: \url{https://de.wikipedia.org/wiki/Pfadname}
-		\item[g)] Lassen Sie sich mit dem Befehl \emph{history} die letzten Befehle Anzeigen, die im Terminal ausgeführt wurden. 
-		\item[h)] Benutzen sie die Pfeiltasten \keys{\arrowkeyup} und \keys{\arrowkeydown} um die letzten Befehle auf die Kommandozeile zu bringen. Mithilfe der Pfeiltasten können Sie durch die History navigieren, wobei \keys{\arrowkeyup} in Richtung älterer Befehle und \keys{\arrowkeydown} Richtung neuerer springt.
+		\item[a)] Navigieren Sie mithilfe der Menüleiste zum Dateimanager und öffnen Sie diesen. Im Ordner \path{~/share/lehrende/troester/netzwerke/exercises/cheat_sheets/} find Sie einige hilfreiche Dokumente. Öffnen Sie den Spickzettel für die Unix Shell (\emph{shell\_basics.md}).\\
+Öffnen Sie die Datei mithilfe des Dateimanagers \footnote{Dateien die auf \emph{.md} enden könne mit \emph{gedit} (\emph{retext} auf dem Raspberry Pi) geöffnet werden} und lösen Sie folgende Aufgaben.\\
+Anmerkung: Einige Aufgaben benötigen mehr als nur genau ein Kommando!
+		\item[b)] Starten Sie die Kommandozeile (Shell)! Entweder via Tastenkombination \keys{\ctrl + \Alt + t} (STRG + ALT + T) oder über das Menü bzw. das Icon im Panel.\\
+		Lassen Sie sich anschließend Ihr aktuelles Verzeichnis auf der Kommandozeile ausgeben! Dies ist standardmäßig Ihr Heimatverzeichnis \footnote{Auch \glqq home directory \grqq: $\sim$ oder ausgeschrieben \path{/home/student/} auf dem Raspberry Pi bzw. \path{/home/s0xxxxxx} auf den Laborrechnern}.
+		\item[c)] Lassen Sie sich den Inhalt des Verzeichnisses ausgeben.
+		\item[d)] Navigieren Sie via \emph{cd} in den Ordner \path{/var}
+		\item[e)] Springen Sie vom vorherigen Ordner in den übergeordneten Ordner (\emph{/}).
+		\item[f)] Navigieren Sie in Ihr Heimatverzeichnis (Dies sollte durch genau ein Kommando erfolgen!) -- s. 1b)
+		\item[g)] Recherchieren Sie kurz den Unterschied zwischen relativen und absoluten Pfaden in Dateisystemen. Sie können folgende Quelle hierfür nutzen: \url{https://de.wikipedia.org/wiki/Pfadname}
+		\item[h)] Lassen Sie sich mit dem Befehl \emph{history} die letzten Befehle Anzeigen, die im Terminal ausgeführt wurden. 
+		\item[i)] Benutzen sie die Pfeiltasten \keys{\arrowkeyup} und \keys{\arrowkeydown} um die letzten Befehle auf die Kommandozeile zu bringen. Mithilfe der Pfeiltasten können Sie durch die History navigieren, wobei \keys{\arrowkeyup} in Richtung älterer Befehle und \keys{\arrowkeydown} Richtung neuerer springt.
 		\item[k)] Mit der Tastenkombination \keys{\ctrl +r} öffnen Sie die interaktive Suche der History anstoßen. Unter Ihrem Command-Prompt erscheint folgendes:\\
 		\begin{lstlisting}[style=Bash, language=Bash]
 bck-i-search: _
 		\end{lstlisting}
-		Mithilfe dieser Suche können Sie nach bereits benutzten Befehlen suchen. Wenn Sie beispielsweise \emph{cd} eingeben sehen Sie den zuletzt genutzten Befehl der den Token \emph{cd} enthält. Durch wiederholtes Drücken der Tastenkombination \keys{\ctrl +r} durchsuchen Sie die History Richtung älterer Befehle die das angegebene Schlüsselwort enthalten.\\
+		Mithilfe dieser Suche können Sie nach bereits benutzten Befehlen suchen. Wenn Sie beispielsweise \emph{cd} eingeben sehen Sie den zuletzt genutzten Befehl der das Wort/ die Buchstabenreihenfolge \emph{cd} enthält. Durch wiederholtes Drücken durchsuchen Sie die History Richtung älterer Befehle die das angegebene Schlüsselwort enthalten.\\
 		\textbf{Kommandos:} \textcolor{blue}{\emph{cd}, \emph{pwd}, \emph{history}}
 	\end{itemize}
   \item Grundlegende Kommandos:\\
   Um den grundlegenden Umgang mit der Shell kennenzulernen fertigen Sie sich ein eigenes kleines Shell-Tutorial an.\\
-  \textbf{Hinweis:} Um lästige Tipparbeit zu vermeiden, bieten viele Shells eine Autovervollständigung an. Mit der \keys{\tab}-Taste (Tabulatortaste) kann diese genutzt werden -- Sie müssen lediglich die ersten Buchstaben tippen und können durch (mehrmaliges) drücken der Tabulatortaste den begonnenen Befehl vervollständigen. Wenn es mehrere Alternativen der Vervollständigung gibt, kann zwischen diesen gesprungen werden.\\
-  Schauen Sie in die Aufgabe B, wenn bestimmt Kommandos (noch) nicht wie gewünscht arbeiten! Ein Blick in die Hilfe löst dies in vielen Fällen.
+  \textbf{Hinweis:} Um lästige Tipparbeit zu vermeiden bieten viele Shells eine Autovervollständigung an. Mit der \keys{\tab}-Taste (Tabulatortaste) kann diese genutzt werden -- Sie müssen lediglich die ersten Buchstaben tippen und können durch (mehrmaliges) drücken der Tabulatortaste den begonnenen Befehl vervollständigen. Wenn es mehrere Alternativen der Vervollständigung gibt, kann zwischen diesen gesprungen werden.
         \begin{tasks}(1)
-        \task Erzeugen Sie das Verzeichnis \path{shell_tutorial} und wechseln Sie in das erzeugte Verzeichnis, erzeugen Sie darin eine leere Datei mit dem Dateinamen \textit{shell\_tutorial.md}.\footnote{.md steht für Markdown, welches ein Format für Textdateien ist, ähnlich wie .txt oder .doc-Dateien.} (Der Satzpunkt gehört nicht zum Dateinamen!)\\
+        \task Erzeugen Sie das Verzeichnis \path{shell_tutorial} und wechseln Sie in das erzeugte Verzeichnis, erzeugen Sie darin eine leere Datei mit dem Dateinamen \textit{shell\_tutorial.md}.\footnote{.md steht für Markdown, welches ein Format für Textdateien ist, ähnlich wie .pdf oder .doc-Dateien.} (Der Punkt gehört nicht zum Dateinamen!)\\
         \textbf{Achtung:} Verwenden Sie zum Anlegen der Datei keinen Editor, sondern (einen) Kommandozeilenbefehl(e).\\
         \textbf{Kommandos:} \textcolor{blue}{\emph{touch}, \emph{mkdir}, \emph{cd}}
 		\task Überprüfen Sie die Dateigröße der Datei \textit{shell\_tutorial.md}.\\
 		\textbf{Kommandos:} \textcolor{blue}{\emph{ls}, \emph{stat}, \emph{du}}
-		\task Fügen Sie mithilfe der Umleitung der Standardausgabe die Zeilen "Shell Tutorial", sowie eine (neue) Zeile mit dem aktuellen Datum ein.\\
+		\task Fügen Sie mithilfe der Umleitung der Standardausgabe die Zeilen \glqq Shell Tutorial\grqq, sowie eine Zeile mit dem aktuellen Datum ein.\\
 		\textbf{Kommandos:} \textcolor{blue}{\emph{echo}, \emph{date}, \emph{>>}, bzw. \emph{>}}
 		\begin{itemize}
 			\item \small Verwenden Sie für das Einfügen des Textes keinen Editor, sondern einen Befehl und eine Weiterleitung (Umleitung der Standardausgabe).
@@ -153,18 +172,32 @@ bck-i-search: _
          \footnote{Sie können auch mit vi, vim oder emacs arbeiten!}
   \item Benutzer- \& Systeminfos:
         \begin{tasks}(1)       
-          \task Lassen Sie sich den Nutzernamen und die Gruppenzugehörigkeit auf dem Terminal des Rechners ausgeben.\\
+          \task Lassen Sie sich ihren Nutzernamen und ihre Gruppenzugehörigkeit auf dem Terminal des Rechners ausgeben.\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{id}, \emph{groups}, \emph{whoami}}
           \task Lassen Sie sich den Namen ihres Rechners ausgeben.\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{hostname}}
           \task Legen Sie einen Ordner \emph{.nfo} an. Schreiben Sie die Ausgaben Ihres Nutzernamens, Gruppenzugehörigkeit sowie den Namen des genutzten Rechners in die Datei \emph{info.nfo} in den Ordner \emph{.nfo}.
-          \task Nutzen Sie \emph{ls} und prüfen Sie, ob Sie den Ordner wiederfinden können! Finden Sie heraus, wie Sie mithilfe des \emph{ls} Kommandos trotzdem diesen versteckten Ordner (Hidden-Folder) finden können.
-          \task Löschen Sie erst die \emph{nfo}-Datei. Anschließend den Ordner \emph{.nfo}\\
+          \task Nutzen Sie \emph{ls} und prüfen Sie, ob Sie den Ordner wiederfinden können! Finden Sie heraus, wie Sie mithilfe des \emph{ls} Kommandos trotzdem diesen versteckten (hidden folder) Ordner finden können.   
+          \task Öffnen Sie ein zweites Terminal und melden Sie sich mit dem Kommando:
+          \begin{itemize}
+          \item[\$]ssh s0XXXX@uranus-ai.f4.htw-berlin.de
+          \end{itemize}
+           auf dem Server Uranus an (s0XXXX entspricht hierbei Ihrer Matrikelnummer). \footnote{Falls Sie sich nicht auf den Uranus verbinden können, nutzen Sie den vor Ihn stehenden Pluto-Rechner} \\
+           Lassen sich ihren Nutzernamen und ihre Gruppenzugehörigkeit, wie auch den Rechnernamen ausgeben. Schreiben Sie den Inhalt dieses mal in eine Datei \emph{s0XXXXX.nfo}.\\
+           Mit folgendem Kommando können Sie die Datei remote kopieren: 
+           \begin{itemize}
+          \item[\$]scp s0XXXX@uranus-ai.f4.htw-berlin.de:\textasciitilde /s0XXXXX.nfo \textasciitilde/.nfo/
+          \end{itemize}
+          \task Vergleiche Sie die beiden Dateien!\\
+          \textbf{Kommandos:} \textcolor{blue}{\emph{diff}}
+          \task Löschen Sie erst die \emph{nfo}-Dateien. Anschließend den Ordner \emph{.nfo}\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{rm}}
-          \task Wie finden Sie heraus, welche Benutzer noch auf dem Ihrem Rechner eingeloggt sind und wie lange diese angemeldet sind.\\
+          \task Wie finden Sie heraus, welche Benutzer noch auf dem Uranus-Server eingeloggt sind und wie lange diese auf dem Server angemeldet sind.\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{who}, \emph{last}, \emph{lastlog}}
-          \task Bringen Sie das genutzte Betriebssystem (Distribution), sowie dessen Kernel in Erfahrung.\\
+          \task Bringen Sie auf beiden Systemen das genutzte Betriebssystem (Distribution), sowie dessen Kernel in Erfahrung.\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{lsb\_release}, \emph{cat \path{/etc/os-release}}, \emph{uname}}
+          \task Loggen Sie sich aus dem Uranus-Server aus.\\
+          \textbf{Kommandos:} \textcolor{blue}{\emph{exit}, \keys{\ctrl +d}}
           \task Viele Linux-Systeme haben eine Quota -- eine Beschränkung des Speicherverbrauchs, ist diese auf den Laborrechnern vorhanden? Falls ja, wie sieht diese aus? (Aktuell ist der Befehl Quota nicht installiert, mithilfe von \textbf{df -h} könne Sie sich dennoch den Status des Dateisystems ausgeben lassen.
         \end{tasks}
 \end{enumerate}
@@ -185,17 +218,17 @@ Die Man-Pages finden Sie als Website auch im Internet. \footnote{\url{https://li
 %\setlist[enumerate, 1]{itemsep=\baselineskip}
 \begin{enumerate}
 
-\item Diskrete Zugangskontrolle (DAC) -- Nutzer \& Gruppen
+\item Nutzer \& Gruppen -- Rechte für alle!
 	\begin{tasks}(1)
         \task Recherchieren Sie die Bedeutung der Spalten 1 -- 7 der Ausgabe des Kommandos \emph{ls -la} in Ihrem Heimatverzeichnis.
         \task Finden Sie die Datei bzw. das Programm \textit{reboot}, die den Neustart des Systems veranlassen kann. Lassen Sie sich die Rechte der Datei \textit{reboot} ausgeben!
         \textbf{Kommandos:} \textcolor{blue}{\emph{whereis}, \emph{find}}
-        \task Um was für einen Dateitypen handelt es sich hierbei? Was ist reboot für eine Datei -- recherchieren Sie gegebenenfalls kurz.
+        \task Um was für einen Dateitypen handelt es sich hierbei? Ist Reboot ein echte Executable?
         \task Wer ist der Eigentümer, wie sehen die Berechtigungen für Nutzer, Gruppe und Andere in symbolischer, oktaler und binärer Schreibweise aus?
         \task Schreiben Sie die Ergebnisse der vorigen Aufgabe in die Datei \textit{reboot\-\_permission.txt}.
         \task Nennen Sie Möglichkeiten den Inhalt der Datei \textit{reboot\-\_permission.txt} anzeigen lassen. Welche Rechte besitzt diese Datei?
         \task Wie würde das Kommando lauten um die Rechte der Datei \textit{reboot\-\_permission.txt} so zu ändern, sodass der Nutzer lesen und schreiben kann, Nutzer der gleichen Gruppe nur lesen und alle anderen keinen Zugriff haben. (Jeweils oktal und symbolisch.) 
-        \task Können Sie den Rechner mit dem Kommando \textit{reboot} neu starten? Falls nicht, warum? 
+        \task Können Sie den Laborrechner mit dem Kommando \textit{reboot} neu starten? Falls nicht, warum? 
         \task Führen Sie einen Reboot des Systems durch -- Achtung speichern Sie alle offenen Dateien, sodass Sie keine ungespeicherten Daten verlieren!
   \end{tasks}
   \item Was ist nach dem Neustart aus dem Ordner der Aufgabe \texttt{A Shell Basic -- 2h)} geworden?
@@ -207,7 +240,20 @@ Die Man-Pages finden Sie als Website auch im Internet. \footnote{\url{https://li
 	Ein Cheat-Sheet kann unter:\\
 	\url{https://www.fprintf.net/vimCheatSheet.html}\\
 	bezogen werden, sodass die Nutzung etwas leichter fällt.\\
-	Sie müssen kein vi-Guru werden, jedoch sollten Sie wissen, wie Dateien geöffnet, geschlossen, gespeichert werden, sowie wie im vi/vim navigiert wird und wie Sie den vi verlassen können. Notieren Sie sich in Ihrem Cheat-Sheet wie Sie vorgegangen sind!\\
-	Die Navigation in den Manpages entspricht der des vims.
+	Sie müssen zunächst kein vi-Guru werden, jedoch sollten Sie wissen, wie Dateien geöffnet, geschlossen, gespeichert werden, sowie wie im vi/vim navigiert wird und wie Sie den vi verlassen können. Notieren Sie sich in Ihrem Cheat-Sheet wie Sie vorgegangen sind!
+	\item Speichern Sie ihr Cheat-Sheet ab! In der nächsten Übung kopieren Sie sich diesen Notizzettel auf Ihren Raspberry Pi.
 \end{enumerate}
+
+\begin{center}\Large{\textbf{IP via DHCP}}\end{center}\vskip0.25in
+Wenn Sie es bis hier geschafft haben: Glückwunsch!\\
+Sie können sich bereits jetzt ein wenig mit den Tools der kommenden Wochen beschäftigen. Zunächst schauen Sie sich an, wie die Adressierung einer Netzwerkkarte aussieht. Diese ist bereits dynamisch vorkonfiguriert.\\
+Falls Sie noch nicht wissen, was eine IP-Adresse ist: \url	{https://en.wikipedia.org/wiki/IP_address}\\
+Zusammenfassend: Eine IP-Adresse ist nichts anderes als ein eindeutige Netzwerkadresse für Ihren Rechner, ähnlich Ihrer Telefonnummer oder Postanschrift. Wie andere Adressierungsschemata folgt IP einem Protokoll: dazu später mehr!
+\begin{enumerate}
+	\item Finden Sie die IPv4-Adresse Ihres Rechners heraus. Es gibt mehrere Möglichkeiten dies zu tun!\\
+	\textbf{Kommandos:} \textcolor{blue}{\emph{ip addr}, \emph{ifconfig}}
+	\item Neben Ihrem Rechner sind auch die Rechner der Kommilitonen im Labornetz erreichbar. Ähneln sich die Adressen der Rechner? Liegt den Adressen ein bestimmtes Schema zu Grunde?\\
+	\item Diskutieren Sie was hinter dem Adressierungsschema stecken könnte.
+\end{enumerate}
+
 \end{document}

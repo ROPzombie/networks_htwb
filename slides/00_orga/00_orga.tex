@@ -1,15 +1,17 @@
+%%%%%%%%%%%%%%%%%%%%%%%VICARIOUS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%											%
+% Template for presentation in Latex`s Beamer Class					%
+% Using the default Berlin theme, can be replaced by other themes		%
+% logo in the upper right can be replaced by new .png, gif, eps etc	%
+% 																		%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \documentclass[xcolor=dvipsnames,aspectratio=169]{beamer}
-
-\usepackage{fontspec}
-\defaultfontfeatures{Ligatures=TeX}
-%\setsansfont{Liberation Sans}
-\usepackage{polyglossia}
-\setdefaultlanguage{german}
-
 \usetheme{Berlin}
 \usecolortheme[named=LimeGreen]{structure}
 \usepackage{beamerthemesplit} % kam neu dazu
-	
+\usepackage[ngerman]	{babel}			
+\usepackage{t1enc}						
+\usepackage[utf8]{inputenc}			
 \usepackage{amsmath}
 \usepackage{graphicx}
 \graphicspath{{pictures/}}
@@ -131,7 +133,7 @@ morestring=[b]",
 
 \begin{document}
 \bibliographystyle{alpha}
-\title{Netzwerke -- Übung WiSe 2019/20}
+\title{Netzwerke -- Übung SoSe 2019}
 \subtitle{Organisatorisches\\
 
 \href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
@@ -140,6 +142,13 @@ morestring=[b]",
 \author{Benjamin Tröster}
 
 \date{}
+
+\begin{frame}\frametitle{}
+\begin{figure}[]
+\centering
+\includegraphics[scale=0.43]{bootcamp}
+\end{figure}
+\end{frame}
 
 \begin{frame}
 \titlepage
@@ -153,37 +162,93 @@ morestring=[b]",
 \end{multicols}
 \end{frame}
 
-\section{Disclamer}
+\section*{About Me}
+\begin{frame}
+\frametitle{About Me}
+\begin{itemize}
+	\item Informatik@FU-Berlin
+	\item Forschungsgebiet:
+	\begin{itemize}
+		\item Mitglied @AG Security Engineering/Secure Systems Engineering
+		\item IT-Security
+		\begin{itemize}
+			\item CtF (Capture the Flag -- Hacking Contests)
+			\item Vulnerability-Exploitation (PoC)
+			\item Reverse-Engineering
+		\end{itemize}
+		\item Betriebssysteme
+		\begin{itemize}
+			\item BSD, Linux, Solaris, $\mu$-Kernel OS
+			\item HPC-Computing \& Scheduling
+		\end{itemize}
+		\item Computernetzwerke \& Netzwerktechnik
+	\end{itemize}
+\end{itemize} 
+\end{frame}
 
-\subsection{Nutzungsrechte \& Datenschutz}
+\section{Disclamer}
+\subsection{Hinweis}
 \begin{frame}
 	\frametitle{Disclaimer I}
 	\begin{itemize}
-		\item Folien, Übungsblätter bitte nicht via Dropbox, Facebook/Whatsapp etc. teilen
-		\item Nutzungsrechte nur für dieses Semester, innerhalb der Veranstaltung Netzwerke
+		\item Das Studium der (Angewandten) Informatik ist anspruchsvoll...
+		\item Das Gebiet Netzwerke ist äußert umfangreich $\rightarrow$ Arbeitsaufwand
+		\item Um nicht den Anschluss zu verlieren:
+		\begin{itemize}
+			\item Sollten Sie sich auf Vorlesung \& Übung vorbereiten
+			\item Literatur/Links etc. lesen bzw. recherchieren
+			\item Sich Notizen anfertigen -- VL, Übung, Hausaufgaben, vorbereitend Fragen formulieren
+			\item Sich Unklarheiten notieren
+			\item \textbf{Fragen}, wenn Sie etwas nicht verstehen 
+	\end{itemize}		
+		\item Bearbeiten Sie die Übungsblätter -- Hausaufgaben, Praxis, klausurvorbereitend
+		\item Sum­ma sum­ma­rum: Beschäftigen Sie sich ausreichend mit den Inhalten!
+	\end{itemize}
+\end{frame}
+
+\begin{frame}\frametitle{}
+\begin{figure}[]
+\centering
+\includegraphics[scale=0.18]{sponge2}
+\end{figure}
+\end{frame}
+
+\begin{frame}\frametitle{}
+\begin{figure}[]
+\centering
+\includegraphics[scale=0.27]{sponge}
+\end{figure}
+\end{frame}
+
+\subsection{Nutzungsrechte \& Datenschutz}
+\begin{frame}
+	\frametitle{Disclaimer II}
+	\begin{itemize}
+		\item Folien, Arbeits-/Übungsblätter bitte nicht via Dropbox, Share-Hoster, Facebook etc. teilen
+		\item Nutzungsrechte nur für dieses Semester innerhalb der Veranstaltung Netzwerke
 		\item Keine Photo-, Video-/Audiomitschnitte in der Übung
 		\item Fragen per Mail nur via HTW-Mail-Account
-		\begin{itemize}
-			\item $\neg$ Hochschuladresse $\rightarrow$ Spam
-		\end{itemize}		 
 	\end{itemize}
 \end{frame}
 
-\subsection{Labor}
-\begin{frame}
-	\frametitle{Disclamer II}
-	\begin{itemize}
-		\item Essen Sie bitte nicht im Labor
-		\item Unterhalten Sie sich bitte leise, da Sie sonst Ihre Kommilitonen stören könnten
-		\item Versuchen Sie nicht erst $X$ Minuten später zu erscheinen!
-		\begin{itemize}
-			\item Sie arbeiten in Gruppen, was es nicht einfacher macht
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
+\subsection{Labor \& Geräte}
 \begin{frame}
 	\frametitle{Disclamer III}
+	\begin{itemize}
+		\item Halten Sie bitte Ordnung! D.h.:
+		\begin{itemize}
+			\item Räumen Sie \textbf{alle} verwendeten Geräte wieder weg!
+			\item Seien Sie sozial, falls Kommilitonen dies vergessen.
+			\item Achten Sie darauf die Raspberry Pis vorsichtig zu behandeln $\rightarrow$ Leihgabe
+			\item Falls Geräte defekt sind: bitte melden!
+		\end{itemize}
+		\item Versuchen Sie nicht erst $X$ Minuten später zu erscheinen! 
+		\item Sie arbeiten in Gruppen, was es nicht einfacher macht
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Disclamer IV}
 	\begin{itemize}
 		\item Objektive Kritik ist immer willkommen!
 		\item Wenn Sie Fehler oder Anmerkungen haben, tragen Sie diese ruhig vor.
@@ -195,13 +260,16 @@ morestring=[b]",
 \section{Organisatorisches}
 \subsection{Übungsablauf}
 \begin{frame}
-	\frametitle{Übungsablauf}
+	\frametitle{Übungsablauf I}
 	\begin{itemize}
 		\item Labor WH C 625
 		\item Übungsgruppe \& -zeit $\Rightarrow$ LSF
+		\begin{itemize}
+			\item regulär Mittwochs: 
+			\item Zug 2: gerade/ungerade Kalenderwoche \vonbis{8}{00}{11}{15}.
+			\item Zug 1, gerade/ungerade Kalenderwoche \vonbis{12}{15}{15}{30}
+		\end{itemize}
 		\item Übungsblätter, Folien, Literatur \& Links etc. $\Rightarrow$ \url{moodle.htw-berlin.de}
-		\item Hausaufgaben $\rightarrow$ Vorbereitung der kommenden Übung
-		\item Laboraufgaben $\rightarrow$ Anwendung der Hausaufgaben
 		\item Zweiwöchentlicher Tonus 
 		\begin{itemize}
 			\item \textasciitilde 6 Übungsblätter -- bestehend aus Theorie- \& Laborteil
@@ -211,6 +279,49 @@ morestring=[b]",
 	\end{itemize}
 \end{frame}
 
+\begin{frame}
+	\frametitle{Übungsablauf II}
+	\vspace{-0.8cm}
+	\begin{itemize}
+		\item Woche ohne Laborübung -- Hausaufgaben
+		\begin{itemize}
+			\item Recherche, Literatur, Hintergrundwissen -- Grundlagenwissen aufbauen
+			\item Planungsphase -- Erste Verbindung von Theorie in die Praxis
+			\begin{itemize}
+				\item Lesen Sie nach den Hausaufgaben die kommenden Laboraufgaben!
+			\end{itemize}
+			\item Zeit Wissen zu verarbeiten \& Fragen vorzubereiten
+			\item Sinn:
+			\begin{itemize}
+				\item Laborzeit effizienter nutzen
+				\item Erlernen von Arbeitsstrategien
+				\item Vorbereitung
+			\end{itemize}
+		\end{itemize}
+		\item Praktische Laborübung
+		\begin{itemize}
+			\item Diskussion der theoretischen Ausarbeitungen im Plenum, als auch in Ihrer Gruppe bzw. mit Ihren Kommilitonen
+			\item Umsetzung der Planung
+			\item Dokumentation der Umsetzung
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Übungsablauf III}
+	\begin{itemize}
+		\item Beginn der Übung:
+		\begin{itemize}
+			\item Retrospektive -- Fragen zur Vorlesung bzw. der letzten Übung
+			\item Fragen zu den aktuellen Haus- bzw. Laboraufgaben 
+			\item Diskussion der Hausaufgaben
+		\end{itemize}
+		\item Kurze Diskussion der Lösungsansätze (Hausaufgaben) in der Gruppe
+		\item Umsetzung des theoretischen Teils in die Praxis
+		\item Ende der Übung: Bearbeitungsstand der aktuelle Übung
+		\item Vorschau auf die nächste Übung \& Vorstellung des neuen Übungsblatts
+	\end{itemize}
+\end{frame}
 
 \subsection{ECTS}
 \begin{frame}
@@ -221,139 +332,65 @@ morestring=[b]",
 				\item 1 ECTS $\widehat{=}$ 30h
 				\item Workload Netzwerke: 150h/Semester oder 37,5h/Monat oder $\sim$ 9,375h/Woche
 				\item 2 SWS \footnote{Semesterwochenstunden} VL + 2 SWS Übung $\rightarrow$ 4 SWS oder 3h
-				\item D.h. restlichen \textbf{6h/Woche}
-				\begin{itemize}
-					\item Vorbereitung \& Nachbereitung der Vorlesung
-					\item Hausaufgaben, Recherche...
-				\end{itemize}
+				\item D.h. restlichen 6h/Woche Vorbereitung \& Nachbereitung, Hausaufgaben etc.
 			\end{itemize}
-			\item Total Workload pro Semester: 30 CP $\widehat{=}$ 900h $\rightarrow$  $\sim$56.25/Woche
 	\end{itemize}
 \end{frame}
 
 \subsection{Klausur \& Klausurzulassung} \label{klausurzulassung}
 \begin{frame}
-	\frametitle{Klausur \& Klausurzulassung \textbf{Wichtig}}
+	\frametitle{Klausurzulassung}
 	\begin{itemize}
-		\item Schriftliche Klausur (90 min.) am Ende des Semesters 
-		\begin{itemize}
-			\item  Bestehen der Klausur: mind. 50\% der Klausurpunkte
-		\end{itemize}
 		\item Es besteht \textbf{keinerlei} Anwesenheitspflicht, Hausaufgabenpflicht etc.
+		\item Für die Klausurzulassung muss jede(r) Studierende zwei Protokolle abgegeben haben
+		\item \textbf{Obligatorisch}: Teil 1:
 		\begin{itemize}
-			\item Sie könne durch Vortragen der Hausaufgaben Bonuspunkte auf die Projektarbeit erhalten!
+			\item in Gruppen von max. vier Studierenden, Blatt drei -- Routing
 		\end{itemize}
-		\item \textbf{Wiederholer:} Klausurzulassungen des letzten Semesters sind weiterhin gültig
-		\item Klausurzulassung: jede(r) Studierende muss zwei Laborblätter bearbeitet haben
+		\item \textbf{Obligatorisch}: Teil 2
 		\begin{itemize}
-			\item Vorführung der geforderten Funktionalität
-			\item Erläuterung \& kritische Auseinandersetzung mit der Umsetzung
+			\item eine frei wählbare Teilaufgabe aus den Blättern vier bis sechs
+			\item allein protokolliert
+			\item Aufgaben nach Absprache
 		\end{itemize}
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Selbstverantwortliches Lernen \textbf{Wichtig}}
+	\frametitle{Klausurzulassung -- \textbf{Wichtig}}
 	\begin{itemize}
-		\item Sie sind für den Fortschritt Ihrer Lernziele selbst verantwortlich
-		\item Im eigenen Interesse:
-		\begin{itemize}
-			\item Bearbeiten Sie die Hausaufgaben
-			\item Notieren Sie sich fragen
-			\item Suchen Sie nach Material, das Sie beim lernen unterstützt
-		\end{itemize}
-		\item Unterstützungsangebot:
-		\begin{itemize}
-			\item Literatur \& Links auf Moodle
-			\item Bilden Sie Übungsgruppen
-			\item Plenum -- basierend auf Ihrer Vorbereitung
+		\item \textbf{Autor ist:} 
 			\begin{itemize}
-				\item Fragen bitte im Moodle-Forum vorher stellen!
+				\item Wer am Protokoll sichtlich mitgeschrieben hat (Kenntlich in der Dokumentation)
+				\item Wer aktiv an der Übung teilgenommen hat (Wichtig, da ich Ihre Umsetzung begutachte)
+				\item Und an Nachbesprechung teilgenommen hat
 			\end{itemize}
-			\item Tutorium -- falls wir eine/einen Tutor*in finden
+			\item Ein Beispielprotokoll wird zum Aufgabenblatt zwei als Hilfestellung bereitgestellt
+			\item Abgabe der Protokolle $\rightarrow$ Moodle!
+			\item Die Protokolle gehen zu 20\% in die Endnote ein.
+			\item \textbf{Die Klausurzulassung} erhält, wer beide Protokolle fristgerecht abgegeben \& an der Nachbesprechung teilgenommen hat
 		\end{itemize}
-		\item Meine Aufgabe ist es Sie bei der Umsetzung der Laboraufgaben zu unterstützen!
-		\begin{itemize}
-			\item Sie sollen eigene Lösungswege finden
-			\item Fehler machen und daraus lernen
-		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Klausurzulassung -- \textbf{Wichtig}}
+	\begin{itemize}
+		\item Die Protokolle sind Teil der Prüfungsleistung
+		\item Plagiate führen zur Note 5.0, eine Klausurzulassung ist nicht mehr möglich
+		\item Im eigenen Interesse sollten Sie ehrlich Ihre Leistungen erbringen
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Projektarbeit -- \textbf{Wichtig}}
+	\frametitle{Klausurzulassung: Wiederholer}
 	\begin{itemize}
-		\item Übungsbetrieb fließt zu 20\% in die Endnote ein $\rightarrow$ Projektarbeit
-		\item Projektarbeit: Zwei Übungsaufgaben
+		\item Für Wiederholer gilt:
 		\begin{itemize}
-			\item Blatt: 05 Routing
-			\item Blatt: 06 Security
+			\item Alte Klausurzulassungen gelten nicht für darauf folgende Semester
+			\item D.h. Sie benötigen eine erneute Klausurzulassung
 		\end{itemize}
-		\item Bearbeitung in Gruppen von \textbf{maximal vier} Studierenden
-		\item Bewertung erfolgt jedoch individuell (Einzelbewertung)
-		\begin{itemize}
-			\item Die Projektarbeiten sind Teil der Prüfungsleistung, daher:
-			\item Plagiate \& Betrugs-/Täuschungsversuche führen zur Note 5.0 -- eine Klausurzulassung ist nicht mehr möglich
-		\end{itemize}
-		\end{itemize}
-\end{frame}
-
-
-\begin{frame}
-	\frametitle{Bewertungsschema}
- \begin{tabular}{cc}
- \hspace*{-1.3cm} 
- \parbox{0.65\linewidth}{
-\begin{itemize}
-		\item Differenzierte Bewertung
-		\item Bewertung erfolgt innerhalb der Übung
-		\begin{itemize}
-			\item Vorführung der Umsetzung/Lösungsansätze
-			\item Q\&A zum Lösungsansatz
-			\item kritische Auseinandersetzung (wiss. Disput)
-		\end{itemize}
-		\item Bewertung nach Inhalt \& Arbeitsweise:	
-	\end{itemize} } 
-& \begin{tabular}{l}
- \begin{tabular}{c}
- \hspace*{-1.7cm}
-  \begin{tabular}{|c|c|c|}
-\hline
-100 - 94,9 \%   & 	1,0  &	sehr gut 		\\
-<94,9 - 89,5 \% & 	1,3  &  sehr gut (-)		\\ \hline
-<89,5 - 84,3 \% & 	1,7 &	gut (+)			\\
-<84,3 - 79,0 \% &	2,0 	& 	gut				\\
-<79,0 - 73,7 \% &	2,3 & 	gut (-)			\\ \hline
-<73,7 - 68,2 \% & 	2,7 & 	befriedigend (+)	\\
-<68,2 - 63,1 \% & 	3,0 	& 	befriedigend		\\
-<63,1 - 57,9 \% & 	3,3 & 	befriedigend (-)	\\ \hline
-<57,9 - 52,6 \% &	3,7 	& 	ausreichend (+)	\\
-<52,6 - 50,0 \% & 	4,0 & 	ausreichend		\\ \hline
-< 50,0 \%		&	5,0 & 	nicht bestanden \\ \hline
-\end{tabular}         
-           \end{tabular}
-\end{tabular}\\
-\end{tabular}
-\end{frame}
-
-\begin{frame}
-	\begin{itemize}
-		\item Inhaltlich
-		\begin{itemize}
-			\item Grad der Erreichung der angestrebten Ziele 
-			\item Systematik der Vorgehensweise 
-			\item Übersichtlichkeit der Durchführung 
-			\item Folgerichtigkeit der Überlegungen 
-			\item Qualität der Problemlösung 
-			\item Umfang der Problemlösung 
-			\item Qualität der Vorbereitung 
-		\end{itemize}
-		\item Arbeitsweise
-		\begin{itemize}
-			\item Selbstständigkeit der Arbeitsweise 
-			\item Bei Gruppenarbeiten: Gruppenatmosphäre \& Arbeitsteilung
-			\item Klare Analyse der Bedingungen und Voraussetzungen
-		\end{itemize}
+		\item Sie benötigen ebenfalls eine Anmeldung im LSF, da es sonst Schwierigkeiten mit dem Prüfungsamt geben könnte!
+		\item Beachten Sie die Fristen für die Anmeldung
 	\end{itemize}
 \end{frame}
 
@@ -402,7 +439,7 @@ morestring=[b]",
  			\item[4.] Webentwicklung \& Verteilte Systeme -- MVC-Pattern, Messaging...
  			\item[5.] KBE, Spez. Anwd. \& Projektstudium -- JSF, JPA, CDI...
  			\item[6.] Möglicherweise Abschlussarbeit
-  		\end{AutoMultiColItemize}
+  \end{AutoMultiColItemize}
 	\end{itemize}
 \end{frame}
 

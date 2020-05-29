@@ -1,18 +1,21 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%LaTeX template for papers && theses									%%
+%%Done by the incredible ||Z01db3rg||									%%
+%%Under the do what ever you want license								%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
 %start preamble
 \documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
-
-\usepackage{fontspec}
-\defaultfontfeatures{Ligatures=TeX}
-%\setsansfont{Liberation Sans}
-\usepackage{polyglossia}	
-\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
-\usepackage{csquotes}
-		
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
 \usepackage{amsmath}%get math done
 \usepackage{amsthm}%get theorems and proofs done
 \usepackage{graphicx}%get pictures & graphics done
 \graphicspath{{pictures/}}%folder to stash all kind of pictures etc
-\usepackage{hyperref}%for links to web
+\usepackage[pdftex,hidelinks]{hyperref}%for links to web
 \usepackage{amssymb}%symbolics for math
 \usepackage{amsfonts}%extra fonts
 \usepackage []{natbib}%citation style
@@ -28,25 +31,12 @@
 \usepackage{dsfont}
 \usepackage{stmaryrd}
 \usepackage{geometry}
+\usepackage{hyperref}
 \usepackage{fancyhdr}
 \usepackage{menukeys}
-\usepackage{csquotes}
-
-%settings colors for links
-\hypersetup{
-    colorlinks,
-    linkcolor={blue!50!black},
-    citecolor={blue},
-    urlcolor={blue!80!black}
-}
-
-\definecolor{pblue}{rgb}{0.13,0.13,1}
-\definecolor{pgreen}{rgb}{0,0.5,0}
-\definecolor{pred}{rgb}{0.9,0,0}
-\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
 \pagestyle{fancy}
-\lhead{Netzwerke Übung (WiSe 2019/20)}
+\lhead{Benjamin Tröster\\Netzwerke Übung (WiSe2018/19)}
 \rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
 \lfoot{Übungsblatt 1 -- Grundlagen Linux \& Shell}
 \cfoot{}
@@ -82,6 +72,17 @@
 \setlist[enumerate]{% (
 labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
 
+\pdfpkresolution=2400%higher resolution
+
+%settings colors for links
+%\hypersetup{
+ %   colorlinks,
+  %  linkcolor={blue!50!black},
+   % citecolor={blue},
+    %urlcolor={blue!80!black}
+%}
+
+%\usepackage[pagetracker=true]{biblatex}
 
 %%here begins the actual document%%
 \newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
@@ -91,19 +92,19 @@ labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
 
 \title{	
 \normalfont \normalsize 
-\textsc{Übungsblatt 01 -- Shell Grundlagen}
+\textsc{Übungsblatt 1 -- Shell Grundlagen}
 }
 
 \begin{document}
 \begin{center}
-\Large{\textbf{Beispiellösung Übungsblatt 1 -- Shell Grundlagen}}
+\Large{\textbf{Übungsblatt 1 -- Shell Grundlagen}}
 \end{center}
-Sie finden die Übungsblätter im Moodle-Kurs und auf den Laborrechnern unter \path{~/share/lehrende/troester/netzwerke/exercises/}.\\
-\linebreak[4]
-Diese Übung soll Sie zunächst mit dem Umgang unixoider Betriebssysteme vertraut machen, sodass der Einstieg etwas leichter fällt. Im speziellen ist hier der Umgang mit der Kommandozeile gemeint, da Server-Systeme i.A. keine grafische Schnittstelle anbieten.\\
-Die Erfahrung zeigt, dass einige Studierende zunächst überfordert sind. Keine Sorge: Sie sind nicht allein. Generell hilft es am Ball zu bleiben und sich kontinuierlich mit den Aufgaben zu beschäftigen -- das heißt auch: selber recherchieren, Literatur lesen, sich Unklarheiten bewusst machen und entsprechend Fragen zu stellen.
+\large{\textbf{\textcolor{red}{Hinweis:} Versuchen Sie die Übungsblätter soweit wie möglich ohne Hilfe von Google, Stackoverflow, Stackexchange etc. zu lösen. Sie sollen eigene Lösungswege finden und nicht professionell Suchmaschinen bedien können. Ausnahmen sind natürlich Aufgaben, in denen explizit recherchiert werden soll.}\\
+\textbf{Sie finden die Übungsblätter im Moodle-Kurs, auf den Laborrechnern unter \path{~/share/lehrende/troester/netzwerke/exercises/} und auf den Raspberry Pi unter \path{~/network_exercises/}}\\
+Diese Übung soll Sie zunächst mit dem Umgang unixoider Betriebssysteme vertraut machen, sodass der Einstieg etwas leichter fällt. Die Erfahrung zeigt, dass einige Studierende zunächst überfordert sind, keine Sorge Sie sind nicht allein. Generell hilft es am Ball zu bleiben und sich kontinuierlich mit den Aufgaben zu beschäftigen -- das heißt auch: selber recherchieren, Literatur lesen, sich Unklarheiten bewusst machen etc.\\
+Wenn Sie mit Linux/Unix bereits firm sind, können Sie auch ein erweitertes Übungsblatt lösen.
 \begin{center}\Large{\textbf{Aufgabe A -- Shell Basics}}\end{center}\vskip0.25in
-
+%\setlist[enumerate, 1]{itemsep=\baselineskip}
 \begin{enumerate}
 \item Navigation:\\
 Ziel dieser Aufgabe ist die grundlegende Navigation unter Linux zu verstehen.
@@ -111,7 +112,7 @@ Ziel dieser Aufgabe ist die grundlegende Navigation unter Linux zu verstehen.
 		\item[a)] Navigieren Sie mithilfe der Menüleiste zum Dateimanager und öffnen Sie diesen. Im Ordner \path{~/share/lehrende/troester/netzwerke/exercises/cheat_sheets/} find Sie einige hilfreiche Dokumente. Öffnen Sie den Spickzettel für die Unix Shell (\emph{shell\_basics.md}).\\
 Öffnen Sie die Datei mithilfe des Dateimanagers \footnote{Dateien die auf \emph{.md} enden könne mit \emph{gedit} (\emph{retext} auf dem Raspberry Pi) geöffnet werden} und lösen Sie folgende Aufgaben (Einige Aufgaben benötigen mehr als nur genau ein Kommando!).
 		\item[b)] Starten Sie die Kommandozeile (Shell). Entweder via Tastenkombination \keys{\ctrl + \Alt + t} (STRG + ALT + T) oder über das Menü.\\
-		Lassen Sie sich anschließend Ihr aktuelles Verzeichnis auf der Kommandozeile ausgeben! Dies ist standardmäßig Ihr Heimatverzeichnis \footnote{Auch \enquote{home directory}: $\sim$ oder ausgeschrieben \path{/home/student/} auf der VM bzw. \path{/home/s0xxxxxx} auf den Laborrechnern}.\\
+		Lassen Sie sich anschließend Ihr aktuelles Verzeichnis auf der Kommandozeile ausgeben! Dies ist standardmäßig Ihr Heimatverzeichnis \footnote{Auch \glqq home directory \grqq: $\sim$ oder ausgeschrieben \path{/home/student/} auf dem Raspberry Pi bzw. \path{/home/s0xxxxxx} auf den Laborrechnern}.\\
 \begin{lstlisting}[style=Bash, language=Bash]
 pwd
 		\end{lstlisting}
@@ -134,7 +135,7 @@ cd # oder
 cd ~
 		\end{lstlisting}
 		\item[g)] Recherchieren Sie kurz den Unterschied zwischen relativen und absoluten Pfaden in Dateisystemen. Sie können folgende Quelle hierfür nutzen: \url{https://de.wikipedia.org/wiki/Pfadname}\\
-		Absolute Pfade (im Dateisystem) beginnen stets bei der Wurzel / (auch root genannt) und gehen von dort  \enquote{hinunter} bis zum Ziel, relative Pfade nehmen das aktuell Verzeichnis als Wurzelelement.
+		Absolute Pfade (im Dateisystem) beginnen stets bei der Wurzel / (auch root genannt) und gehen von dort \glqq hinunter\grqq\ bis zum Ziel, relative Pfade nehmen das aktuell Verzeichnis als Wurzelelement.
 		\item[h)] Lassen Sie sich mit dem Befehl \emph{history} die letzten Befehle Anzeigen, die im Terminal ausgeführt wurden. 
 		\item[i)] Benutzen sie die Pfeiltasten \keys{\arrowkeyup} und \keys{\arrowkeydown} um die letzten Befehle auf die Kommandozeile zu bringen. Mithilfe der Pfeiltasten können Sie durch die History navigieren, wobei \keys{\arrowkeyup} in Richtung älterer Befehle und \keys{\arrowkeydown} Richtung neuerer springt.
 		\item[k)] Mit der Tastenkombination \keys{\ctrl +r} öffnen Sie die interaktive Suche der History. Unter Ihrem Command-Prompt erscheint folgendes:\\
@@ -158,16 +159,15 @@ bck-i-search: _
 		\textbf{Kommandos:} \textcolor{blue}{\emph{ls}, \emph{stat}, \emph{du}}\\
 		\textit{ls -la shell\_tutorial.md} oder\\
 		\textit{stat shell\_tutorial.md}
-		\task Fügen Sie mithilfe der Umleitung der Standardausgabe die Zeilen  \enquote{Shell Tutorial}, sowie die Zeile mit dem aktuellen Datum ein.\\
+		\task Fügen Sie mithilfe der Umleitung der Standardausgabe die Zeilen \glqq Shell Tutorial\grqq, sowie die Zeile mit dem aktuellen Datum ein.\\
 		\textbf{Kommandos:} \textcolor{blue}{\emph{echo}, \emph{>>}, bzw. \emph{>}}\\
 		\begin{itemize}
 			\item \small Verwenden Sie für das Einfügen des Textes keinen Editor, sondern einen Befehl und eine Weiterleitung (Umleitung der Standardausgabe).
 		\end{itemize}
 		\textit{echo Shell Tutorial > shell\_tutorial.md}\\
-		\textit{date >> shell\_tutorial.md}\\
-		\textit{echo 'Shell Tutorial' > shell\_tutorial.md; date >> shell\_tutorial.md}
+		\textit{data >> shell\_tutorial.md}
 		\task Geben Sie die erste Zeile der Datei auf der Kommandozeile aus.\\
-		\textbf{Kommandos:} \textcolor{blue}{\emph{head}, \emph{tail}}\\
+		\textbf{Kommandos:} \textcolor{blue}{\emph{head}, \emph{tail}}
 		\textit{head -n 1 shell\_tutorial.md}
 		\task Öffnen Sie Ihr Cheat-Sheet mithilfe das Programms \emph{gedit} bzw. \emph{retext}. Notieren Sie sich alle Befehle, sowie deren Bedeutung, sodass Sie eine erste Anlaufstelle für die nächsten Übungen haben. Dieses Dokument (Sie können auch mehrere anlegen) sollten Sie fortan als Notizzettel für die Laboraufgaben nutzen!
 		\task Navigieren Sie in Ihr Heimatverzeichnis. Legen Sie folgenden Ordner, sowie Unterordner mithilfe des \emph{mkdir}-Kommandos an: \path{exercise_notes/tutorials}.\\
@@ -187,13 +187,15 @@ bck-i-search: _
         \begin{tasks}(1)       
           \task Lassen Sie sich ihren Nutzernamen und ihre Gruppenzugehörigkeit auf dem Terminal des Laborrechners ausgeben. \\
           \textbf{Kommandos:} \textcolor{blue}{\emph{id}, \emph{groups}, \emph{whoami}}\\
-          \textit{id}\\
+          \textit{id} oder\\
           \textit{groups}
           \task Lassen Sie sich den Namen ihres Rechners ausgeben.\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{hostname}}
           \task Legen Sie einen Ordner \emph{.nfo} an. Schreiben Sie die Ausgaben Ihres Nutzernamens, Gruppenzugehörigkeit sowie den Namen des genutzten Rechners in die Datei \emph{info.nfo} in den Ordner \emph{.nfo}.\\
-          \textit{mkdir .nfo; touch foo.nfo}\\
-          \textit{hostname >> foo.nfo; id >> foo.nfo}\\
+          \textit{mkdir .nfo}
+          \textit{touch foo.nfo}\\
+          \textit{hostname >> foo.nfo}\\
+          \textit{id >> foo.nfo}
           \task Nutzen Sie ls und prüfen Sie, ob Sie den Ordner wiederfinden können! Finden Sie heraus, wie Sie mithilfe des \emph{ls} Kommandos trotzdem diesen versteckten (hidden folder) Ordner finden können. \\
           \textit{ls -la}  
           \task Öffnen Sie ein zweites Terminal und melden Sie sich mit dem Kommando:
@@ -272,7 +274,14 @@ Unix/Linux bietet von Hause aus einige Anlaufstellen an, mit deren Hilfe Sie die
         \task Führen Sie einen Reboot des Systems durch -- Achtung speichern Sie alle offenen Dateien, sodass Sie keine eventuellen Daten verlieren!
   \end{tasks}
   \item Was ist nach dem Neustart aus dem Ordner der Aufgabe Shell -- 2h) geworden?\\
-  \path{\tmp} ist ein rein temporäres Verzeichnis, je nach Konfiguration sollte das Betriebssystem dafür sorgen, dass hier abgelegte Dateien gelöscht werden. In vielen Fällen gibt es hierfür ein eigenes spezielles Dateisystem.
+  Weg! \path{\tmp} ist ein rein temporäres Verzeichnis.
 \end{enumerate}
-
+\begin{center}\Large{\textbf{VI/Vim}}\end{center}\vskip0.25in
+\begin{enumerate}
+	\item Der Standardeditor unter Unix ist \emph{vi}, dieser ist auf jedem System vorhanden. Bearbeiten Sie folgendes Tutorial:\\
+	\url{http://www.openvim.com/}
+	Eine Cheat-Sheet kann unter: \url{https://www.fprintf.net/vimCheatSheet.html} bezogen werden, sodass die Nutzung etwas leichter fällt.\\
+	Sie müssen zunächst kein vi-Guru werden, jedoch sollten Sie wissen, wie Dateien geöffnet, geschlossen, gespeichert werden, sowie wie im vi/vim navigiert wird und wie sie den vi verlassen können. Notieren Sie sich in Ihrem Cheat-Sheet wie sie vorgegangen sind!
+	\item Speichern Sie ihr Cheat-Sheet ab! In der nächsten Übung kopieren Sie sich diesen Notizzettel auf Ihren Raspberry Pi.
+\end{enumerate}
 \end{document}

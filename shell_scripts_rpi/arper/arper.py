@@ -1,5 +1,4 @@
-#!/usr/bin/python3
-# make use of python3, whereby debi(li)an has still python2 as defautl
+#!/usr/bin/python
 
 from scapy.all import *     #special lib for networking
 import os                   # os utils for python

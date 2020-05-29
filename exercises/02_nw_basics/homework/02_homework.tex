@@ -1,0 +1,190 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%LaTeX template for papers && theses									%%
+%%Done by the incredible ||Z01db3rg||									%%
+%%Under the do what ever you want license								%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+\usepackage{multicol}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+%Header & Footers
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (SoSe 2019)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 2 -- Netzwerkgrundlagen}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+\pdfpkresolution=2400%higher resolution
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Hausaufgaben Laborübung 2 -- Theorie, Netzwerkgrundlagen}}
+\end{center}
+\begin{center}\Large{\textbf{Zusammenfassung}}\end{center}
+Ziel dieses Übungsblatts soll es sein Sie auf die kommende Laborübung gut vorzubereiten.\\
+\textbf{Das Übungsblatt soll die Planung eines kleinen Netzwerkes theoretisch vorwegnehmen, sodass Sie Zeit haben sich einzuarbeiten, zu recherchieren und mögliche Probleme bzw. Fragen festzuhalten.}\\
+Weiterhin dient das Hausaufgabenblatt der Aneignung zu Theorie und Grundlagen einiger Linux-Tools die in der kommenden Laborübung verwendet werden.
+\paragraph{Inhalt:}
+\begin{itemize}
+	\item Grundlagen Laborhardware
+	\item Netzwerktopologien
+	\item Grundlegendes zu IP-Adressen
+	\item Einige Kommandozeilenwerkzeuge für die Netzwerkadministration (\emph{ip}, \emph{ifconfig})
+	\item Ping
+\end{itemize}
+Eine gute Anlaufstelle sind die Wikis der bekannteren Linux-Distributionen, wie das Debian- oder das Arch-Linux-Wiki.
+\begin{itemize}
+	\item \url{https://wiki.debian.org/}
+	\item \url{https://www.debian.org/doc/manuals/debian-reference/index.en.html}
+	\item \url{https://wiki.archlinux.org/}
+\end{itemize}
+
+\begin{center}\Large{\textbf{Aufgabe A - Planung des physischen Netzes}}\end{center}\vskip0.25in
+Sie planen in Vierergruppen die Netzinfrastruktur für ein kleines LAN mit je vier Rasp\-berry Pis.
+\begin{itemize}
+	\item[1.)] Machen Sie sich die Funktion der einzelnen Rechner- \& Netzwerkkomponenten klar.
+\begin{itemize}
+    \item Raspberry Pi \& Peripherie (Monitor, Tastatur etc.)
+    \item Netzwerkkabel -- Aufgabe im NW
+    \item Switch -- Aufgabe im NW \& Einordnung ins OSI-Modell
+    \item Ethernet-Port -- physikalisches Netzwerkinterface
+\end{itemize}
+	
+	\item[2.)] Recherchieren Sie mithilfe der folgender Links was eine Netzwerktopologie ist.
+	\begin{itemize}
+		\item \url{https://www.elektronik-kompendium.de/sites/net/0503281.htm}
+		\item \url{https://en.wikipedia.org/wiki/Network_topology}
+		\item \url{https://www.lifewire.com/computer-network-topology-817884}
+	\end{itemize}
+	\item[3.)] Wählen Sie eine geeignete Netztopologie und skizzieren Sie diese mit geeigneten Symbolen.\\ \textbf{Hinweis:} Unter \url{http://iacis.org/iis/2008/S2008_967.pdf} finden Sie auf S. 241 eine Möglichkeit, wie dies aussehen könnte.\\
+	Ordnen Sie die Geräte auf der Skizze so an, wie sie auch vor ihnen im Raum bzw. auf dem Tisch angeordnet sein sollten.
+	\item[4.)] Planen Sie die Netzkonfiguration
+\begin{tasks}[counter-format=(tsk[r])](1)	
+	\task Recherchieren Sie kurz was eine IP-Adresse ist (zunächst genügt ein grobes Verständnis). Welche Aufgabe haben diese Adressen in einem Netzwerk?\\
+	\textbf{Hinweis:} Ein guter Start wäre: \url{https://de.wikipedia.org/wiki/IP-Adresse}
+	\task Momentan werden vor allem \emph{IPv4} und \emph{IPv6} als Netzwerkschichtprotokolle genutzt. Recherchieren Sie nur \textbf{kurz} einige wichtige Unterschiede zwischen \emph{IPv4} und \emph{IPv6}.
+	\task Recherchieren Sie was eine Subnetzmaske ist und wofür diese gebraucht wird.
+	\task Bestimmte IP-Adressbereiche werden nicht ins Internet weitergeleitet, sie werden als private IP-Adressen bezeichnet. Diese Adressen gibt es sowohl unter \emph{IPv4} als auch unter \emph{IPv6}. Recherchieren Sie, welche IP-Adressbereiche nicht ins Internet geroutet werden.
+	\task Wählen Sie beispielhaft eine Netzwerkadresse (IP-Addresse -- ip address) und Subnetzmaske (subnet mask) für einen möglichst kleinen IP-Adressbereich, der genau für vier Raspberry Pis ausreicht. Als Hilfestellung können Sie folgenden Link nutzen:
+	\begin{itemize}
+		\item \url{https://www.calculator.net/ip-subnet-calculator.html}
+		\item \url{https://www.tunnelsup.com/subnet-calculator/}
+	\end{itemize}
+\end{tasks} 
+\end{itemize}
+
+\begin{center}\Large{\textbf{Aufgabe B -- Tools}}\end{center}\vskip0.25in
+Um den Übungsbetrieb etwas effizienter nutzen zu können, sollen Sie sich zunächst mit den Standardwerkzeugen der Netzwerkadministration vertraut machen. Mithilfe der Werkzeugsammlungen \emph{iproute2} sowie \emph{net-tools} wird dies in der Regel unter Linux und Unix-Betriebssystemen bewerkstelligt.
+\begin{enumerate}
+	\item Im letzten Übungsblatt haben Sie bereits das Rechtemodell kennengelernt. Verschiedene NutzerInnen haben verschiedene Rechte -- für die Konfiguration des Systems sollen im allgemeinen nur bestimmte Nutzer zuständig sein. Recherchieren Sie welche Rechte der \emph{root}-User hat und was das Kommando \emph{sudo} in diesem Zusammenhang leistet.
+	\item In Betriebssystemen gibt es verschiedene Dienste/ Hintergrunddienste (Daemons genannt), die die Verwaltung des Systems in Teilen organisieren. Da Raspbian das Betriebssystem auf den Raspberry Pis ist, kommt Systemd zum Einsatz. \footnote{Eigentlich war Systemd als Alternative des System-V Init-Daemons gedacht, hat aber über die Zeit immer mehr Funktionalitäten bekommen.}
+	\begin{tasks}
+		\task Recherchieren Sie einige wichtige Dienste, die durch Systemd gesteuert werden.
+		\task Systemd verfügt über die Möglichkeit bestimmte Dienste zu starten, stopen, etc. Recherchieren Sie wie der entsprechende Befehl lautet. Das Wiki bzw. die Man-Page ist eine gute Anlaufstelle!\\
+		Notieren Sie sich die Syntax Wort für Wort, sowie die Bedeutung jedes Wortes (Tokens). 
+		\task Wichtige Dienste für die nächste Laborübungen sind der Networking-Service und DHCP. Notieren Sie sich:
+		\begin{itemize}
+			\item[i] Wie der Status eines Daemons abgefragt werden kann.
+			\item[ii] Wie ein Daemon gestartet, gestoppt werden kann.
+			\item[iii] Wie ein Daemon permanent eingeschaltet bzw. ausgeschaltet werden kann (d.h. auch nach einem Neustart automatisch gestartet werden kann.)
+		\end{itemize}
+	\end{tasks}
+	\item Übliche Befehle zum Einrichten von Netzwerkadaptern sind \emph{ifconfig} (BSD \emph{net-tools}) oder auch \emph{ip} aus der Werkzeugsammlung \emph{iproute2}. Der Befehl \emph{ifconfig} gilt in manchen Linux-Distributionen als veraltet (In BSD, Solaris etc. ist dies nicht der Fall!). Recherchieren Sie kurz, worin sich beide Tools-Sammlungen unterscheiden und notieren Sie sich wesentliche Unterschiede.\\
+	Digital Ocean hat ein schönes HowTo dazu: \url{goo.gl/w1MN5x}
+ %https://www.digitalocean.com/community/tutorials/how-to-use-iproute2-tools-to-manage-network-configuration-on-a-linux-vps
+ % goo.gl/w1MN5x
+ 	\item Bringen Sie in Erfahrung, wie Sie die Konfiguration bereits existierende Netzwerkkonfigurationen mit den Tools \emph{ip} und \emph{ifconfig} in Erfahrung bringen.
+	\item Recherchieren und notieren Sie sich, wie mithilfe des Befehls \emph{ip addr} Netzwerkadapter(n) eine (oder mehrere) IP-Adressen und Subnetzmasken zugewiesen wird.\\
+	Wie wird dies mit \emph{ifconfig} gehandhabt.\\
+	(Auch hier gilt: Notieren Sie sich das Kommando sowie dessen Bedeutung Wort/Schrittweise)!
+	\item Recherchieren Sie, wie Sie die IP-Konfiguration in einer Datei festlegen und speichern können, sodass diese weiterhin nach einem Neustart gültig ist.\\
+	\textbf{Achtung:} Bedenken Sie für welches Betriebssystem diese Konfiguration erfolgen soll!
+	\begin{tasks}(1)
+		\task In welcher Datei wird die Konfiguration abgelegt?
+		\task Welcher User kann auf diese Datei zugreifen?
+		\task Notieren Sie sich, wie eine Konfiguration beispielhaft aussieht und was die einzelnen Zeilen bedeuten!
+	\end{tasks}
+	\item Recherchieren Sie wie der Status eines Netzwerkadapters mit den \emph{net-tools} und \emph{iproute2} abgefragt werden kann.\\
+	Welche Stati kann ein Adapter besitzen?\\
+	Wie kann der Status geändert werden?
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- Ping}}\end{center}\vskip0.25in
+Um festzustellen ob eine Verbindung funktionstüchtig ist, wird oftmals das Tool \emph{ping} genutzt. D.h. \emph{ping} analysiert ob Datenpakete überhaupt und wie viele Pakete von einem Host (bspw. Ihrem Rechner) zu einem Ziel (wie etwa der Webserver der HTW-Berlin) gelangen. Falls Sie ein wenig mehr zu Ping recherchieren wollen, kann ich Ihnen folgenden Artikel empfehlen: \url{https://openmaniak.com/ping.php}
+\begin{enumerate}
+	\item Recherchieren Sie die Syntax von \emph{ping}. Ein guter Anlaufpunkt wäre die Man-Page (\emph{man ping}) oder \url{https://linux.die.net/man/8/ping}.
+	\item \textbf{Optional:} Arbeiten Sie folgendes Tutorial durch: \url{https://www.thegeekstuff.com/2009/11/ping-tutorial-13-effective-ping-command-examples/}
+\end{enumerate}
+\end{document}

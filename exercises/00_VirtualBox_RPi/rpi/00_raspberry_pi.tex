@@ -1,0 +1,132 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%LaTeX template for papers && theses									%%
+%%Done by the incredible ||Z01db3rg||									%%
+%%Under the do what ever you want license								%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{hyperref}%for links to web
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+
+\pagestyle{fancy}
+\lhead{Benjamin Tröster\\Netzwerke Übung}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Raspberry Pi}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  %linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+\pdfpkresolution=2400%higher resolution
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Raspberry Pi -- Installation}}
+\end{center}
+\begin{center}\Large{\textbf{Raspberry Pi}}\end{center}\vskip0.25in
+Falls Sie überlegen sich einen Raspberry Pi selbst zuzulegen oder wissen wollen, wie dieser zusammengesetzt wird, dann ist folgender Link recht nützlich:\\
+\url{https://tutorials-raspberrypi.de/raspberry-pi-einstieg-wie-starte-ich/}
+Da unsere Raspberry Pis bereits in einem Gehäuse stecken, muss lediglich die SD-Karte in den SD-Karten-Slot geschoben werden.
+\begin{center}\Large{\textbf{Image \& Installation}}\end{center}\vskip0.25in
+Das Image für die Raspberry Pis liegt auf dem Uranus-Server der HTW Berlin unter dem Pfad \path{share/lehrende/troester/netzwerke/rpi/}. Das Image kann mithilfe eines SSH-Clients bezogen werden (nativ unter Linux via \emph{scp}, unter Windows mit \emph{PuTTy} (\url{https://www.putty.org/}) oder grafisch mit \emph{FileZilla} (\url{https://filezilla-project.org/}).
+\paragraph{Installation unter Unix, Linux \& MacOS}~\\
+Falls Sie \emph{scp} nutzen wollen, sieht der Befehl wie folgt aus:
+\begin{lstlisting}[style=Bash, language=Bash]
+scp -r s0XXXXXX@uranus-ai.f4.htw-berlin.de:~/share/lehrende/troester/netzwerke/rpi/ ~/
+		\end{lstlisting}
+Um sicher zu gehen, dass beim Download keine Fehler aufgetreten sind und Sie das richtige Image bezogen haben können Sie eine kryptografische Prüfsumme berechnen:
+
+\begin{lstlisting}[style=Bash, language=Bash]
+sha512sum -c rpi.img.sha512
+		\end{lstlisting}
+Anschließend kann nun das Image auf die SD-Karte kopiert werden (microSD-Karte mit mind. 8 GB). Dafür muss der  Gerätename festgestellt werden. Das Kommando \emph{lsblk} zeigt Ihnen an, welche Geräte wo im Dateisystem zu finden sind.
+\begin{lstlisting}[style=Bash, language=Bash]
+lsblk
+\end{lstlisting}
+Zumeist beginnen SD-Karten mit mmcblk gefolgt von einer Zahl, etwa mmcblk1 ist die erste Memory-Karte im Dateisystem.\\
+Das Tool dd kann unter Linux, BSD, MacOSx genutzt werden um das Image schlussendlich auf die Karte zu schreiben. Hierbei wird dd gefolgt von Quelldatei (Image das kopiert werden soll) und Ziel, also wohin das Image geschrieben werden soll angegeben. Das Schlüsselwort \emph{sudo} sorgt dafür, dass das Image überhaupt geschrieben werden darf, da unter Umständen bestimmte Geräte einen Schreibschutz haben und nicht jeder Nutzer diese beschreiben darf. Daher sollten Sie Vorsicht walten lassen, Sie wollen sicherlich nicht die Falsche SD-Karte oder Festplatte überschreiben!
+\begin{lstlisting}[style=Bash, language=Bash]
+sudo dd if=rpi.img of=/dev/mmcblk_X_ bs=4M status=progress && sync
+\end{lstlisting}
+Der Parameter \emph{bs=4} gibt die \glqq Blocksize\grqq\ an, also wie groß die zu schreibenden Happen sind. \emph{status=progress} dient nur dem Verfolgen des Schreibvorgangs, sodass Sie wissen, ob noch Zeit für eine Tasse Tee ist. Schlussendlich sorgt der Befehl \emph{sync} dafür, dass der Schreibvorgang komplett synchronisiert wird und keine Daten in Puffern oder Caches verbleiben.
+\paragraph{Installation unter Windows}~\\
+Die Internetseite \url{https://www.raspberrypi.org/documentation/installation/installing-images/windows.md} rät für die Installation das Tool \emph{Etcher} (\url{https://etcher.io/}), da dies am einfachsten, im Sinne von komfortabel, ist. Alternativ kann der \emph{Win32DiskImager} (\url{https://sourceforge.net/projects/win32diskimager/}) genutzt werden. Die Installation läuft wie folgt ab: \footnote{Da ich kein Windows nutze, ist die Anleitung lediglich von der offiziellen Raspberry Pi Seite übernommen!}
+\begin{itemize}
+	\item Stecken Sie die SD-Karte in den SD-Kartenleser bzw. den SD-Karten-Slot, -Adapter etc. Beachten Sie den Laufwerksbuchstaben der Ihrer SD-Karte zugewiesen wird. Diesen können Sie im File-Manager unter dem jeweilige Gerät sehen. Beispielsweise \path{G:}
+	\item Downloader Sie den \emph{Win32DiskImager} unter \url{https://sourceforge.net/projects/win32diskimager/} als Installer , und installieren Sie anschließend das Programm. 
+	\item Starten Sie den \emph{Win32DiskImager} von Ihrem Desktop aus
+	\item Wählen Sie das zu installierende Image aus, dass Sie von Uranus bezogen haben
+	\item Im Kästen für das Gerät (device) sollten Sie den Buchstaben ihrer SD-Karte wählen. Auch hier: Seien Sie vorsichtig und gehen Sie sicher, dass die korrekte SD-Karte gewählt wurde, andernfalls können die Daten auf dem Datenträger gelöscht bzw. überschrieben werden!
+	\item Drücken Sie den schreiben (write) Button und warten Sie bis der Vorgang abgeschlossen ist
+	\item Verlassen Sie anschließen den \emph{Win32DiskImager} und werfen Sie die SD-Karte aus
+\end{itemize}
+\begin{center}\Large{\textbf{Raspian Admin Basic}}\end{center}\vskip0.25in
+Wie jedes Betriebssystem muss auch das Raspbian gewartet werden. Auch hier hat die Dokumentation schon einiges parat: \url{https://www.raspberrypi.org/documentation/linux/usage/users.md}. Jedoch fehlt dort wie Update eingespielt werden. Da Raspbian ein Debian-Fork ist, ist die Syntax exakt gleich. D.h. das System kann mit den \emph{apt}-Tool administriert werden.
+Der Befehl \emph{apt update} sogt dafür, dass nach Aktualisierungen für das Betriebssystem gesucht wird.
+\begin{lstlisting}[style=Bash, language=Bash]
+sudo apt update
+\end{lstlisting}
+Der Befehl \emph{apt upgrade} spielt diese dann ein. Achten Sie darauf, dass für das Einspielen der Updates eine aktive Verbindung ins Internet bestehen muss.
+\begin{lstlisting}[style=Bash, language=Bash]
+sudo apt upgrade
+# in einem Schritt
+sudo apt update && sudo apt upgrade
+\end{lstlisting}
+Das Default Passwort für alle Sudo-Befehle lautet \glqq raspberry\grqq, dies ist auch das Nutzer-Passwort für den Nutzer \emph{pi}.
+
+\end{document}

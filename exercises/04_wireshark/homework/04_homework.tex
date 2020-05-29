@@ -1,0 +1,190 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+\usepackage{xcolor}%nicer colors, here used for links
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (SoSe 2019)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 05 -- Wireshark}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+\pdfpkresolution=2400%higher resolution
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 4 -- Wireshark}}
+\end{center}
+\begin{center}\Large{\textbf{Aufgabe A -- Wireshark}}\end{center}\vskip0.25in
+Nachdem Sie sich in den letzten Übungen vor allem mit dem \glqq handwerklichen\grqq\ Aufsetzen von Netzwerken beschäftigt haben, schauen Sie sich in der kommenden Übung genauer an, was im Netzwerkstack vor sich geht.\\
+Sie analysieren was im Inneren eines Netzwerkes passiert, wie die Realisierung der Protokolle aussieht und ob sich die theoretischen Ideen aus der Vorlesung auch in der Praxis wiederfinden lassen.\\
+Um all dies in Angriff nehmen zu können, nutzen wir den Netzwerk-Sniffer \emph{Wireshark}. Wireshark ist eine Open-Source-Software mithilfe dessen Analysen, Fehlerbehebungen, Software- und Protokollkommunikation untersucht werden können. \emph{Wireshark} ähnelt \emph{tcpdump} in gewisser Weise, jedoch bietet \emph{Wireshark} ein grafisches Frontend (GUI), sodass die Analysen visuell ansprechend dargestellt werden können.\\
+Hilfreiche Links:
+\begin{itemize}
+	\item \url{https://en.wikipedia.org/wiki/Wireshark}
+	\item \url{https://www.lifewire.com/wireshark-tutorial-4143298}
+	\item \url{https://www.wireshark.org/download/docs/user-guide.pdf}
+	\item \url{https://wiki.wireshark.org/}
+	\item \url{https://wiki.wireshark.org/CaptureFilters}
+	\item \url{https://wiki.wireshark.org/DisplayFilters}
+\end{itemize}
+\begin{enumerate}
+	\item Rekapitulieren Sie Ihr Wissen zum OSI-Modell. 
+	\item Erläutern Sie was in Netzwerken unter Datenkapselung verstanden wird.	
+	\item Lesen Sie folgendes Tutorial in Hinblick auf die Fragen in Aufgabe 4.): \url{https://tinyurl.com/yby2kukf}
+	\footnote{Lohnenswert ist das Wireshark 101 Buch im PDF Format.}
+	\item Nachdem Sie die Tutorials abgearbeitet haben:
+	\begin{tasks}(1)
+		\task Was ist ein \emph{Network-Sniffer}?
+		\task Wozu kann ein Netzwerk-Sniffer genutzt werden?
+		\task Verschaffen Sie sich einen Überblick, sodass Sie einen Überblick haben wo was zu finden ist, bzw. wo Sie Hilfe finden können.
+		\task Recherchieren Sie wozu Filter in \emph{Wireshark} eingesetzt werden.
+		\task Bringen Sie in Erfahrung wie Filter genutzt werden.
+		\task Welche beiden unterschiedlichen Mitschnitt-Modi (Caputre Modes) bietet \emph{Wireshark}? Worin unterscheiden sich diese?
+	\end{tasks}
+	\item Erläutern Sie anhand von Beispielen den grundlegende Umgang mit \emph{Wireshark}. 
+	\begin{tasks}(1)
+		\task Wie stellen Sie Netzwerkinterfaces ein -- auf welchem Interface soll der Mitschnitt laufen.
+		\task Wie filtern Sie nach Protokollen?
+		\task Wie filtern Sie \emph{MAC}-Adressen?
+		\task Wie filtern Sie \emph{IP}-Adressen?
+	\end{tasks}
+	\item \textbf{Fakultativ:} Wenn Sie mögen, können Sie \emph{Wireshark} auf Ihre(n) Gerät(en) installieren oder in der virtuellen Maschine laufen lassen und ihren Netzwerkverkehr ein wenig analysieren. 
+	\begin{itemize}
+		\item \url{https://www.wireshark.org/download.html}
+		\item \url{https://www.wireshark.org/docs/wsug_html_chunked/ChapterBuildInstall.html}
+	\end{itemize}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- Address Resolution Protocol (ARP) \& Neighbor Discovery Protocol (NDP)}}\end{center}\vskip0.25in
+Es sollte Ihnen aufgefallen sein, dass in der zweiten Übung (Switched LAN) Ihr Netzwerk in der Planung zwar IP-Adressen nutzt, aber kein Router Verwendung fand. Der verwendete Switch ist ein \texttt{OSI-Layer 2} Gerät und kommt ohne IP-Adressen zurecht. Ihre Raspberry Pis verlangen jedoch zwingend eine IP-Adresse von Ihnen.\\
+Um den Knoten ein wenig zu lösen, schauen Sie sich das \emph{Address Resolution Protocol (ARP)} an.
+\begin{enumerate}
+		\item Recherchieren Sie mithilfe folgenden links: \url{https://en.wikipedia.org/wiki/Address_Resolution_Protocol}, was \emph{ARP} ist und wie dies funktioniert.
+		\item Wie adressiert ein Switch die Pakte zwischen den Endknoten (also den Raspberry Pis)?
+		\item Erläutern Sie das Adressschema von \emph{MAC}-Adressen. Kann dieses Adressschema auch zu Problemen führen?
+		\item Da unser Uplink (Gateway des Labors) \glqq nur\grqq\ das alte \emph{IPv4} spricht ist \emph{ARP} notwendig. Unter \emph{IPv6} gibt es kein \emph{ARP}, wie wird dies dort gehandhabt?
+		\item Erklären Sie wie die Adressauflösung mittels \emph{NDP} aussieht? Welche Schritten sind hier notwendig?
+		\item Recherchieren Sie wie die Werkzeuge \emph{arp} und \emph{ip neigh} in unixoiden Betriebssystemen genutzt werden können, sowie deren Syntax.
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- MITM \& ARP-Cache}}\end{center}\vskip0.25in
+Aufgrund Ihres Wissen ahnen Sie schon, dass mit ein wenig List viele Netzwerke leicht manipulierbar sind. \emph{ARP} besitzt keinerlei Mechanismen, um die Nutzer vor Angriffen zu schützen. Mit der folgende Aufgabe sollen Sie herausfinden, wie hoch der Aufwand für eine solche Manipulation ist.\\
+\textbf{Hinweis:} Die hier vorgestellten Techniken sollen Ihnen ermöglichen Angriffszenarien zu verstehen. Nicht diese fremde Infrastrukturen anzuwenden. Die Skripte sollten Sie nur in den eigenen Umgebungen bzw. der entsprechenden Laborübung nutzen! 
+\begin{enumerate}
+	\item Vergegenwärtigen Sie sich, was ein Cache ist und wozu dieser eingesetzt wird. Anschließend daran, recherchieren Sie was es mit dem ARP-Cache auf sich hat.
+	\item Erläutern Sie wie der ARP-Cache-Mechanismus funktioniert.
+	\item Recherchieren Sie was ein Man-In-The-Middle-Angriff (\emph{MITM}) ist.
+	\item Da der ARP-Cache keinerlei Validierungsmöglichkeiten hat, ist ein Manipulation des ARP-Caches möglich. Überlegen Sie sich zunächst, welche Schritte hierfür notwendig wären, wenn Sie als Angreifer den Cache eines anderen Systems verändern wollen.
+	\begin{itemize}
+		\item Welche Voraussetzungen müssen gegeben sein?
+		\item Welche Informationen über das Angriffsziel benötigen Sie?
+		\item Welche Schritten müssen für den Angriff erfolgen. Denken Sie zunächst abstrakt darüber nach. 
+		\item \textbf{Anmerkung:} Falls Sie die vorige Aufgabe nicht bewerkstelligen könne, lesen Sie ein Tutorial zu ARP-Cache-Poisoning.
+	\end{itemize}
+	\item Im Moodle (sowie auf den Raspberry Pis) steht ein Angrifftool für das sogenannte ARP-Spoofing bzw. ARP-Cache-Poisoning bereit. Lesen dieses Skript und versuchen Sie diese weitestgehend zu verstehen.\\
+	Notieren Sie sich den Ablauf! Stellen Sie Fragen zu den Stellen im Quellcode, die Sie nicht verstehen.
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe D -- Ethernet \& UDP|TCP/IP}}\end{center}\vskip0.25in
+Da Sie in der kommenden Übung mithilfe \emph{Wiresharks} Ihren Netzwerkverkehr untersuchen sollen, müssen Sie zumindest grundlegend verstanden haben, auf welche Protokolle Sie dort stoßen werden. Natürlich können wir uns nicht alle Protokolle en dé­tail anschauen, die wichtigsten, zumindest für die kommende Übung, sollten Sie jedoch kennen.
+\begin{enumerate}
+	\item Recherchieren Sie die Funktion, sowie den Aufbau von Ethernet (\emph{IEEE 802.3} Protokollfamilie).
+	\begin{tasks}(1)
+		\task Auf welcher Ebene im OSI-Modell arbeitet \emph{Ethernet}?
+		\task Welche Aufgabe übernimmt das oben genannte Protokoll?
+		\task Aus welchen Segmenten besteht ein Ethernet-Frame?
+		\task Zeigen Sie beispielhaft den Aufbau eine Ethernet-Frames.
+	\end{tasks}
+	\item Recherchieren Sie die Funktion, sowie den Aufbau des IP-Protokolls (\emph{IPv4}).
+	\begin{tasks}(1)
+		\task Auf welcher Ebene im OSI-Modell arbeitet IP?
+		\task Welche Aufgabe übernimmt das oben genannte Protokoll?
+		\task Aus welchen Segmenten besteht ein IPv4-Paket?
+		\task Aus welchen Segmenten besteht ein IPv6-Paket?
+		\task Zeigen Sie beispielhaft den Aufbau eines IPv4-Pakets.
+		\task Zeigen Sie beispielhaft den Aufbau eines IPv6-Pakets.
+	\end{tasks}
+	\item Recherchieren Sie die Funktion, sowie den Aufbau des \emph{TCP}-Protokolls.
+	\begin{tasks}(1)
+		\task Auf welcher Ebene im OSI-Modell arbeitet \emph{TCP}?
+		\task Welche Aufgabe übernimmt das oben genannte Protokoll?
+		\task Aus welchen Segmenten besteht ein \emph{TCP}-Datagram?
+		\task Zeigen Sie beispielhaft den Aufbau eines \emph{TCP}-Datagram.
+	\end{tasks}
+	\item Recherchieren Sie die Funktion, sowie den Aufbau des \emph{UDP}-Protokolls.
+	\begin{tasks}(1)
+		\task Auf welcher Ebene im OSI-Modell arbeitet \emph{UDP}?
+		\task Welche Aufgabe übernimmt das oben genannte Protokoll?
+		\task Aus welchen Segmenten besteht ein \emph{UDP}-Datagram?
+		\task Zeigen Sie beispielhaft den Aufbau eines \emph{UDP}-Datagram.
+	\end{tasks}
+	\item Worin unterscheiden sich \emph{TCP} und \emph{UDP} grundlegend?
+\end{enumerate}
+\end{document}
