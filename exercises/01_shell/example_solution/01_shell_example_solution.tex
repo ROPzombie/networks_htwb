@@ -1,0 +1,278 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+\usepackage{csquotes}
+		
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{hyperref}%for links to web
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+\usepackage{csquotes}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (WiSe 2019/20)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 1 -- Grundlagen Linux \& Shell}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+  upquote=true,
+  columns=fullflexible,
+  literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}
+
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+
+\DeclareMathOperator{\id}{id}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Übungsblatt 01 -- Shell Grundlagen}
+}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Beispiellösung Übungsblatt 1 -- Shell Grundlagen}}
+\end{center}
+Sie finden die Übungsblätter im Moodle-Kurs und auf den Laborrechnern unter \path{~/share/lehrende/troester/netzwerke/exercises/}.\\
+\linebreak[4]
+Diese Übung soll Sie zunächst mit dem Umgang unixoider Betriebssysteme vertraut machen, sodass der Einstieg etwas leichter fällt. Im speziellen ist hier der Umgang mit der Kommandozeile gemeint, da Server-Systeme i.A. keine grafische Schnittstelle anbieten.\\
+Die Erfahrung zeigt, dass einige Studierende zunächst überfordert sind. Keine Sorge: Sie sind nicht allein. Generell hilft es am Ball zu bleiben und sich kontinuierlich mit den Aufgaben zu beschäftigen -- das heißt auch: selber recherchieren, Literatur lesen, sich Unklarheiten bewusst machen und entsprechend Fragen zu stellen.
+\begin{center}\Large{\textbf{Aufgabe A -- Shell Basics}}\end{center}\vskip0.25in
+
+\begin{enumerate}
+\item Navigation:\\
+Ziel dieser Aufgabe ist die grundlegende Navigation unter Linux zu verstehen.
+	\begin{itemize}
+		\item[a)] Navigieren Sie mithilfe der Menüleiste zum Dateimanager und öffnen Sie diesen. Im Ordner \path{~/share/lehrende/troester/netzwerke/exercises/cheat_sheets/} find Sie einige hilfreiche Dokumente. Öffnen Sie den Spickzettel für die Unix Shell (\emph{shell\_basics.md}).\\
+Öffnen Sie die Datei mithilfe des Dateimanagers \footnote{Dateien die auf \emph{.md} enden könne mit \emph{gedit} (\emph{retext} auf dem Raspberry Pi) geöffnet werden} und lösen Sie folgende Aufgaben (Einige Aufgaben benötigen mehr als nur genau ein Kommando!).
+		\item[b)] Starten Sie die Kommandozeile (Shell). Entweder via Tastenkombination \keys{\ctrl + \Alt + t} (STRG + ALT + T) oder über das Menü.\\
+		Lassen Sie sich anschließend Ihr aktuelles Verzeichnis auf der Kommandozeile ausgeben! Dies ist standardmäßig Ihr Heimatverzeichnis \footnote{Auch \enquote{home directory}: $\sim$ oder ausgeschrieben \path{/home/student/} auf der VM bzw. \path{/home/s0xxxxxx} auf den Laborrechnern}.\\
+\begin{lstlisting}[style=Bash, language=Bash]
+pwd
+		\end{lstlisting}
+		\item[c)] Lassen Sie sich den Inhalt des Verzeichnisses ausgeben.\\
+\begin{lstlisting}[style=Bash, language=Bash]
+ls
+ls -la #zeigt auch hidden files und permissions
+		\end{lstlisting}
+		\item[d)] Navigieren Sie via \emph{cd} in den Ordner \path{/var}\\
+\begin{lstlisting}[style=Bash, language=Bash]
+cd /var
+		\end{lstlisting}
+		\item[e)] Springen Sie vom vorherigen Ordner in den übergeordneten Ordner (\emph{/}).\\
+\begin{lstlisting}[style=Bash, language=Bash]
+cd .. 
+	\end{lstlisting}
+		\item[f)] Navigieren Sie in Ihr Heimatverzeichnis (Dies sollte durch genau ein Kommando erfolgen!) -- s. 1b)\\
+\begin{lstlisting}[style=Bash, language=Bash]
+cd # oder
+cd ~
+		\end{lstlisting}
+		\item[g)] Recherchieren Sie kurz den Unterschied zwischen relativen und absoluten Pfaden in Dateisystemen. Sie können folgende Quelle hierfür nutzen: \url{https://de.wikipedia.org/wiki/Pfadname}\\
+		Absolute Pfade (im Dateisystem) beginnen stets bei der Wurzel / (auch root genannt) und gehen von dort  \enquote{hinunter} bis zum Ziel, relative Pfade nehmen das aktuell Verzeichnis als Wurzelelement.
+		\item[h)] Lassen Sie sich mit dem Befehl \emph{history} die letzten Befehle Anzeigen, die im Terminal ausgeführt wurden. 
+		\item[i)] Benutzen sie die Pfeiltasten \keys{\arrowkeyup} und \keys{\arrowkeydown} um die letzten Befehle auf die Kommandozeile zu bringen. Mithilfe der Pfeiltasten können Sie durch die History navigieren, wobei \keys{\arrowkeyup} in Richtung älterer Befehle und \keys{\arrowkeydown} Richtung neuerer springt.
+		\item[k)] Mit der Tastenkombination \keys{\ctrl +r} öffnen Sie die interaktive Suche der History. Unter Ihrem Command-Prompt erscheint folgendes:\\
+		\begin{lstlisting}[style=Bash, language=Bash]
+bck-i-search: _
+		\end{lstlisting}
+		Mithilfe dieser Suche können Sie nach bereits benutzten Befehlen suchen. Wenn Sie beispielsweise \emph{cd} eingeben sehen Sie den zuletzt genutzten Befehl der das Wort/ die Buchstabenreihenfolge \emph{cd} enthält. Durch wiederholtes Drücken durchsuchen Sie die History Richtung älterer Befehle die das angegebene Schlüsselwort enthalten.\\
+		\textbf{Kommandos:} \textcolor{blue}{\emph{cd}, \emph{pwd}, \emph{history}}
+	\end{itemize}
+  \item Grundlegende Kommandos:\\
+  Um den grundlegenden Umgang mit der Shell kennenzulernen fertigen Sie sich ein eigenes kleines Shell-Tutorial an.\\
+  \textbf{Hinweis:} Um lästige Tipparbeit zu vermeiden bieten viele Shells eine Autovervollständigung an. Mit der \keys{\tab}-Taste (Tabulatortaste) kann diese genutzt werden -- Sie müssen lediglich die ersten Buchstaben tippen und können durch (mehrmaliges) drücken der Tabulatortaste den begonnenen Befehl vervollständigen. Wenn es mehrere Alternativen der Vervollständigung gibt, kann zwischen diesen gesprungen werden.
+        \begin{tasks}(1)
+        \task Erzeugen Sie das Verzeichnis \path{shell_tutorial} und wechseln Sie in das erzeugte Verzeichnis, erzeugen Sie darin eine leere Datei mit dem Dateinamen \textit{shell\_tutorial.md}.\footnote{.md steht für Markdown, welches ein Format für Textdateien ist, ähnlich wie .pdf oder .doc-Dateien.} \\
+        \textbf{Achtung:} Verwenden Sie zum Anlegen der Datei keinen Editor, sondern (einen) Kommandozeilenbefehl(e).\\
+        \textbf{Kommandos:} \textcolor{blue}{\emph{touch}, \emph{mkdir}, \emph{cd}}\\
+		\textit{mkdir shell\_tutorial}\\
+		\textit{cd shell\_tutorial}\\
+		\textit{touch shell\_tutorial.md}
+		\task Überprüfen Sie die Dateigröße der Datei \textit{shell\_tutorial.md}.\\
+		\textbf{Kommandos:} \textcolor{blue}{\emph{ls}, \emph{stat}, \emph{du}}\\
+		\textit{ls -la shell\_tutorial.md} oder\\
+		\textit{stat shell\_tutorial.md}
+		\task Fügen Sie mithilfe der Umleitung der Standardausgabe die Zeilen  \enquote{Shell Tutorial}, sowie die Zeile mit dem aktuellen Datum ein.\\
+		\textbf{Kommandos:} \textcolor{blue}{\emph{echo}, \emph{>>}, bzw. \emph{>}}\\
+		\begin{itemize}
+			\item \small Verwenden Sie für das Einfügen des Textes keinen Editor, sondern einen Befehl und eine Weiterleitung (Umleitung der Standardausgabe).
+		\end{itemize}
+		\textit{echo Shell Tutorial > shell\_tutorial.md}\\
+		\textit{date >> shell\_tutorial.md}\\
+		\textit{echo 'Shell Tutorial' > shell\_tutorial.md; date >> shell\_tutorial.md}
+		\task Geben Sie die erste Zeile der Datei auf der Kommandozeile aus.\\
+		\textbf{Kommandos:} \textcolor{blue}{\emph{head}, \emph{tail}}\\
+		\textit{head -n 1 shell\_tutorial.md}
+		\task Öffnen Sie Ihr Cheat-Sheet mithilfe das Programms \emph{gedit} bzw. \emph{retext}. Notieren Sie sich alle Befehle, sowie deren Bedeutung, sodass Sie eine erste Anlaufstelle für die nächsten Übungen haben. Dieses Dokument (Sie können auch mehrere anlegen) sollten Sie fortan als Notizzettel für die Laboraufgaben nutzen!
+		\task Navigieren Sie in Ihr Heimatverzeichnis. Legen Sie folgenden Ordner, sowie Unterordner mithilfe des \emph{mkdir}-Kommandos an: \path{exercise_notes/tutorials}.\\
+		\textit{mkdir -p exercise\_notes/tutorials}\\
+		\task Kopieren Sie die Datei bzw. den Ordner \emph{shell\_tutorial} in das eben angelegte Verzeichnis.\\
+		\textbf{Kommandos:} \textcolor{blue}{\emph{cp} }\\
+		\textit{cp \path{shell_tutorial/shell_tutorial.md} \path{exercise_notes/tutorials/} }
+        \task Kopieren Sie die Datei(en) inklusive des Ordners \path{exercises/tutorials/shell_tutorial.md} in das Verzeichnis \path{/tmp}.\\
+        \textbf{Hinweise:} Schauen Sie in die Manpage von cp um herauszufinden, wie Ordner kopiert werden können.\\
+        \textbf{Kommandos:} \textcolor{blue}{\emph{man}}\\
+        \textit{cp -r \path{exercises/tutorials/} \path{/tmp/}}
+        \end{tasks}
+        \footnote{.md steht für Markdown, welches ein Format für Textdateien ist, ähnlich wie .pdf oder .doc-Dateien.}
+        \footnote{\url{https://github.com/retext-project}}
+         \footnote{Sie können auch mit vi, vim oder emacs arbeiten!}
+  \item Benutzer- \& Systeminfos:
+        \begin{tasks}(1)       
+          \task Lassen Sie sich ihren Nutzernamen und ihre Gruppenzugehörigkeit auf dem Terminal des Laborrechners ausgeben. \\
+          \textbf{Kommandos:} \textcolor{blue}{\emph{id}, \emph{groups}, \emph{whoami}}\\
+          \textit{id}\\
+          \textit{groups}
+          \task Lassen Sie sich den Namen ihres Rechners ausgeben.\\
+          \textbf{Kommandos:} \textcolor{blue}{\emph{hostname}}
+          \task Legen Sie einen Ordner \emph{.nfo} an. Schreiben Sie die Ausgaben Ihres Nutzernamens, Gruppenzugehörigkeit sowie den Namen des genutzten Rechners in die Datei \emph{info.nfo} in den Ordner \emph{.nfo}.\\
+          \textit{mkdir .nfo; touch foo.nfo}\\
+          \textit{hostname >> foo.nfo; id >> foo.nfo}\\
+          \task Nutzen Sie ls und prüfen Sie, ob Sie den Ordner wiederfinden können! Finden Sie heraus, wie Sie mithilfe des \emph{ls} Kommandos trotzdem diesen versteckten (hidden folder) Ordner finden können. \\
+          \textit{ls -la}  
+          \task Öffnen Sie ein zweites Terminal und melden Sie sich mit dem Kommando:
+          \begin{itemize}
+          \item[\$]ssh s0XXXX@uranus.f4.htw-berlin.de
+          \end{itemize}
+           auf dem Server Uranus an (s0XXXX entspricht hierbei Ihrer Matrikelnummer).
+           Lassen sich ihren Nutzernamen und ihre Gruppenzugehörigkeit, wie auch den Rechnernamen ebenfalls ausgeben. Schreiben Sie den Inhalt auch dieses mal in eine Datei \emph{s0XXXXX.nfo}. Mit folgendem Kommando können Sie die Datei remote kopieren: 
+           \begin{itemize}
+          \item[\$]scp s0XXXX@uranus.f4.htw-berlin.de:\textasciitilde /s0XXXXX.nfo \textasciitilde/.nfo/
+          \end{itemize}
+          \task Vergleiche Sie die beiden Dateien!\\
+          \textbf{Kommandos:} \textcolor{blue}{\emph{diff}}\\
+          \textit{diff foo.nfo bar.nfo}
+          \task Löschen Sie erst die \emph{nfo}-Dateien. Anschließend den Ordner \emph{.nfo}\\
+          \textbf{Kommandos:} \textcolor{blue}{\emph{rm}}\\
+          \textit{rm foo.nfo}\\
+          \textit{rm -r .nfo}
+          \task Wie finden Sie heraus, welche Benutzer noch auf dem Uranus-Server eingeloggt sind und wie lange diese auf dem Server angemeldet sind.\\
+          \textbf{Kommandos:} \textcolor{blue}{\emph{who}, \emph{last}, \emph{lastlog}}
+          \task Bringen Sie auf beiden Systemen das genutzte Betriebssystem, sowie dessen Kernel in Erfahrung.\\
+          \textbf{Kommandos:} \textcolor{blue}{\emph{lsb\_release}, \emph{cat \path{/etc/os-release}}, \emph{uname}}
+          \task Loggen Sie sich aus dem Uranus-Server aus.\\
+          \textbf{Kommandos:} \textcolor{blue}{\emph{exit}, \keys{\ctrl +d}}
+          \task Viele Linux-Systeme habe eine Quota -- eine Beschränkung des Speicherverbrauchs, ist diese auf den Laborrechnern vorhanden? Falls ja, wie sieht diese aus? (Aktuell ist der Befehl Quota nicht installiert, mithilfe von \textbf{df -h} könne Sie sich dennoch den Status des Dateisystems ausgeben lassen.
+        \end{tasks}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- Manpages \& Hilfe}}\end{center}\vskip0.25in
+Unix/Linux bietet von Hause aus einige Anlaufstellen an, mit deren Hilfe Sie die Handhabung von der Tools (Kommandozeilenbefehle etc.) recherchieren können.
+\begin{tasks}
+	\task Führen Sie den Befehl \emph{info} aus und manövrieren Sie mit \keys{\tab}, den Pfeiltasten und \keys{\return} durch die Hilfe. Schließen die Hilfe via \keys{q} anschließend.
+	\task Suchen Sie sich einen Befehl aus, den Sie heute bereits benutzt oder haben. Mithilfe der Parameter \emph{--help}, \emph{-help} oder \emph{-h} erhalten Sie eine kurze Übersicht über den Befehl.
+    \task Geben Sie durch: \\
+    		\emph{man HIERBEFEHLKEINFUEGEN}\\
+		den eben gewählten Befehl ein, sodass das Manual (die sogenannte Man-Page) zum Befehl geöffnet wird.\\
+		 Nutzen Sie die Pfeiltasten, die Bild hoch/runter (\keys{pageup \arrowkeyup}/ \keys{pageup \arrowkeydown}) oder Leertaste (\keys{\Space}) zum lesen. Schließen erfolgt mit \keys{q}.
+		\task Die Man-Pages finden Sie als Website auch im Internet. \footnote{\url{https://linux.die.net/man/}}
+\end{tasks}
+
+\begin{center}\Large{\textbf{Aufgabe C -- User \& Rechte}}\end{center}\vskip0.25in
+%\setlist[enumerate, 1]{itemsep=\baselineskip}
+\begin{enumerate}
+
+\item Nutzer \& Gruppen -- Rechte für alle!
+	\begin{tasks}(1)
+        \task Recherchieren Sie die Bedeutung der Spalten 1 -- 7 der Ausgabe des Kommandos \emph{ls -la} in Ihrem Heimatverzeichnis.
+        \begin{enumerate}
+        		\item Dateityp
+        		\item Rechte User-Gruppe-Others in symbolischer Schreibweise
+        		\item Anzahl der Links
+        		\item Name des Dateieigentümers
+        		\item Name der Gruppenzugehörigkeit
+        		\item Dateigröße (in Bytes)
+        		\item Datum der letzten Änderung
+        		\item Datei- oder Ordnername
+        \end{enumerate}
+        \task Finden Sie die Datei bzw. das Programm \textit{reboot}, die den Neustart des Systems veranlassen kann. Lassen Sie sich die Rechte der Datei \textit{reboot} ausgeben!
+        textbf{Kommandos:} \textcolor{blue}{\emph{whereis}, \emph{find}}\\
+        \textit{Finden:} whereis reboot !oder! find / -type f -name ''reboot'' 2$>$\& 1 $|$ grep -v ''Permission denied''
+        \task Wer ist der Eigentümer und wie sehen die Berechtigungen für Nutzer, Gruppe und Andere in symbolischer, oktaler und binärer Schreibweise aus?\\
+        \textbf{Owner:} root\\
+        \textbf{Perm.:} rwx, 777, 111 111 111
+        \task Schreiben Sie die Ergebnisse der vorigen Aufgabe in die Datei \textit{reboot\-\_permission.txt}.
+        \task Nennen Sie Möglichkeiten den Inhalt der Datei \textit{reboot\-\_permission.txt} anzeigen lassen. Welche Rechte besitzt diese Datei?\\
+        textbf{Anzeigen:} less -FX reboot\-\_permission.txt\\
+        \textit{Rechte:} ls -la reboot\-\_permission.txt
+        \task Wie würde das Kommando lauten um die Rechte der Datei \textit{reboot\-\_permission.txt} so zu ändern, sodass der Nutzer lesen und schreiben kann, Nutzer der gleichen Gruppe nur lesen und alle anderen keinen Zugriff haben. (Jeweils oktal und symbolisch.) \\
+        \textit{Rechte:} chmod 640 reboot\-\_permission.txt oder\\
+        \textit{chmod u+rw reboot\-\_permission.tx}\\
+        \textit{chmod g+r reboot\-\_permission.tx}
+        \task Können Sie den Laborrechner mit dem Kommando \textit{reboot} neu starten? Falls nicht, warum?\\
+        Leider ja, sollte eigentlich nicht möglich sein, da auch andere Studierende auf diesen Laborrechnern remote arbeiten könnten.
+        \task Warum können Sie trotzdem einen Neustart über die grafische Oberfläche durchführen?\\
+        Die grafische Oberfläche kann Programme unter andern Nutzer oder Gruppennamen laufen lassen, diese führen den Systemcall (reboot ist eigentlich kein Programm sondern ein Systemcall a.k.a Software Interrupt) durch.
+        \task Führen Sie einen Reboot des Systems durch -- Achtung speichern Sie alle offenen Dateien, sodass Sie keine eventuellen Daten verlieren!
+  \end{tasks}
+  \item Was ist nach dem Neustart aus dem Ordner der Aufgabe Shell -- 2h) geworden?\\
+  \path{\tmp} ist ein rein temporäres Verzeichnis, je nach Konfiguration sollte das Betriebssystem dafür sorgen, dass hier abgelegte Dateien gelöscht werden. In vielen Fällen gibt es hierfür ein eigenes spezielles Dateisystem.
+\end{enumerate}
+
+\end{document}

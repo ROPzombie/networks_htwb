@@ -1,0 +1,187 @@
+%%%%%%%%%%%%%%%%%%%%%%%VICARIOUS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 																	%
+% Template for presentation in Latex`s Beamer Class					%
+% Using the default Berlin theme, can be replaced by other themes		%
+% logo in the upper right can be replaced by new .png, gif, eps etc	%
+% 																	%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[xcolor=dvipsnames, aspectratio=169]{beamer}
+\usetheme{Berlin}
+\usecolortheme[named=LimeGreen]{structure}
+\usepackage{beamerthemesplit} % kam neu dazu
+\usepackage[ngerman]	{babel}			
+\usepackage{t1enc}						
+\usepackage[utf8]{inputenc}			
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{pictures/}}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{caption}
+\usepackage{multimedia}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{acronym}
+\usepackage{subfig}
+
+\usepackage{lmodern}
+\usepackage{multicol}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{
+    escapeinside={(*}{*)}
+}
+
+
+\lstdefinestyle{basic}{  
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=7pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{black},
+  captionpos=b,
+  keywordstyle=\color{blue}\bf,
+  commentstyle=\color{gray},
+  stringstyle=\color{green},
+  keywordstyle={[2]\color{red}\bf},
+}
+
+
+\lstdefinelanguage{custom}
+{
+morekeywords={public, void},
+sensitive=false,
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]",
+}
+
+
+\lstdefinestyle{BashInputStyle}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  xleftmargin=0.1\linewidth
+}
+
+%Logo in the upper right just change if you know what you are doing^^
+\addtobeamertemplate{frametitle}{}{%
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=2pt] at (current page.north east) {\includegraphics[height=1.8cm]{htw}};
+\end{tikzpicture}}
+
+\begin{document}
+\bibliographystyle{alpha}
+\title{Netzwerke -- Übung WiSe2018/19}
+\subtitle{OSI-Stack \& Wireshark\\
+		\href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
+		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
+\author{Benjamin Tröster}
+
+\date{}
+
+\begin{frame}
+\titlepage
+
+\end{frame}
+
+\section*{Road-Map}
+\begin{frame}
+\frametitle{Road-Map}
+\begin{multicols}{2}
+  \tableofcontents
+\end{multicols}
+\end{frame}
+
+\section*{Nachfrage}
+\begin{frame}{In English?}
+\centering{Soll die Veranstaltung, d.h. Hausaufgaben, Übungsblätter, Slides, Protokolle etc. in Englisch gehalten werden?}
+
+\end{frame}
+
+\section{Hinweis}
+\begin{frame}
+	\frametitle{Semesterendspurt: Klausur}
+	\begin{itemize}
+		\item Die Klausuren rücken näher...
+		\item Jetzt ist der ideale Zeitpunkt um sich auf Klausuren vorzubereiten.
+		\item Stellen Sie fragen zu den VL, Übungsblättern, etc. 
+		\item Teilen Sie sich Ihre Zeit sorgfältig ein, lernen Sie konsequent -- es lohnt sich!
+		\begin{itemize}
+			\item Für die Freunde der Didaktik: Pomodoro-Technik
+			\item \url{https://de.wikipedia.org/wiki/Pomodoro-Technik}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\section{Retrospektive}
+\begin{frame}{Retrospektive}
+\begin{itemize}
+	\item Vorlesung
+	\begin{itemize}
+		\item Retrospektive der Vorlesung -- was haben Sie behandelt?
+		\item Fragen?
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\section{Präsentation}
+\subsection{Wireshark}
+\begin{frame}
+\frametitle{1.) Introdcution to Wireshark}
+	\begin{itemize}
+		\item Erläutern Sie was ein Network-Sniffer ist.
+		\item Erklären Sie was Filter sind und wozu diese genutzt werden können.
+		\item Zeigen Sie anhand von Beispielen:
+		\begin{itemize}
+			\item Wie stellen Sie Netzwerkinterfaces ein -- auf welchem Interface soll der Mitschnitt laufen.
+			\item Wie filtern Sie nach Protokollen?
+			\item Wie filtern Sie \emph{MAC}-Adressen?
+			\item Wie filtern Sie \emph{IP}-Adressen?
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\subsection{ARP \& NDP}
+\begin{frame}
+	\frametitle{2.) ARP}
+	\begin{itemize}
+		\item Wie sieht das Adressschema für MAC-Adressen aus?
+		\item Erläutern Sie wie die Adressauflösung von logischer Adresse (IP) zu physikalischer Adresse vonstatten geht.
+		\item Erläutern Sie die Nutzung der beiden Tools \emph{arp} und \emph{ip neigh} anhand von Beispielen.
+		\item Nennen und erklären Sie was unter den Begriffen ARP-Tabele und ARP-Cache zu verstehen ist.
+	\end{itemize}
+\end{frame}
+
+\subsection{ARP-Spoofing}
+\begin{frame}
+\frametitle{3.) ARP-Spoofing}
+	\begin{itemize}
+		\item Erläutern Sie was sich hinter dem Akronym \emph{MITM} verbirgt.
+		\item Erläutern Sie weiterhin, was APR-Spoofing und ARP-Cache-Poisoning ist.
+		\item Diskutieren Sie die Vorgehensweise bei den eben genannten Angriffen. 
+		\item \textbf{Anmerkung:} Möglicherweise hilft Ihnen eine Skizze...
+	\end{itemize}
+\end{frame}
+
+
+\end{document}

@@ -1,0 +1,239 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+		
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{csquotes}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (WiSe 2019/20)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 04 -- Switched LAN}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+  upquote=true,
+  columns=fullflexible,
+  literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}
+
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+
+%settings colors for links
+%\hypersetup{
+ %   colorlinks,
+  %  linkcolor={blue!50!black},
+   % citecolor={blue},
+    %urlcolor={blue!80!black}
+%}
+
+%\usepackage[pagetracker=true]{biblatex}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+
+\DeclareMathOperator{\id}{id}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Übungsblatt 4}
+}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 04 -- Netzwerkgrundlagen}}
+\end{center}
+\textbf{Zusammenfassung:}\\
+Sie lernen die Rechner kennen und bauen ein eigenes Netzwerk auf. Hierfür untersuchen Sie zunächst einen bereits vorkonfigurierten Netzwerkadapter, anschließend nehmen Sie die Konfiguration des Netzwerkes auf Grundlage Ihrer Hausaufgaben händisch vor.
+\begin{center}\Large{\textbf{Aufgabe A - Setup}}\end{center}\vskip0.25in
+\begin{enumerate}
+	\item Lassen Sie sich den Status des DHCP und Networking-Service anzeigen.
+	\item Lassen Sie sich den Status des Networking-Mangers anzeigen.
+	\item Falls der DHCP-Service ausgeschaltet sein sollte, können Sie diesen mithilfe von Systemd wieder einschalten.
+	\item Lassen Sie sich mit den Kommandos:
+			\begin{lstlisting}[style=Bash, language=Bash]
+uname -or
+		\end{lstlisting} und
+				\begin{lstlisting}[style=Bash, language=Bash]
+cat /etc/os-release
+		\end{lstlisting} anzeigen, welcher Betriebssystemkern (Kernel) und welche Distribution als VM läuft.
+	\item Nutzen Sie diese Information um im Falle von Fehlern/Fehlkonfigurationen nach möglichen Lösungen für das Betriebssystem zu recherchieren. Es ist schlau in einer Suche den Namen des Betriebssystems vorkommen zu lassen. Sie wollen keine Lösungen für Windows finden.
+\end{enumerate}
+	
+\begin{center}
+\Large{\textbf{Aufgabe B - Anzeige der bestehenden Netzwerkkonfiguration}}
+\end{center}\vskip0.25in
+Bevor Sie ein eigenes kleines Netzwerk einrichten, sollen Sie sich mit den dafür Notwendigen Tools vertraut machen. Daher soll zunächst die bestehende Netzwerkkonfiguration untersucht werden.\\
+Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen Rechnern in einem Netzwerk. Jeder Rechner muss hierfür eine passende IP-Adresse haben, mit der er andere Rechner bzw. Zwischenknoten im Netz erreichen kann.
+\begin{enumerate}
+	\item Lassen Sie sich die aktuelle IP-Adresskonfiguration anzeigen.
+	\item Wo finden Sie in der Ausgabe die folgenden Informationen:
+	\begin{tasks}(1)
+		\task MAC-Adresse der Netzwerkkarte
+		\task Aktuelle IP-Adresse des Systems
+		\task Subnetzmaske
+		\task Besteht eine aktive Verbindung mit dem Netzwerk (also Kabel mit dem Switch verbunden)?
+		\task Qualität der Verbindung? (Anzahl fehlerhafter Pakete)
+		\task Übertragene Datenmenge?
+	\end{tasks}
+	\item Überprüfen Sie, ob ein Netzwerkverbindung besteht. Zum Prüfen können Sie folgende Aktionen durchführen:
+	\begin{tasks}
+		\task Webbrowser öffnen und versuchen eine Seite anzuzeigen (dazu muss der Rechner eine IP-Adresse
+haben, sein Gateway kennen und das DNS richtig konfiguriert sein, der Webserver muss aktiv sein, keine Firewall darf die Pakete blocken).
+		\task Auf der Kommandozeile einen Rechner mit seinem Namen anpingen (bspw.: \url{mi.fu-berlin.de}).
+		\task Ping auf eine IP-Adresse (bspw.: 160.45.117.199).
+		\task Ping auf die IP-Adresse des Laborrouters (IP: 10.10.10.254) -- funktioniert die Kommunikation im lokalen Netz (LAN)?
+		\task Ping auf meine eigene IP-Adresse -- wurde der lokale Netzwerkstack richtig gestartet?
+	\end{tasks}
+	\item Schalten Sie den Netwrok-Manger via Systemd permanent aus!
+	\item Löschen Sie alle von DHCP gesetzten Einträge, d.h. alle IP-Adressen, Default-Routen sollen verworfen werden.
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C - Switched LAN}}\end{center}\vskip0.25in
+In der Hausaufgabe haben Sie ein kleines Netzwerk geplant, dies soll in Vierergruppen mit der vorhandenen Hardware umgesetzt werden.
+\begin{enumerate}
+	\item Beschriften Sie die Skizze aus der Planungsphase mit Gerätename und evtl. den Namen der Gruppenmitglieder.
+	\item Legen Sie für die Gruppe eine Netzwerkadresse samt Subnetzmaske fest.\\
+	Das Netzwerk sollte der IP-Range 10.0.$X.Y$ genügen. D.h. $X$ ist durch ihre Bankreihe bestimmt und $Y$ entspricht dem Host in dieser  Reihe. Die Subnetzmaske sollte der Anzahl Ihrer verwendeten Hosts genügen.\\
+	Beispielsweise: 10.0.3.4 -- dritte Reihe, vierter Rechner.\\
+	Die IP-Adressen 10.0.0.0 und 10.255.255.255 können nicht belegt werden. Ebenso ist die Adresse 10.10.10.254 bereits vergeben.
+	\item Vergeben Sie für jede VM eine \emph{IPv4}-Adresse, tragen Sie diese auf Ihrer Skizze ein.
+	\item Umsetzen der Konfiguration:
+\begin{tasks}(1)
+	\task Lassen Sie sich im Terminal die aktuelle Netzwerkkonfiguration mit \emph{ifconfig} und \emph{ip addr} anzeigen. Haben Sie eine IP-Adresse (\emph{inet}) und Subnetzmaske (\emph{netmask})?
+	
+	\task Richten Sie die VMs mit den Ihnen bekannten Befehlen ein. D.h. Sie müssen nun manuell \emph{IPv4}-Adressen vergeben, sodass Ihre VMs miteinander kommunizieren können. Nutzen Sie hierfür Werkzeuge aus beiden Werkzeugkästen (\emph{iproute2}, \emph{net-tools}).
+	\task Lassen Sie sich im Terminal die neue Netzwerkkonfiguration mit \emph{ifconfig} oder \emph{ip addr} anzeigen.
+	\task Überprüfen Sie ob Ihr Netzwerkinterface tatsächlich aktiv ist! Dies ist unter \emph{ip addr} direkt einsehbar, bei \emph{ifconfig} nur indirekt.
+\end{tasks}
+\item Testen des Netzes
+\begin{tasks}(1)
+	\task Testen Sie, ob sich Ihre VMs gegenseitig mit dem Befehl \emph{ping} \enquote{anpingen} können. Lassen Sie dabei einen der drei anderen VMs außen vor und merken Sie sich welcher das war.
+	\task Starten Sie Ihre VM per Kommandozeile neu. Pingen Sie einen der beiden bereits \enquote{angepingten} VMs erneut an. Funktioniert es immer noch?
+	\task Lassen Sie sich die Netzwerkkonfiguration erneut anzeigen.
+\end{tasks}
+	\item Setzen Sie eine persistente Netzwerkkonfiguration mittels Dateien um. Gehen Sie beim Testen ebenso vor, wie in der vorigen Aufgabe.
+\end{enumerate}
+
+\begin{center}
+\Large{\textbf{Aufgabe D - Bestimmung des physischen Rechners zu einer IP-Adresse -- ARP}}
+\end{center}\vskip0.25in
+Sie haben bereits theoretisch recherchiert wie die Zuordnung von physischer Adresse zu einer IP-Adresse vonstatten geht. Im Folgenden sollen Sie herausfinden, ob die Auflösung von IP-Adresse auf physische Adresse wirklich analog zu Ihren theoretischen Recherchen abläuft.
+\begin{enumerate}
+	\item Finden Sie mithilfe Wiresharks heraus, wie die Adressauflösung funktioniert.
+		\begin{tasks}(1)
+			\task Leeren Sie zunächst den ARP-Cache.
+			\task Pingen Sie nun einen Rechner an, den Sie vorhin noch nicht \enquote{angepingt} haben. Die dafür ausgetauschten Pakete (und wahrscheinlich einige mehr) werden \enquote{gesnifft}.
+			\task Beenden sie das Mitschneiden des Netzwerksverkehrs und setzen Sie als Filtern die MAC-Adresse ihres Adapters.
+			\task Versuchen Sie über den Mitschnitt herauszufinden, wie die Bestimmung des zugehörigen Netzadapters und die MAC-Adresse erfolgt.
+		\end{tasks}
+	\item Damit Ihr Rechner nicht jedes mal eine Auflösung veranlassen muss, werden die ARP-Informationen lokal in einem Cache zwischengespeichert (\enquote{cached}).
+\begin{tasks}(1)
+	\task Lassen Sie sich Ihren aktuellen ARP-Cache anzeigen. Welche Informationen können Sie diesem entnehmen?
+	\task Schauen Sie kurz nach wie lange der ARP-Cache Einträge vorhält.
+	\task Lassen Sie zwei VMs die IP-Adressen tauschen. Dies sollte möglichst schnell umgesetzt werden!
+	\task Versuchen Sie nun durch eine dritte VM eine \enquote{alte} IP-Adresse zu erreichen. Werden die Daten an den richtigen Knoten übermittelt?
+	\task Verfolgen Sie die Datenübermittlung per Wireshark mit.
+\end{tasks}
+\end{enumerate}
+
+\begin{center}
+\Large{\textbf{Aufgabe E - ARP-Cache-Poisoning}}
+\end{center}\vskip0.25in
+Wie in den Hausaufgaben bereits zu erahnen war, dürfen Sie nun ein wenig Unruhe in Ihren Netzwerken stiften!\\
+Sie sollen in diesem Teil der Laborübung ein ARP-Spoofing vornehmen. Um dies zu erreichen, sollen Sie den ARP-Cache so manipulieren das sämtlicher Verkehr zwischen Ihren LANs $A$ und $B$ nicht mehr über den Router geleitet wird, sondern über den Angreifenden Host.
+\begin{enumerate}
+	\item Ziel ist es sämtlichen Netzwerkverkehr statt direkt über das Labor-Gateway über den Angreifen laufen zu lassen. 
+	\item Setzen Sie alle vorgenommenen Konfigurationen zurück. D.h. Sie müssen veränderte Systemdateien in den ursprünglichen Zustand zurücksetzen. Es stehen einige Shell-Skripte bereit. Diese laufen mit root-Rechten und müssen daher mit dem Schlüsselwort \emph{sudo} ausgeführt werden.
+	\item Setzen Sie Ihr System wieder in die Ausgangslage zurück. D.h. Sie sollen wieder eine IP-Adresse und Default-Route vom DHCP-Server beziehen.
+	\item Zunächst beginnen Sie mit der sogenannten Reconnaissance-Phase (Aufklärung). Sie
+	müssen Angreifer und Opfer in Ihren Netzwerk auswählen. Bringen Sie hierfür alle notwendige Informationen in Erfahrung (IP-Adressen, Adapter).
+	\item Analysieren Sie den ARP-Cache des anzugreifenden Systems.
+	\item Da der angreifende Host als \enquote{MITM-Router} fungiert, muss das Forwarding aktiviert sein und eine Default-Route zum Backbone angelegt werden, sodass der Abgefangene Traffic auch beim Ziel ankommt. Mit Folgendem Befehl aktivieren Sie das Forwarding:
+	\begin{lstlisting}[style=Bash, language=Bash]
+sudo sysctl -w net.ipv4.ip_forward=1
+\end{lstlisting}
+Die Default-Route sollte durch den DHCP bereits korrekt gesetzt sein! Schauen Sie trotzdem im Routing-Table nach.
+	\item Im Ordner \path{~/arp_poison/} liegt ein Python-Skript (wie auch ein Perl-Skript und eine C-Datei), welche für den Angriff genutzt werden kann. Bevor Sie dies einsetzen: Schauen Sie sich das Skript erneut an. Wie muss dieses Skript ausgeführt werden? Haben Sie die entsprechenden Rechte? Haben Sie alle benötigten Parameter?
+	\item Führen Sie das ARP-Cache-Poisoning durch.
+	\item Lassen Sie sowohl auf dem angreifenden als auch angegriffenen System Wireshark mitlaufen.
+	\item Erzeugen Sie ein wenig Netzwerkverkehr, am besten unverschlüsselt!
+	\item Betrachten Sie den ARP-Cache während des Angriffs, sowie einige Zeit nachdem Angriff.
+	\item Ziehen Sie ein Fazit aus dem eben durchgeführten Angriff!
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Here be Dragons... Network-Discovery}}\end{center}\vskip0.25in
+Nachdem Sie Ihr System wieder in die Ausgangslage versetzt haben, sollen Sie im nächsten Schritt das Labornetzwerk erkunden. Frei nach dem Motto "'Here be dragons" \footnote{\url{https://en.wikipedia.org/wiki/Here_be_dragons}} sind im Labor neben den VMs auch andere Maschinen Online. In späteren Übungen werden Sie diese fragwürdigen Geräte genauer begutachten.
+\begin{enumerate}
+	\item Ein Tool um Informationen über Geräte im LAN zu sammeln sind \emph{arping} und \emph{arp-scan}. Schauen Sie in der Manpage oder in der Hilfe nach, wie diese Tools zu nutzen sind. 
+	\item Erstellen Sie sich eine kurze Übersicht über die aktiven Maschinen im Netzwerk. Neben Ihren VMs sollten auch andere Systeme auftauchen. Die Unterscheidung kann mithilfe der Adressen als auch anhand der Hostnamen erfolgen.
+	\item Sie sollen noch ein wenig mehr über die dubiosen Maschinen in Erfahrung bringen. Mit dem Tool \emph{nmap} können Sie einen Port-Scan starten. Dies ermöglicht Ihnen herauszufinden, welche Dienste auf den jeweiligen Maschinen laufen.\\
+	Starten Sie einen Port-Scan!
+	\item Welche Ports sind geöffnet? Und welche Services verstecken sich dort? Gibt es vielleicht interessante Dienste, die Sie näher erkunden wollen?
+	\item Falls eine Maschine die Web-Ports offen hat: Rufen Sie die Maschinen mit den Ports 80 oder 443 via Browser auf.\footnote{Sie könne auch andere Tools hierfür verwenden.}
+\end{enumerate}
+\end{document}

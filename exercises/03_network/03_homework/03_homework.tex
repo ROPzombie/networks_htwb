@@ -1,0 +1,196 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{csquotes}
+\usepackage{enumitem}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (SoSe 2020)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 03 -- Static Networks}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 3 -- Static Networks}}
+\end{center}
+
+\begin{center}\Large{\textbf{Aufgabe A - Planung des physischen Netzes}}\end{center}
+
+Sie planen ein kleine Netzwerk, bestehend aus drei Rechnern (also drei VMs). Hierfür sollen Sie zunächst die Infrastruktur planen.
+\begin{enumerate}
+	\item Machen Sie sich die Funktion der einzelnen Rechner- \& Netzwerkkomponenten klar. Wie sieht Ihre Infrastruktur aus? Gehen Sie hierbei auf den Rechner ein, der das Netzwerk virtualisiert, als auch Ihre tatsächliche physische Infrastruktur.
+	\item \textbf{Recap:} Recherchieren Sie mithilfe \cite[S. 461ff]{Kurose2012}  was eine Netzwerktopologie ist.
+	\item \textbf{Recap:} Lesen Sie Kapitel 4.3 in \cite[S. 320ff]{Kurose2012} zum Thema Routing und Router.
+	\item Ihr Netzwerk soll aus drei Rechnern bestehen, zwei sind einfache Host, die nur am Netzwerk teilnehmen, ein Rechner soll als Router fungieren.\\
+	Wählen Sie eine geeignete Netztopologie und skizzieren Sie diese mit geeigneten Symbolen.\\ 
+	\textbf{Hinweis:} Unter \url{http://iacis.org/iis/2008/S2008_967.pdf} finden Sie auf S. 241 eine Möglichkeit, wie dies aussehen könnte.\\
+	\item Planen Sie die Netzkonfiguration:
+	\begin{enumerate}
+		\item Rekapitulieren Sie kurz was eine IP-Adresse ist. Welche Aufgabe haben diese Adressen in einem Netzwerk? s. \cite[S. 331ff]{Kurose2012}
+		\item Momentan werden vor allem \emph{IPv4} und \emph{IPv6} als Netzwerkschichtprotokolle genutzt. Recherchieren Sie einige wichtige Unterschiede zwischen \emph{IPv4} und \emph{IPv6}.
+		\item Rekapitulieren Sie was eine Subnetzmaske ist und wofür diese gebraucht wird.
+		\item Wie spielen IP-Adresse und Subnetzmaske zusammen?
+		\item Bestimmte IP-Adressbereiche werden nicht ins Internet weitergeleitet, sie werden als private IP-Adressen bezeichnet. Diese Adressen gibt es sowohl unter \emph{IPv4} als auch unter \emph{IPv6}. Recherchieren Sie, welche IP-Adressbereiche nicht ins Internet geroutet werden.
+		\item Wählen Sie beispielhaft eine Netzwerkadresse (IP-Addresse -- ip address) und Subnetzmaske (subnet mask) für einen möglichst kleinen IP-Adressbereich, der genau für zwei Rechner ausreicht. Wie sähe die Subnetzmaske für 7, 23, 42 oder 72 Rechner aus? 
+		\item Ich habe ein Video für Sie bereitgestellt, dass zeigt, wie Sie ein virtuelles Netzwerk mit VirtualBox organisieren können \footnote{Mit Anmeldung in der HTW-Mediathek: \url{https://mediathek.htw-berlin.de/video/Virtualbox-Network-Preperations-amp-Cloning/276fab5dbd663d7589d12a30234da003}}. Schauen Sie sich das Video an und setzen Sie das Netzwerk um! Die Images finden Sie im Moodle oder via \url{https://cloud.htw-berlin.de/s/JNwcn7LL2qgt87n}. Ein FreeBSD können sie ebenfalls nutzen, wenn Sie möchten: \url{https://cloud.htw-berlin.de/s/yxn6ZQDczxrED4w}
+		\item Die IP-Range für das Netzwerk ist $172.16.0.0/24$ und $172.16.1.0/24$. Wie viele Maschinen könnten Sie prinziepiell hier unterbringen? 
+		\item Sie sollen jedoch Ihre Netzwerke minimal planen. Welche Netzadressen und Subnetzmasken müssen Sie in Ihre Skizze eintragen?
+	\end{enumerate}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- Routing}}\end{center}
+
+\begin{enumerate}
+	\item Was sind die Aufgaben eines Routers. Wie erfolgt, im Groben, die Umsetzung des Routings?
+	\item Machen Sie sich klar, wie Router und \emph{IP}-Protokoll zusammenhängen.
+	\item In welcher Schicht des OSI-Modells würden Sie einen Router einordnen? (Begründung!)
+	\item Wie haben sich bis jetzt Ihre VMs gefunden? Woher "'wussten" diese, welches Gerät gemeint war?
+	\item Woher weiß ein \textit{Host} (Endknoten), wann er ein Paket direkt adressieren kann und wann er es an Router/Gateway weiter schicken muss?
+	\item Woher weiß ein \textit{Router} (Zwischenknoten), wann er ein Paket weiter schicken soll und wann nicht?
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- Tools}}\end{center}
+Ziel der nächsten Übung ist es das Netzwerk nicht nur theoretisch, sondern auch praktisch umzusetzen. Daher sollen Sie die Nutzung einiger Tools in Erfahrung bringen.\\
+Mithilfe der Werkzeugsammlungen \emph{iproute2} sowie \emph{net-tools} wird dies in der Regel unter Linux und Unix-Betriebssystemen bewerkstelligt.
+\begin{enumerate}
+	\item Im ersten Übungsblatt haben Sie bereits das Rechtemodell kennengelernt. Verschiedene Nutzer*innen haben verschiedene Rechte. Für die Konfiguration des Systems soll im allgemeinen nur bestimmte Nutzer*innen zuständig sein. Recherchieren Sie welche Rechte der \emph{root}-User hat und was das Kommando \emph{sudo} in diesem Zusammenhang leistet.
+	\item In Betriebssystemen gibt es verschiedene Hintergrunddienste (Daemons), die die Verwaltung des Systems in Teilen organisieren. Da Debian das Betriebssystem auf der meisten VMs ist, kommt Systemd zum Einsatz \footnote{Wenn FreeBSD eingesetzt wird, haben Sie kein systemd, s. \url{https://www.freebsd.org/doc/handbook/configtuning-rcd.html}}. \footnote{Eigentlich war Systemd als Alternative des System-V Init-Daemons gedacht, hat aber über die Zeit immer mehr Funktionalitäten bekommen.}
+	\begin{enumerate}
+		\item \emph{systemd} verfügt über die Möglichkeit bestimmte Dienste zu starten, stopen, etc. Recherchieren Sie wie der entsprechende Befehl lautet. Die Man-Pages oder der Link der Fußnote sind gute Anlaufstellen!
+		\footnote{\url{https://wiki.archlinux.org/index.php/Systemd\#Using_units}}\\
+		Notieren Sie sich die Syntax Wort für Wort, sowie die Bedeutung jedes Wortes (Tokens). 
+		\item Wichtige Dienste für die nächste Laborübungen sind der Networking-Service und DHCPclient. Notieren Sie sich:
+		\begin{enumerate}
+			\item Wie der Status eines Daemons abgefragt werden kann.
+			\item Wie ein Daemon gestartet, gestoppt werden kann.
+			\item Wie ein Daemon permanent eingeschaltet bzw. ausgeschaltet werden kann (d.h. auch nach einem Neustart automatisch gestartet werden kann.)
+		\end{enumerate}
+	\end{enumerate}
+	\item Übliche Befehle zum Einrichten von Netzwerkadaptern sind \emph{ifconfig} (BSD \emph{net-tools}) oder auch \emph{ip} aus der Werkzeugsammlung \emph{iproute2}. Der Befehl \emph{ifconfig} gilt in manchen Linux-Distributionen als veraltet (In BSD, Solaris etc. ist dies nicht der Fall!). Recherchieren Sie kurz, worin sich beide Tools-Sammlungen unterscheiden und notieren Sie sich wesentliche Unterschiede.\\
+	Digital Ocean hat ein schönes HowTo dazu: \url{goo.gl/w1MN5x}
+ 	\item Bringen Sie in Erfahrung, wie Sie die Konfiguration bereits existierende Netzwerkkonfigurationen mit den Tools \emph{ip} und \emph{ifconfig} in Erfahrung bringen.
+	\item Recherchieren und notieren Sie sich, wie mithilfe des Befehls \emph{ip addr} Netzwerkadapter(n) eine (oder mehrere) IP-Adressen und Subnetzmasken zugewiesen wird.\\
+	Wie wird dies mit \emph{ifconfig} gehandhabt. \footnote{\url{http://linux-ip.net/linux-ip/linux-ip.pdf} Appendix C: S 108}\\
+	(Auch hier gilt: Notieren Sie sich das Kommando sowie dessen Bedeutung Wort/Schrittweise)!
+	\item Recherchieren Sie, wie Sie die IP-Konfiguration in einer Datei festlegen und speichern können, sodass diese weiterhin nach einem Neustart gültig ist.  \footnote{\url{http://linux-ip.net/linux-ip/linux-ip.pdf} Kapitel 1 S 4.}\\
+	\textbf{Achtung:} Bedenken Sie für welches Betriebssystem diese Konfiguration erfolgen soll!
+	\begin{enumerate}
+		\item In welcher Datei wird unter Debian/FreeBSD die Konfiguration abgelegt?
+		\item Welcher User kann auf diese Datei zugreifen?
+		\item Notieren Sie sich, wie eine Konfiguration beispielhaft aussieht und was die einzelnen Zeilen bedeuten!
+	\end{enumerate}
+	\item Recherchieren Sie wie der Status eines Netzwerkadapters mit den \emph{net-tools} und \emph{iproute2} abgefragt werden kann.\\
+	Welche Stati kann ein Adapter besitzen und wie kann der Status geändert werden?
+	\item Recherchieren Sie, welches Werkzeug aus \emph{iproute2} genutzt werden kann um Routen zu setzen.\\Notieren Sie sich die Syntax und was die Parameter bewerkstelligen.
+	\item Analog dazu: Wie werden Routen mithilfe der \emph{net-tools} konfiguriert?
+	\item Recherchieren Sie beispielhaft wie eine persistente Lösung aussähe. Kommentieren Sie 	Ihr Beispiel anschließend, sodass Sie wissen was die einzelnen Wörter/Token bedeuten.
+	\item Gateways \& Router -- Gateways sind im allgemeinen nicht das Gleiche wie Router. Auch unter den Gateways gibt es Unterscheidungen.
+	\begin{enumerate}
+		\item Recherchieren Sie worin sich Router und Gateways unterscheiden.
+		\item Beim aufsetzen des Netzwerkes kann unterschieden werden zwischen \emph{Gateways} und \emph{Default-Gateways}. Recherchieren Sie diese Unterscheidung.
+	\item Lesen Sie Kapitel 4.1.1. \cite[S. 308ff]{Kurose2012} zum Thema Routing und Forwarding. Worin unterscheiden sich diese Mechanismen?
+	\item Der Betriebssystemkern (Kernel) stellt die Infrastruktur für das Routing bereit. Die dafür genutzte Datenstruktur ist der Routing-Table. \footnote{\url{http://linux-ip.net/linux-ip/linux-ip.pdf} Kapitel 8, S 38ff}
+	\item Rekapitulieren Sie den Unterschied zwischen Routing und Forwarding.
+	\item Welchen Kernel-Parameter müssen Sie aktivieren (bzw. welche Datei im \path{/proc/sys} Verzeichnis müssen sie editieren), sodass das IP-Forwarding aktiviert wird? Welche Möglichkeiten zum Editieren dieser Datei haben Sie?
+	\item In welcher Konfigurationsdatei müssen Sie einen Eintrag vornehmen, so das das Routing dauerhaft beim Systemstart aktiviert bleibt? Notieren Sie sich beispielhaft (auszugsweise) wie dies aussehen kann.
+	\item \emph{ICMP} ist ein Diagnose-Protokoll, dass Sie bei der Wartung/Nutzung von Netzwerken unterstützt. Recherchieren Sie welchen Hinweis Ihnen dabei die Folgenden \emph{ICMP}-Messages geben. Wo wird jeweils der Fehler in der Konfiguration liegen?
+	\begin{enumerate}
+		\item Connect: network is unreachable
+		\item Destination Host Unreachable
+		\item Destination Network Unreachable
+		\item keine Antwort auf ein Ping
+	\end{enumerate}
+	\item Zwei weitere bekannte Netzwerkanalyse-Tools sind \emph{netstat} (aus \emph{net-tools}) und \emph{ss} (aus der \emph{iproute2}-Werkzeugsammlung).
+	\begin{enumerate}
+		\item Recherchieren Sie die wesentliche Funktionen von \emph{netstat}, sowie \emph{ss} \footnote{\url{http://linux-ip.net/linux-ip/linux-ip.pdf} Kapitel 4, S 151ff; für \emph{ss} \url{https://www.linux.com/topic/networking/introduction-ss-command/}}.
+		\item Notieren Sie sich anhand von Beispielen die Syntax der eben genannten Tools. 
+	\end{enumerate}
+	\item \emph{iptables} wird unter Linux allgemein als Firewall-Tool genutzt.\\
+	In der kommenden Übung übernimmt \emph{iptables} eine etwas andere Aufgabe. Es sorgt zunächst dafür, dass unsere VMs via \emph{NAT}\footnote{Um genau zu sein: SNAT} Pakte in das Internet leiten können. Der Router arbeitet als \emph{NAT}-Gateway -- dieser übersetzt unsere privaten IP-Adressen auf Adressen auf die eigenen Adressen. 
+	\begin{enumerate}
+		\item Recherchieren Sie entweder unter \cite[S. 349f]{Kurose2012} oder mithilfe folgenden Links was \emph{NAT} ist und warum dies unter \emph{IPv4} genutzt wird.\\
+		\url{https://en.wikipedia.org/wiki/Network_address_translation}
+		\item Machen Sie sich im groben klar, wie \emph{NAT} umgesetzt wird.
+		\item Recherchieren Sie kurz welche \emph{NAT}-Varianten es gibt. 
+		\item \textbf{Fakultativ:} Mit sehr hoher Wahrscheinlichkeit nutzt auch Ihr Router/Modem \emph{NAT}, wie wird dies hier umgesetzt?
+		\item Recherchieren Sie was unter einer Firewall im wesentlichen verstanden wird.
+		\item Machen Sie sich klar, wie eine Firewall im Groben umgesetzt wird -- wie setzt eine Firewall seine Regeln um.
+		\item \emph{iptables} kann genutzt werden, um die privaten Adressen auf öffentliche zu übersetzen. Lesen Sie folgenden Artikel:\\
+		\url{https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/4/html/Security_Guide/s1-firewall-ipt-fwd.html}\\
+		Versuchen Sie den Inhalt wirklich komplett zu verstehen. Notieren Sie sich alle notwendigen Schritte um das Masquerading via \emph{iptables} einzuschalten.
+		\item \emph{iptables} unterstützt sowohl \emph{SNAT} (One-to-Many-NAT) als auch \emph{DNAT}. Recherchieren Sie kurz worin sich beide Arten unterscheiden.
+	\end{enumerate}
+	\end{enumerate}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- Ping}}\end{center}
+Um festzustellen ob eine Verbindung funktionstüchtig ist, wird oftmals das Tool \emph{ping} genutzt. D.h. \emph{ping} analysiert ob Datenpakete überhaupt und wie viele Pakete von einem Host (bspw. Ihrem Rechner) zu einem Ziel (wie etwa der Webserver der HTW-Berlin) gelangen. Falls Sie ein wenig mehr zu Ping recherchieren wollen, kann ich Ihnen folgenden Artikel empfehlen: \url{https://openmaniak.com/ping.php}
+\begin{enumerate}
+	\item Recherchieren Sie die Syntax von \emph{ping}. Ein guter Anlaufpunkt wäre die Man-Page (\emph{man ping}) oder \url{https://linux.die.net/man/8/ping}.
+\end{enumerate}
+\bibliographystyle{plain}
+\bibliography{sources}
+\end{document}
+
+

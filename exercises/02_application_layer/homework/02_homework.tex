@@ -1,0 +1,239 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+\usepackage{csquotes}		
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+\usepackage{multicol}
+\usepackage{csquotes}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (SoSe 2020)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 02 -- Application Layer}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 2 -- Application Layer}}
+\end{center}
+Zunächst beginnen wir mit der Anwendungsschicht. Dies hat den Vorteil, dass Sie die meisten der vorliegenden Anwendungen bzw. deren Protokolle bereits kennen. Wir können natürlich nicht alle Anwendungsprotokolle betrachten, daher geht dieses Blatt auf die Folgenden Protokolle ein:
+\begin{itemize}
+	\item Wireshark -- als Analysewerkzeug
+	\item E-Mail via IMAP (POP3) \& SMTP
+	\item HTTP/HTTPs -- Protokoll des Webs
+	\item DNS: Namensauflösung -- Abbildung von Namen auf IP-Adresse
+\end{itemize}
+Eine gute Einführung finden Sie im Kurose et al. \cite[S. 83]{Kurose2012} (Kapitel 2).
+\begin{center}\Large{\textbf{Vorbereitung}}\end{center}\vskip0.25in
+Um die Übung effizienter zu gestalten habe ich in den Weiten des Internets folgendes gefunden:\\
+\begin{enumerate}
+	\item Fakultativ: Schauen Sie als Einführung die Videos 1.1 bis 1.6. Diese Videos dienen nur der Rekapitulation.\\
+	\url{https://www.youtube.com/watch?v=5D67Qy1tPLY&list=PLLFIgriuZPAcCkmSTfcq7oaHcVy3rzEtc}
+	\item Falls Sie trotz der Vorlesung noch nicht komplett sicher in der Anwendungsschicht sind, schauen Sie folgendes Video:
+	\url{https://youtu.be/xJ9JTT2fXWk}
+	\item Folgende Konzepte sind für die Übung von Interesse:
+	\begin{enumerate}
+		\item Aufbau und Nutzen des ISO-OSI-Schichtenmodells.
+		\item Das Akronym \emph{API}: Was ist mit Schnittstelle gemeint und welchen Nutzen bringt diese.
+		\item Konzept eines Ports -- als Eintrittspunkt im Betriebssystem.
+		\item Konzept der Sockets -- als Adressierungsschema für Anwendungen.
+	\end{enumerate}
+	Diese Aufgaben müssen Sie nicht notwendigerweise als erste Aufgabe lösen! Sollten Konzepte nach dem Bearbeiten unklar bleiben, notieren Sie entsprechende Fragen im Moodle-Plenum.
+\end{enumerate}
+\newpage
+\begin{center}\Large{\textbf{Aufgabe A -- Wireshark}}\end{center}\vskip0.25in
+Da Sie nicht nur Netzwerkanwendungen nutzen können sollen, müssen Sie verstehen wie Anwendungen realisiert werden. Hierzu müssen Sie hinter die Kulissen schauen. Im Fall von Netzwerken wird die Kommunikation via Protokolle umgesetzt. Das heißt, beide Seiten haben sich auf ein Art und Weise verständigt, wie kommuniziert wird. Daher gibt es Standards, die befolgt werden (RFCs, ISOs, etc.). Aufgrund der Nutzung von standardisierter Protokolle ist es ebenfalls relativ leicht möglich Programme zu bauen, die diese Protokolle verstehen und mitschneiden können. Das Mitschneiden und Analysieren kann mittels eines sogenannten Sniffers realisiert werden.\\
+Wir nutzen den Netzwerk-Sniffer \emph{Wireshark}. Wireshark ist eine Open-Source-Software mithilfe dessen Analysen, Fehlerbehebungen, Software- und Protokollkommunikation untersucht werden können.\\
+Hilfreiche Links:
+\begin{itemize}
+	\item \url{https://www.lifewire.com/wireshark-tutorial-4143298}
+	\item \url{https://www.wireshark.org/download/docs/user-guide.pdf}
+	\item \url{https://wiki.wireshark.org/}
+\end{itemize}
+\begin{enumerate}
+	\item Finden Sie heraus was das OSI-Modell ist. Sie brauchen zunächst nur ein grobes Verständnis!
+	\item Erläutern Sie was in Netzwerken unter Datenkapselung verstanden wird. (Sollte in der Erklärung des OSI-Modells enthalten sein.)	
+	\item Lesen Sie folgendes Tutorial in Hinblick auf die Fragen in Aufgabe A 4.): \url{https://tinyurl.com/yby2kukf}
+	\footnote{Lohnenswert ist das Wireshark 101 Buch im PDF Format -- erhältlich bei der Suchmaschine Ihres Vertrauens.}
+	\item Nachdem Sie die Tutorials abgearbeitet haben:
+	\begin{enumerate}
+		\item Was ist ein \emph{Network-Sniffer}?
+		\item Wozu kann ein Netzwerk-Sniffer genutzt werden?
+		\item Verschaffen Sie sich einen Überblick, sodass Sie einen Überblick haben wo was zu finden ist, bzw. wo Sie Hilfe finden können.
+		\item Recherchieren Sie wozu Filter in \emph{Wireshark} eingesetzt werden.
+		\item Bringen Sie in Erfahrung wie Filter genutzt werden.
+		\item Welche beiden unterschiedlichen Mitschnitt-Modi (Caputre Modes) bietet \emph{Wireshark}? Worin unterscheiden sich diese?
+	\end{enumerate}
+	\item Erläutern Sie anhand von Beispielen den grundlegende Umgang mit \emph{Wireshark}. 
+	\begin{enumerate}
+		\item Erläutern Sie was ein Netzwerkinterface ist.
+		\item Wie stellen Sie Netzwerkinterfaces ein -- auf welchem Interface soll der Mitschnitt laufen.
+		\item Wie filtern Sie nach Protokollen? (TCP, UDP, DNS...)
+		\item Wie filtern Sie \emph{MAC}-Adressen?\\Die \emph{MAC}-Adresse ist eine Link-Layer-Adresse und sorgt für die Punkt-zu-Punkt-Verbindung innerhalb eines Netzsegmentes (Bspw.: LAN).
+		\item Wie filtern Sie \emph{IP}-Adressen?\\Analog zur \emph{MAC}-Adresse -- jedoch auf dem Network-Layer. \emph{IP} sorgt für eine Ende-zu-Ende-Verbindung über die Grenzen eines Netzsegmentes von zwei Kommunikationsparteien. (Zwei Rechner die über das Hochschulnetz kommunizieren.) 
+	\end{enumerate}
+	\item \textbf{Fakultativ:} Wenn Sie mögen, können Sie \emph{Wireshark} auf Ihre(n) Gerät(en) installieren oder in der virtuellen Maschine laufen lassen und ihren Netzwerkverkehr ein wenig analysieren. 
+	\begin{itemize}
+		\item \url{https://www.wireshark.org/download.html}
+		\item \url{https://www.wireshark.org/docs/wsug_html_chunked/ChapterBuildInstall.html}
+	\end{itemize}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- HTTP(S)}}\end{center}\vskip0.25in
+Kein anderes Protokoll ist für das World-Wide-Web so wichtig wie HTTP. In diesem Teil sollen Sie recherchieren, wie die bunten Seiten in Ihren Browser kommen.
+\begin{enumerate}
+	\item Recherchieren Sie zunächst was HTTP ist. Eine gute Anlaufstelle wäre \cite[S. 98ff]{Kurose2012}.
+	\item Alternativ: unter \url{https://youtu.be/oXUgqWSvH6k} finden Sie eine Einführung zu HTTP.
+	\item Skizzieren Sie grob die Funktionalitäten von HTTP.
+	\item Auf welcher Schicht des OSI-Modells ordnen Sie HTTP ein?
+	\item Recherchieren Sie was unter einem Port verstanden wird! Ein grobes Verständnis genügt.
+	\item Auf welchen Port laufen meistens Webserver? Auf welchem Port läuft die verschlüsselte Variante HTTPS?
+	\item Wie sieht ein typischer HTTP-Header aus?
+	\item HTTP ist ein zustandsloses Protokoll. Erläutern Sie diese Aussage!
+	\item HTTP arbeitet mithilfe von Methoden: Nennen Sie alle HTTP-Methoden. Notieren Sie sich was diese machen und wie deren Aufruf aussieht.
+	\item Machen Sie sich kurz klar, welche Aufgabe SSL/TLS übernimmt. (Hinweis: An dieser Stelle genügt es, wenn Sie wissen was SSL/TLS macht.)
+	\item Auf welcher Schicht arbeitet SSL/TLS? Wenn Sie das Akronym auflösen, sollte die Lösung Ihnen entgegen fallen.
+	\item HTTP ist ein textbasiertes Protokoll, entsprechend kann dies auch über die Kommandozeile bedient werden.\\
+	Mithilfe der Tools \emph{telnet}, \emph{netcat} und \emph{openssl s\_client} können Sie Anfragen an den Webserver absetzen.\\
+	Durchlaufen Sie folgende Tutorials und notieren Sie sich wie vorgegangen wird:
+	\begin{itemize}
+		\item \url{https://www.thomas-krenn.com/de/wiki/TCP_Port_80_(http)_Zugriff_mit_telnet_%C3%BCberpr%C3%BCfen}
+		\item \url{https://administrator.de/wissen/netcat-tcp-ip-swiss-army-knife-40641.html#toc-4}
+		\item  \url{https://tinyurl.com/y9nnaz6a} oder \url{https://www.feistyduck.com/library/openssl-cookbook/online/ch-testing-with-openssl.html}
+	\end{itemize}
+	\item Recherchieren Sie was \emph{STARTTLS} bedeutet, warum gibt es diese Möglichkeit der verschlüsselten Kommunikation?
+	\item Recherchieren Sie kurz was ein kryptografisches Zertifikat ist. Wozu werden diese im Zusammenhang mit HTTP genutzt?
+	\item Erläutern Sie wie Zertifikate mithilfe \emph{openssl}s geprüft werden können.  
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- E-Mail mit POP3, IMAPv4 \& SMTP}}\end{center}\vskip0.25in
+Das Simple Mail Transfer Protokoll (SMTP) wird, wie der Name schon sagt, zum Austausch von E-Mails in Computernetzwerken genutzt. Primär wird es zum Weiterleiten von Mails zwischen Server genutzt. Auf Ihren Endgeräten kommt zumeist \emph{IMAP} oder \emph{POP3} zum Einsatz. 
+\begin{enumerate}
+	\item Wie in den vorigen Aufgaben: \url{https://youtu.be/TntfISdGwO8} gibt eine Einführung zu E-Mail.
+	\item Recherchieren Sie zunächst was sich hinter den Akronymen POP3, IMAPv4, sowie SMTP verbirgt.
+	\item Erläutern Sie im groben welche Aufgaben die oben genannten Protokolle übernehmen.
+	\item Auf welcher Ebene des OSI-Modells arbeiten die Protokolle?
+	\item Machen Sie sich im Groben klar, wie diese Protokolle arbeiten.	
+	\item Worin unterscheiden sich POP3 und IMAP?
+	\item Auf welchen Ports arbeiten die drei Protokolle?
+	\item Auf welchen Ports arbeiten die drei Protokolle mit Verschlüsselung?
+	\item Durchlaufen Sie folgende Tutorials:
+	\begin{itemize}
+		\item \url{https://www.unixwitch.de/de/sysadmin/tools/imap-mit-ssl-testen}
+		\item \url{https://www.atmail.com/blog/imap-101-manual-imap-sessions/}
+		\item \url{https://tecadmin.net/send-email-smtp-server-linux-command-line-ssmtp/}
+	\end{itemize}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe D -- Domain Name System (DNS)}}\end{center}\vskip0.25in
+Das Domain Name System ist ein dezentrales System (verteilte Datenbank nach der Client-Server-Architektur), dessen primäre Aufgabe die Adressauflösung von Domain Name(n) zu IP-Adresse(n) ist.\\
+Sie nutzen das DNS sicherlich täglich! Bei jedem Aufruf von Websites, lesen Ihrer E-Mails etc. nutzen Sie sicherlich keine \emph{IP}-Adressen, sondern Namen -- genauer gesagt Domain-Names, wie etwa \url{htw-berlin.de} statt 141.45.66.214. Diese Übersetzung von Domainname auf \emph{IP}-Adresse ist rein kosmetischer Natur, da Menschen i.A. sich Namen besser merken können, als lange Zahlenkolonnen.
+\begin{enumerate}
+	\item DNS 101 -- Grundsätzliches zu DNS\\
+	Schauen Sie folgendes Video: \url{https://youtu.be/XondVs0hJ8U}
+	\begin{enumerate}
+		\item Beschreiben Sie mit eigenen Worten, was das DNS leistet.
+		\item Recherchieren Sie, was eine Client-Server-Architektur ist. Sie müssen lediglich verstehen, wie diese Aufgebaut ist.
+	\end{enumerate}
+	\item Nennen und Erklären Sie die folgenden Komponenten des DNS-Systems.
+	\begin{enumerate}
+		\item Was wird unter dem Begriff Resolver verstanden?
+		\item Was ist ein DNS-Root-Server, was ist ein Top-Level-Domain-Server (TLD) und was ein Second-Level-Domain-Server?
+		\item Was ist ein \emph{Stub} im Kontext von DNS?
+		\item Was ist ein Bind-Server?
+	\end{enumerate}
+	\item Rechner können die unterschiedlichsten Dienste bereitstellen, auf einem Rechner laufen zumeist mehrere Dienste. Entsprechend gibt es diverse DNS-Record-Types die dies realisieren.\\
+	Recherchieren Sie welche Typen von Records es gibt.
+	\item Erläutern Sie die Auflösung einer DNS-Anfrage.
+	\begin{enumerate}
+		\item Welche beiden Möglichkeiten einer Namensauflösung gibt es? D.h. welche Variante gibt einen Namen aufzulösen.
+		\item Wie erfolgt die jeweilige Auflösung eines DNS-Requests?
+		\item Verdeutlichen Sie sich anhand eines Beispiels, wie ein DNS-Request bearbeitet wird.
+		\item In der Praxis wird eine Mischung aus den beiden obrigen Verfahren angewandt. Recherchieren Sie, wie diese Auflösung \enquote{in the wild} aussieht.
+	\end{enumerate}
+	\item Durchlaufen Sie folgende Tutorials:
+	\begin{itemize}
+	\item \url{https://www.madboa.com/geek/dig/}
+	\item \url{https://www.poftut.com/nslookup-commands-tutorial-with-examples/}
+	\end{itemize}
+	Notieren Sie sich wie vorgegangen wird! Diese Tools nutzen Sie in der nächsten Laborübung.	
+\item Namensauflösung am praktischen Beispiel.
+\begin{table}[h]
+\caption{Adressen für DNS-Auflösung.}
+\label{dns_mail}
+\centering
+\begin{tabular}{lll}
+\hline
+ & Bob & Alice \\ \hline
+ IP address: &  192.45.56.127 & 208.115.92.45\\
+ Local name server:& 192.47.56.2 & 208.115.92.2\\
+ SMTP server: & mail.server.org & mail.server.org\\
+ Email Address: & bob@realword.org & alice@wonderland.org\\ \hline
+\end{tabular}
+\end{table}
+	\begin{enumerate}
+		\item Nehmen Sie an Bob möchte eine E-Mail an Alice senden. Um eine Verbindung mit dem SMTP-Server aufzubauen, muss der Name des Servers via DNS in eine IP-Adresse aufgelöst werden. Erläutern Sie welche Nachrichten ausgetauscht werden müssen und zwischen welchen Hosts. Die Auflösung des Domainnamen ist rein rekursive.\\
+		Nehmen Sie weiter an, dass nur der Nameserver der für die Domäne server.org zuständig ist, die Anfrage beantworten kann. (Alle Adressen sind in Tabelle \ref{dns_mail} zu sehen!) Skizzieren Sie den Ablauf der Namensauflösung!
+		\item Nun ist Alice am Zug um Bob zu antworten. Erläutern Sie den Nachrichtenaustausch, wenn eine rein iterative Namensauflösung genutzt wird. Nehmen Sie wie in der vorigen Aufgabe an, dass das nur der Namensserver der zuständig für die Domäne server.org die Anfrage beantworten kann. Skizzieren Sie den Ablauf der Namensauflösung!
+		\item Erläutern Sie, wie Bobs SMTP-Server den für Alice verantwortlichen Mail-Transfer-Agent (MTA) findet.
+	\end{enumerate}	
+\end{enumerate}
+\bibliographystyle{plain}
+\bibliography{sources}
+\end{document}

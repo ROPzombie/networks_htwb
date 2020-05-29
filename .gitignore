@@ -1,0 +1,14 @@
+*.log
+*.aux
+*.bbl
+*.blg
+*.out
+*.gz
+*.toc
+*.swp
+*.swrx
+*.pytxcode
+*.nav
+*.snm
+*.csv
+*.tsv

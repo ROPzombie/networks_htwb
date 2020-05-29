@@ -1,0 +1,284 @@
+\documentclass[xcolor=dvipsnames,aspectratio=169]{beamer}
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}
+\setdefaultlanguage{german}
+
+\usetheme{Berlin}
+\usecolortheme[named=LimeGreen]{structure}
+\usepackage{beamerthemesplit} % kam neu dazu
+	
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{pictures/}}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{caption}
+\usepackage{multimedia}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{acronym}
+\usepackage{uhrzeit}
+\usepackage{lmodern}
+\usepackage{multicol}
+
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\newcounter{countitems}
+\newcounter{nextitemizecount}
+\newcommand{\setupcountitems}{%
+  \stepcounter{nextitemizecount}%
+  \setcounter{countitems}{0}%
+  \preto\item{\stepcounter{countitems}}%
+}
+\makeatletter
+\newcommand{\computecountitems}{%
+  \edef\@currentlabel{\number\c@countitems}%
+  \label{countitems@\number\numexpr\value{nextitemizecount}-1\relax}%
+}
+\newcommand{\nextitemizecount}{%
+  \getrefnumber{countitems@\number\c@nextitemizecount}%
+}
+\newcommand{\previtemizecount}{%
+  \getrefnumber{countitems@\number\numexpr\value{nextitemizecount}-1\relax}%
+}
+
+\makeatother    
+\newenvironment{AutoMultiColItemize}{%
+\ifnumcomp{\nextitemizecount}{>}{3}{\begin{multicols}{2}}{}%
+\setupcountitems\begin{itemize}}%
+{\end{itemize}%
+\unskip\computecountitems\ifnumcomp{\previtemizecount}{>}{3}{\end{multicols}}{}}
+
+\lstset{
+    escapeinside={(*}{*)}
+}
+
+\lstdefinestyle{Java}{
+  showspaces=false,
+  showtabs=false,
+  tabsize=2,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\footnotesize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=7pt,
+  %moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%},
+  captionpos=b
+}
+
+\lstdefinestyle{basic}{  
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=7pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{black},
+  captionpos=b,
+  keywordstyle=\color{blue}\bf,
+  commentstyle=\color{gray},
+  stringstyle=\color{green},
+  keywordstyle={[2]\color{red}\bf},
+}
+
+
+\lstdefinelanguage{custom}
+{
+morekeywords={public, void},
+sensitive=false,
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]",
+}
+
+
+\lstdefinestyle{BashInputStyle}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  xleftmargin=0.1\linewidth
+}
+
+%Logo in the upper right just change if you know what you are doing^^
+\addtobeamertemplate{frametitle}{}{%
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=2pt] at (current page.north east) {\includegraphics[height=1.8cm]{htw}};
+\end{tikzpicture}}
+
+\begin{document}
+\bibliographystyle{alpha}
+\title{Netzwerke -- Übung SoSe 2020}
+\subtitle{Organisatorisches\\
+
+\href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
+		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
+
+\author{Benjamin Tröster}
+
+\date{}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\section*{Road-Map}
+\begin{frame}
+\frametitle{Road-Map}
+\begin{multicols}{2}
+  \tableofcontents
+\end{multicols}
+\end{frame}
+
+\section{Disclamer}
+\begin{frame}
+	\frametitle{Disclamer I}
+	\begin{itemize}
+		\item Objektive Kritik ist immer willkommen!
+		\item Wenn Sie Fehler oder Anmerkungen haben, tragen Sie diese ruhig vor.
+		\item Sie wollen ehrliches Feedback genauso wie ich
+		\item Wenn Sie Anregungen, Verbesserungsvorschläge haben, nehme ich diese ebenfalls gerne an.
+	\end{itemize}
+\end{frame}
+
+\section{Organisatorisches}
+\subsection{Übungsablauf}
+\begin{frame}
+	\frametitle{Übungsablauf}
+	\begin{itemize}
+		\item Voraussichtlich ab dem 20.04.2020: Labor WH C 625
+		\item Bis dahin keine Präsenzveranstaltung -- Übung remote
+		\item Übungsgruppe \& -zeit $\Rightarrow$ LSF
+		\item Übungsblätter, Folien, Literatur \& Links etc. $\Rightarrow$ \url{moodle.htw-berlin.de}
+		\item Hausaufgaben $\rightarrow$ Vorbereitung der kommenden Übung
+		\item Laboraufgaben $\rightarrow$ Anwendung der Hausaufgaben
+		\item Zweiwöchentlicher Tonus 
+		\begin{itemize}
+			\item \textasciitilde 6 Übungsblätter -- bestehend aus Theorie- \& Laborteil
+			\item Jede Übung in sich abgeschlossen
+			\item \textbf{Aber:} Übungen bauen aufeinander auf
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+\subsection{ECTS}
+\begin{frame}
+	\frametitle{Arbeitsaufwand -- ECTS}
+	\begin{itemize}
+		\item Modul Netzwerke: 5 ECTS (European Credit Transfer System) -- manchmal auch LP/CP (Leistungspunkte)
+			\begin{itemize}
+				\item 1 ECTS $\widehat{=}$ 30h
+				\item Workload Netzwerke: 150h/Semester oder 37,5h/Monat oder $\sim$ 9,375h/Woche
+				\item 2 SWS \footnote{Semesterwochenstunden} VL + 2 SWS Übung $\rightarrow$ 4 SWS oder 3h
+				\item D.h. restlichen \textbf{6h/Woche}
+				\begin{itemize}
+					\item Vorbereitung \& Nachbereitung der Vorlesung
+					\item Hausaufgaben, Recherche...
+				\end{itemize}
+			\end{itemize}
+			\item Total Workload pro Semester: 30 CP $\widehat{=}$ 900h $\rightarrow$  $\sim$56.25/Woche
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Selbstverantwortliches Lernen \textbf{Wichtig}}
+	\begin{itemize}
+		\item Sie sind für den Fortschritt Ihrer Lernziele selbst verantwortlich
+		\item Im eigenen Interesse:
+		\begin{itemize}
+			\item Bearbeiten Sie die Hausaufgaben
+			\item Notieren Sie sich fragen
+			\item Suchen Sie nach Material, das Sie beim lernen unterstützt
+		\end{itemize}
+		\item Unterstützungsangebot:
+		\begin{itemize}
+			\item Literatur \& Links auf Moodle
+			\item Bilden Sie Übungsgruppen
+			\item Plenum -- basierend auf Ihrer Vorbereitung
+			\begin{itemize}
+				\item Fragen bitte im Moodle-Forum vorher stellen!
+			\end{itemize}
+		\end{itemize}
+		\item Meine Aufgabe ist es Sie bei der Umsetzung der Laboraufgaben zu unterstützen!
+		\begin{itemize}
+			\item Sie sollen eigene Lösungswege finden
+			\item Fehler machen und daraus lernen
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+\section{Motivation}
+\subsection{Studien- \& Prüfungsordnung AMB30/2012}
+\begin{frame}
+	\frametitle{Motivation}
+	Studien- \& Prüfungsordnung AMB30/2012 S. 375\\
+	B12 Netzwerke
+	\begin{itemize}
+		\item Die Studierenden erwerben Kenntnisse wichtiger Netzwerkprotokolle und -dienste
+		\item Sie erwerben Fertigkeiten im Aufbau von Rechnernetzen
+		\item Sie erwerben Grundlagen sicherer Netzwerkkommunikation
+		\item Sie können einfache Netzwerke realisieren
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle{Motivation}
+	\vspace{-0.7cm}
+	Etwas genauer:\\
+	Studienordnung des Bachelorstudiengangs Angewandte Informatik -- B12 Netzwerke:
+	\begin{itemize}
+		\item Die Studierenden erwerben Kenntnisse wichtiger Netzwerkprotokolle und -dienste
+		\item Sie erwerben Fertigkeiten im Aufbau von Rechnernetzen
+		\item Sie erwerben Grundlagen sicherer Netzwerkkommunikation
+		\item Sie können einfache Netzwerke realisieren
+		\item Grundlagen der Systemverwaltung
+		\item OSI-Referenzmodell
+		\item Netzwerkprotokolle TCP, UDP, IP, ...
+		\item Routing
+		\item Name Service
+		\item HTTP
+	\end{itemize}
+\end{frame}
+
+\subsection{Netzwerktechnik in anderen Modulen}
+\begin{frame}
+\frametitle{Motivation II}
+	\begin{itemize}
+		\item Netzwerke $\rightarrow$ Fundament der digitalen Infrastruktur
+		\item Grundlagen der Veranstaltungen Netzwerke sind Grundlagen anderer Kurse
+		 \begin{AutoMultiColItemize}
+ 			\item[1.] Netzwerke
+ 			\item[2.] Betriebssysteme -- Client-Server-Programmierung, Sockets, Grid-Computing...
+ 			\item[3.] Programmieren 3 \& Datenbanken -- Sockets, JDBC...
+ 			\item[4.] Webentwicklung \& Verteilte Systeme -- MVC-Pattern, Messaging...
+ 			\item[5.] KBE, Spez. Anwd. \& Projektstudium -- JSF, JPA, CDI...
+ 			\item[6.] Möglicherweise Abschlussarbeit
+  		\end{AutoMultiColItemize}
+	\end{itemize}
+\end{frame}
+
+\end{document}

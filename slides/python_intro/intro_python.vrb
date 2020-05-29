@@ -1,0 +1,51 @@
+\begin{tabular}{cc}
+ \hspace*{-1.3cm}
+ \parbox{0.65\linewidth}{
+\begin{itemize}
+	\item Operations:
+	\begin{itemize}
+		\item AND: x \& y
+		\item OR: x | y
+		\item exclusive OR (XOR): x \textasciitilde~ y
+		\item invert: \textasciitilde  x
+		\item shift right n bits: x >> n
+		\item shift left n bits: x << n
+	\end{itemize}
+Use bin(x) to get binary representation string of x .
+\end{itemize} }
+& \begin{tabular}{l}
+ \begin{tabular}{c}
+ \hspace*{-1.1cm}
+           \begin{lstlisting}[language=Python]
+>>> print ( bin (6) , bin (3))
+0 b110 0 b11
+>>> 6 & 3
+2
+>>> 6 | 3
+7
+>>> 6 ^ 3
+5
+>>> ~0
+-1
+>>> 1 << 3
+8
+>>> pow (2 ,3)
+8
+>>> 9 >> 1
+4
+>>> print ( bin (
+\end{lstlisting}
+           \end{tabular}
+\end{tabular}\\
+\end{tabular}
+
+\section{Strings}
+\begin{frame}{Strings}
+Data type: str
+\begin{itemize}
+	\item s = 'spam' , s = "spam"
+	\item Multiline strings: s = """spam"""
+	\item No interpretation of escape sequences: $s = r"sp nam"$
+	\item Generate strings from other data types: str(1.0)
+\end{itemize}
+

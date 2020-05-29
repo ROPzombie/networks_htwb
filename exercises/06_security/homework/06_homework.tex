@@ -1,0 +1,192 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+
+\usepackage{amsmath}%get math done
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{csquotes}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (WiSe 2019/20)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 06 -- Netzwerksicherheit}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 06 -- Netzwerksicherheit}}
+\end{center}
+Über das gesamte Semester hinweg haben Sie ein fundiertes Grundlagenwissen zu Netzwerken erworben. Da Sie als angehende Informatiker*innen sich bewusst sind, dass Daten von Ihnen selbst, als anderer Nutzer, schützenswert sind, beschäftigen Sie sich im letzten Übungsblatt mit den Themen Kryptografie und Netzwerksicherheit.
+
+\begin{center}\Large{\textbf{Aufgabe A -- Kryptografie Grundlagen}}\end{center}\vskip0.25in
+Da Sie mit großer Wahrscheinlichkeit keine ausgebildeten Mathematiker*innen sind, beginnen Sie zunächst mit einer kurzen Recherchephase. Dies soll Ihnen helfen Licht ins Dunkel zu bringen.\\
+Hilfreiche Links:
+\begin{itemize}
+	\item \url{https://de.wikipedia.org/wiki/Kryptologie}
+	\item \url{https://en.wikipedia.org/wiki/Cryptography}
+	\item \url{https://www.cryptool.org} $\rightarrow$ sehr schönes Tool! Zeigt \& visualisiert Chiffren \& Verfahren etc.
+\end{itemize}
+\begin{enumerate}
+	\item Begriffsklärung Kryptografie \& Chiffren:
+	\begin{tasks}(1)
+	\task Erläutern Sie die grundlegende Sicherheitszielklassen CIA (Confidentiality, Integrity, Availability) und Authenticity im Bereich der IT-Security.
+	\task Recherchieren Sie was sich hinter den Begriffen Kryptologie, Kryptografie und Kryptoanalyse verbirgt.
+	\task Worin besteht der maßgebliche Unterschied zwischen symmetrischen und asymmetrischen Kryptosystemen?
+	\task Welche Aufgaben könne kryptografisch per symmetrischen Chiffren bewältigt werden?
+	\task Welche Aufgaben könne kryptografisch per asymmetrischen Chiffren bewältigt werden?
+	\task Recherchieren Sie \textbf{kurz} welche Aufgabe der Diffie-Hellmann-Algorithmus und der Elgamal-Algorithmus haben? Wozu werden diese Verfahren für gewöhnlich genutzt?
+	\task Recherchieren Sie zunächst was unter einer Hashfunktion verstanden wird. Im Anschluss daran: Was wird unter einer kryptografischen Hashfunktion verstanden?
+	\task Was ist die Aufgabe einer kryptografischen Hashfunktion?
+	\end{tasks}
+	\item Public-Key-Kryptografie
+	\begin{tasks}(1)
+		\task Was wird unter dem Begriff Public-Key-Kryptografie verstanden?
+		\task Warum werden Public-Key-Verfahren eingesetzt? Warum sollte ein solches Verfahren genutzt werden?
+		\task Erläutern Sie den Ablauf eines Public-Key-Verfahren im groben? Sie müssen hier keine mathematischen Feinheiten beachten, wichtig ist der grundlegende Gedanke!
+	\end{tasks}
+	\item Kryptografische Zertifikate \& Public-Key-Infrastruktur
+	\begin{tasks}(1)
+		\task Was wird unter einem kryptografische Zertifikat verstanden? Welchen Nutzen hat dieses Zertifikat?
+		\task Recherchieren Sie was unter einer Public-Key-Infrastruktur \emph{PKI} verstanden wird.
+		\task Recherchieren Sie was im Zusammenhang mit \emph{PKI}s unter dem Namen \emph{Chain-Of-Trust} verstanden wird.
+	\end{tasks}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- Grundlagen: Secure Shell (SSH) mit openSSH}}\end{center}\vskip0.25in
+Das gesamte Semester über haben Sie überwiegend lokal auf der Kommandozeile gearbeitet, also relativ nah an der eigentlich Hardware. Viele Netzwerk- und Serverkomponenten sind jedoch nicht lokal verfügbar (d.h. direkt, physisch), da diese oft in Rechenzentren unter besonderen Bedingungen ihren Dienst verrichten.\footnote{Sie würden bestimmt nicht direkt in einem Rechenzentrum Ihre Arbeit als Administrator ausführen! Da die Temperaturen oft unangenehm und die Lautstärke recht hoch ist. Auch die Sicherheitsbestimmungen sind enorm hoch.} Die Administration der Rechner muss also auch entfernt möglich sein -- remote.\\
+Früher haben dies die sogenannten \emph{r-Tools} ermöglicht, dies jedoch ohne kryptografische Schutzmaßnahmen. Heute übernehmen gesicherte Tools wie \emph{SSH} mit verschiedensten Implementierungen, wie \emph{openSSH}, diese Aufgabe.
+	\begin{enumerate}
+		\item Lesen Sie folgendes SSH-Tutorial: \url{https://support.suso.com/supki/SSH_Tutorial_for_Linux}
+		\item Welche vier Aufgaben, d.h. Zusicherungen in Bezug auf die Sicherheit von Daten, kann \emph{SSH} mithilfe von kryptografischen Verfahren gewährleisten?	
+		\item Notieren Sie sich an welchen Orten die verschiedenen Konfigurationsdateien für Server und Client im Normalfall (default) unter einem Debian-Linux liegen. Notieren sie sich deren Zweck.
+		\item Recherchieren Sie, was ein \enquote{Fingerprint} im Sinne von \emph{SSH} ist und welche Aufgabe dieser übernimmt. 
+		\item \emph{SSH} kommt ohne Passwörter aus, es können Public-Key-Verfahren genutzt werden. D.h. Sie können \emph{SSH} auch ohne Zugangspasswort nutzen.\footnote{Eigentlich ist es ratsam auf Passwörter zu verzichten, da das Brechen von kryptografischen Schlüsseln momentan fast unmöglich ist.}\\
+		Recherchieren Sie welche Verfahren \emph{openSSH} hierfür anbietet.
+		\item Recherchieren Sie, wie die Schlüsselgenerierung in openSSH erfolgt. Wie sind Verfahren, Schlüsselgröße und zu speichernden Ort zu wählen? Notieren Sie sich die entsprechende Syntax!
+		\item Welche Schlüssellänge und welche Schlüsselarten sind für Ihren Einsatz im Labor sinnvoll?\\
+		Wie hängen Schlüssellänge und Sicherheit zusammen?
+		\item Lassen sich die \emph{SSH}-Schlüssel zwischen verschiedenen Clients (Windows, Linux, Solaris,...) weiterverwenden/konvertieren? Oder muss andernfalls für jeden Client ein eigener Schlüssel generiert werden?
+		\item Recherchieren Sie die Bedeutung der Passphrase. Ist die Passphrase mit dem Passwort gleichzusetzen?
+		\item Wie kann aus Sicherheitsgründen ein Login ohne Passwort eingeschränkt werden, so das nur bestimmte Kommandos via \emph{SSH} ausgeführt werden können?
+		\item In manchen Fällen ist es ratsam den Zugriff via \emph{SSH} nur auf einige Nutzer zu beschränken. Wie muss dies unter \emph{openSSH} anhand eines Beispiels aussehen.
+	\end{enumerate}
+	
+\begin{center}\Large{\textbf{Aufgabe C -- SSH Port-Forwarding}}\end{center}\vskip0.25in
+Mit \emph{SSH} können Sie beliebige TCP-Verbindungen über die verschlüsselte \emph{SSH}-Verbindung \enquote{tunneln}. \footnote{\url{https://de.wikipedia.org/wiki/Tunnel_(Rechnernetz)}} Somit wird es Ihnen möglich Server zu erreichen, zu denen Sie ansonsten direkt keinen zugriff hätten, weil sie hinter einer Firewall stehen oder der Datenverkehr anderweitig gefiltert wird.\\
+\emph{openSSH} kann nicht nur beliebige TCP-Verbindungen weiterleiten, sondern ein komplettes VPN aufbauen, in dem alle Datenverbindungen, egal ob TCP, UDP oder ICMP über die verschlüsselte \emph{SSH}-Verbindung weitergeleitet werden.\\
+Der Nachteil hierbei ist jedoch, das es, im Gegensatz zum SSH-Port-Forwarding, nur durch den \emph{root}-Nutzer eingerichtet werden kann. Den Tunnel verwenden kann jeder Nutzer/jedes Programm, konfigurieren muss dies jedoch der Administrator. Normale Port-Forwardings hingegen kann jeder Nutzer für sich selber nach Bedarf einrichten.\\
+Nützliche Links:
+\begin{itemize}
+	\item \url{https://www.ssh.com/ssh/tunneling/example}
+	\item \url{https://blog.trackets.com/2014/05/17/ssh-tunnel-local-and-remote-port-forwarding-explained-with-examples.html?utm_source=cronweekly.com}
+	\item \url{https://marius.bloggt-in-braunschweig.de/2016/01/02/vds-schnell-ein-vpn-aufsetzen/}
+	\item \url{https://marius.bloggt-in-braunschweig.de/2016/04/12/ssh-vpn-mit-den-iproute2-tools/}
+	\item \url{https://debian-administration.org/article/539/Setting_up_a_Layer_3_tunneling_VPN_with_using_OpenSSH}
+\end{itemize}
+\begin{itemize}
+	\item Recherchieren Sie was \enquote{Tunneling} im Sinne von \emph{SSH}  bedeutet.
+	\item Recherchieren Sie was unter Port-Forwarding verstanden wird.\\
+	\begin{tasks}(1)
+		\task Welche Arten von Port-Forwarding gibt es bzw. welche können mit SSH realisiert werden? Für welche Einsatzszenarien kann welches Forwarding genutzt werden?
+		\task Verdeutlichen Sie sich jeweils anhand eines Beispiels wie Forwarding genutzt werden kann.
+		\task Finden Sie heraus, wie Port-Forwarding unter Linux und SSH funktioniert.\\
+		Sie sollten schauen, was die Vorbedingungen sind, und welche Kommandos für das Forwarding notwendig sind.\\
+		Notieren Sie sich entsprechende Kommandos, sowie deren Bedeutung!
+	\end{tasks}
+\end{itemize}
+
+\begin{center}\Large{\textbf{Aufgabe D -- TLS}}\end{center}\vskip0.25in
+Ein Großteil der von Ihnen genutzten Verbindungen nutzen \emph{TLS} (früher \emph{SSL}), sodass Ihr Datenverkehr absichert zwischen den Sockets fließen kann. In der vorigen Übung haben Sie schon einige male \emph{TLS} genutzt, nun sollen Sie dazu ein wenig mehr in Erfahrung bringen.
+\begin{enumerate}
+	\item Der englische Wikipedia-Artikel ist ein guter Einstieg in das \emph{TLS}-Protokoll.\\
+	\url{https://en.wikipedia.org/wiki/Transport_Layer_Security}
+	\begin{tasks}(1)
+		\task Für welche Zwecke kann \emph{TLS} genutzt werden?
+		\task Auf welcher Schicht des OSI-Modells würden Sie \emph{TLS} einordnen und welche Schicht soll dieses Protokoll absichern?
+	\end{tasks}
+	\item Beschreiben Sie kurz den wesentlichen Aufbau von \emph{TLS}.
+	\item Vollziehen Sie alles Schritte einer \emph{TLS}-Session nach!\\
+	\textbf{Hinweis:} unter \url{https://tls.ulfheim.net/} gibt es eine schöne Illustration.
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe E -- VPN via Wireguard}}\end{center}\vskip0.25in
+Virtual Private Networks (VPN) sind in sich geschlossene Kommunikationsnetze, die wie der Name schon sagt, virtuell sind. Sinn eines solches Netzwerkes ist es physisch nicht lokale Teilnehmer in die eigene Netzwerkinfrastruktur aufzunehmen. Somit ist es den VPN Teilnehmern möglich die Infrastruktur trotz entfernten Zugriff zu nutzen.
+\begin{itemize}
+	\item \url{https://emanuelduss.ch/2018/09/wireguard-vpn-road-warrior-setup/}
+	\item \url{https://www.linux-magazin.de/ausgaben/2018/01/wireguard/}
+	\item \url{https://www.linux.org/threads/how-to-create-a-vpn-tunnel-with-wireguard.21496/}
+\end{itemize}
+\begin{enumerate}
+	\item Unter den oben gelisteten Links befinden sich einige Tutorials für den Einstieg in Wireguard.
+	\begin{tasks}(1)
+		\task Der Installationsschritt kann ausgelassen werden, da Wireguard bereits vorinstalliert ist.
+		\task Recherchieren Sie, wie die privaten und öffentlichen Schlüssel zu generieren sind und welche Besonderheiten zu beachten sind.
+		\task Was wird unter einen virtuellen Interface verstanden? Warum muss ein solches für das VPN konfiguriert werden?
+		\task Darauf aufbauend: Wie müssen die virtuellen Interfaces konfiguriert werden? Notieren Sie sich alle notwendigen Schritte!
+		\task Recherchieren Sie wie eine \emph{Wireguard}-Konfiguration automatisiert werden könnte.
+	\end{tasks}
+\end{enumerate}	
+
+\end{document}

@@ -1,0 +1,159 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+
+\usepackage{amsmath}%get math done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{tasks}
+\usepackage{csquotes}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung\\SoSe 2020}
+\rhead{Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 03 -- Static Networks}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  %linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 03 -- Static Networks}}\\
+\end{center}
+
+\begin{center}\Large{\textbf{Aufgabe A - Setup}}\end{center}
+Bevor es richtig losgeht, müssen Sie folgende Vorbereitungen treffen.
+\begin{enumerate}
+	\item Sie benötigen drei VMs. Hierfür sollten Sie das minimale Debian (oder FreeBSD) nutzen (ohne grafische Oberfläche/Headless). Importieren Sie die VM. Anschließend klonen Sie die VM zwei mal, sodass Sie insgesamt drei VMs haben. Hierfür habe ich ein kurzes Video vorbereitet: \url{https://mediathek.htw-berlin.de/video/Virtualbox-Network-Preperations-amp-Cloning/276fab5dbd663d7589d12a30234da003} \footnote{Anmeldung in der Mediathek nicht vergessen!}
+	\item \textbf{Fakultativ:} Sie können den Hostname der VMs gerne ändern, sodass Sie immer wissen, auf welcher VM sie sind. Eine Anleitung finden Sie hier: \url{https://wiki.debian.org/Hostname#Rename_a_computer}
+\end{enumerate}
+	
+\begin{center}
+\Large{\textbf{Aufgabe B - Anzeige der bestehenden Netzwerkkonfiguration}}
+\end{center}
+Bevor Sie ein eigenes kleines Netzwerk einrichten, sollen Sie sich mit den dafür Notwendigen Tools vertraut machen. Daher soll zunächst die bestehende Netzwerkkonfiguration untersucht werden.\\
+Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen Rechnern in einem Netzwerk. Jeder Rechner muss hierfür eine passende IP-Adresse haben, mit der er andere Rechner bzw. Zwischenknoten im Netz erreichen kann. Wenn Sie dem Tutorial gefolgt sind, hat die VM drei Interfaces, eines davon hat Zugang zu einem DHCP-Netzwerk. Somit auch eine IP-Adresse.
+\begin{enumerate}
+	\item Starten Sie die Router-VM! Nutzen Sie für die nachfolgende Aufgabe beide Tools (ip addr als auch ifconfig)
+	\item Lassen Sie sich die aktuelle IP-Adresskonfiguration anzeigen.
+	\item Wo finden Sie in der Ausgabe die folgenden Informationen:
+	\begin{enumerate}
+		\item MAC-Adresse der Netzwerkkarte
+		\item Aktuelle IP-Adresse des Systems
+		\item Subnetzmaske
+		\item Besteht eine aktive Verbindung mit dem Netzwerk?
+		\item Qualität der Verbindung? (Anzahl fehlerhafter Pakete)
+		\item Übertragene Datenmenge?
+	\end{enumerate}
+	\item Überprüfen Sie, ob ein Netzwerkverbindung besteht. Zum Prüfen können Sie folgende Aktionen durchführen:
+	\begin{enumerate}
+		\item Auf der Kommandozeile einen Rechner mit seinem Namen anpingen (bspw.: \url{mi.fu-berlin.de}).
+		\item Ping auf eine IP-Adresse (bspw.: 160.45.117.199).
+		\item Ping auf die IP-Adresse des Laborrouters (IP: 10.10.10.254) -- funktioniert die Kommunikation im lokalen Netz (LAN)?
+		\item Ping auf meine eigene IP-Adresse -- wurde der lokale Netzwerkstack richtig gestartet?
+	\end{enumerate}
+	\item Auf den beiden VMs die nur als Host arbeiten, sollte das DHCP ausgeschaltet werden. Wie das geht zeige ich hier: \url{https://mediathek.htw-berlin.de/video/Stop-DHCP-under-systemd/cec6c3b2cd63c67a74c8ce8f3bc741fd}
+	\item Schauen Sie, welche Routen im Routing-Table eingetragen sind. Diese sollten leer sein. 
+	\item \textbf{Fakultativ:} Sie können auf der Router-VM ebenfalls das DHCP deaktivieren und den Routing-Table leeren.
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- Umsetzung des Routings}}\end{center}\vskip0.25in
+Setzen Sie das aus der Planung hervorgegangene Netzwerk (bzw. die Netzwerke) um.
+\begin{enumerate}
+	\item Der Router sollte als erstes aufgesetzt werden. Dieser hat drei Interfaces: untersuchen Sie welches Interface für welches Netzwerk zuständig ist!
+	\begin{enumerate}
+		\item Konfigurieren Sie am Router die IP-Adressen des Netzwerkadapters für die beiden Netzwerke \emph{vbox0} und \emph{vbox1}. Gewöhnlich hat der Router die erste verfügbare Adresse im Netzwerk.
+	\end{enumerate}
+	\item \textbf{Für die Hosts:}\\
+	\begin{enumerate}
+		\item Die Hosts haben jeweils nur ein Interface. Dieses soll mit dem Router kommunizieren. Geben Sie der VM eine entsprechende IP-Adresse und  Subnetzmaske. Nutzen Sie auf einer VM das Kommando \emph{ip add} auf der anderen \emph{ifconfig} hierfür.
+		\item Beide VMs sollen miteinander kommunizieren. Da diese in verschiedenen Subnetzen liegen, muss der Router helfen. Zunächst sollen beide VMs den Router erreichen.\\
+		Setzen Sie Routen von den Hosts auf den Router jeweils einmal mit den Kommando \emph{ip route} und einmal via \emph{route}.
+		\item Welche Art Route definieren Sie?\\
+		Achten Sie darauf, ob Sie ein Default-Gateway definieren oder ein \enquote{herkömmliches} Gateway! Beides ist möglich, welche Art Gateway sollten Sie für die Hosts nutzen?
+		\item Analysieren Sie die Ihnen vorliegende Routing-Tabelle. Was bedeuten die Einträge? Bzw. entspricht die Ausgabe Ihren Erwartungen?
+	\end{enumerate}
+	\item \textbf{Finale für den Router:}\\
+	\begin{enumerate}
+		\item Ihr Router muss nun nur noch das Forwarding aktivieren. Schalten Sie das Forwarding im Kernel nicht persistent ein (Es soll nicht in eine Datei geschrieben werden!)
+		\item Sie können mithilfe eines kleine \enquote{Chats} testen, ob Pakete tatsächlich auf dem Router ankommen. Dafür basteln Sie eine kleine  Client-Server-Lösung. Beide Seiten nutzen das Tool \emph{netcat -- \emph{nc}}. Das Listing \ref{netcat_server} zeigt die Seite des Servers. Dieser Stellt den Server bereit, der Client darf sich anschließend mithilfe eines \emph{Sockets (Tupel aus IP-Adresse und Port)} verbinden (s. Listing \ref{netcat_client}). 
+	\end{enumerate}
+	\begin{lstlisting}[style=Bash, language=Bash, label={netcat_server}]
+#Server port > 1024 
+nc -l -p <port> -s <ip_of_server>
+#example
+nc -l -p 4242 -s 10.0.0.1
+		\end{lstlisting}
+		
+		\begin{lstlisting}[style=Bash, language=Bash, label={netcat_client}]
+#Client 
+nc <ip_of_server> <port_number>
+#example
+nc 10.0.0.1 4242
+		\end{lstlisting}
+	\begin{center}\Large{\textbf{Aufgabe C -- Einrichtung des Uplinks}}\end{center}\vskip0.25in
+Momentan kann Ihr Router das Internet erreichen, Ihre VM jedoch nicht. Damit dies möglich ist, muss Ihre VM erweitert werden, sodass diese ein \emph{NAT}-Gatway wird. 
+\begin{enumerate}
+	\item Richten Sie die Verbindung zum Router ein, sodass Ihre VMs auch das Internet erreichen können.
+	\begin{enumerate}
+		\item Mithilfe des Tools \emph{iptables} kann das \emph{NAT}-Gateway eingerichtet werden. Im Folgenden Video zeige ich Ihnen wie Sie dies vornehmen können \url{https://mediathek.htw-berlin.de/video/SNAT-with-iptables-for-Routing-amp-Forwarding/a05d003eb98505b11115d13531f565ae}
+	\end{enumerate}
+	\item Da auf dem Uplink bereits ein DNS-Server arbeitet, müssen Sie sich keine Sorgen hierüber machen. Sie sollten nun sowohl IP-Adressen als auch Host-Names adressieren können.\\
+	\item Ihre Host VMs ohne DHCP-Anbindungen wissen jedoch nicht, wo und wie diese zu erfragen sind. Konfigurieren Sie die \path{/etc/resolv.conf}, sodass Ihre VMs auch Domainnamen auflösen können.
+	\item Testen Sie Ihre VM ausreichen: Können Sie alle Maschinen im LAN/WAN erreichen? Können Sie öffentliche IP-Adressen erreichen (Bspw.: 1.1.1.1), können Sie Domainnamen auflösen?
+	\item Testen Sie ebenfalls die Auflösung der Routen mit \emph{traceroute}. Entspricht die Auflösung innerhalb Ihres Netzwerkes Ihren Erwartungen? Oder gibt es unerwartete Abkürzungen?
+	\end{enumerate}
+\end{enumerate}
+\end{document}

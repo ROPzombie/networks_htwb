@@ -1,0 +1,160 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+\usepackage{csquotes}
+		
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+\usepackage{multicol}
+\usepackage{csquotes}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (SoSe 2020)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 02 -- Application Layer}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  %linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 02 --  Application Layer}}\\
+\large{Manueller Funktionstest}
+\end{center}
+Viele Protokolle im Internet, insbesondere die älteren, sind Text-basiert, d.h. es werden einzelne, auch für Menschen, lesbare Befehle zwischen den Rechnern hin und her geschickt. Entsprechende Server können Sie demzufolge auch \enquote{per Hand} als Client bedienen, um deren Funktion zu testen bzw. auf deren Dienste zuzugreifen. Dazu reicht beispielsweise Programme wie \emph{netcat} oder \emph{telnet} aus.\\
+Andererseits können Sie  aber auch einfach Skripte mit beliebige Befehlsfolgen zusammenstellen und automatisiert an den Server senden. Sei es zum automatisieren auf der Kommandozeile oder als Fuzzy-Test mit beliebigen Datenmüll um zu prüfen, wie Fehlertolerant Ihr eigener Server ist.
+
+\begin{center}\Large{\textbf{Aufgabe A -- HTTP(S) \& HTML}}\end{center}\vskip0.25in
+Aufsetzen eines einfachen Webservers:\\
+Im wesentlichen liefert ein Webserver Dateien über einen Socket aus. Das heißt dieser bekommt anfragen, und bei entsprechender Berechtigung, liefert der Webserver die angeforderten Dateien aus.
+\begin{enumerate}
+	\item Auf jeder VM ist ein \emph{Apache} Webserver vorinstalliert. Als Hilfestellung für die Konfiguration des Webservers gehen Sie wie folgt vor:\\
+	Für das Binding des Webservers muss in der Apache Konfiguration (s. \path{/etc/apache2/apache2.conf}) die IP-Adresse und optional der Port mit dem Befehl \emph{Listen} gesetzt werden. 
+	\begin{lstlisting}[style=Bash, language=Bash]
+Listen IP:Port 
+# Example: 
+# Listen 10.0.0.1:80
+\end{lstlisting}
+Ihre IP-Adresse können Sie mithilfe folgenden Kommando in Erfahrung bringen:
+\begin{lstlisting}[style=Bash, language=Bash]
+ip a s enp3s0 | awk '/inet/ {print $2}'
+\end{lstlisting}
+
+Mit dem Befehl \emph{apachectl} kann der Apache angesprochen werden. Entsprechen sollten die Befehle:
+	\begin{lstlisting}[style=Bash, language=Bash]
+sudo apachectl configtest
+sudo apachectl start
+\end{lstlisting}
+	ausgeführt werden. Der erste testet, ob die Konfiguration des Servers korrekt ist. Der zweite Befehl startet den Webserver.
+	\item Konfigurieren Sie den Apache, sodass die Default-Site auf der Laboradresse der VM ausgeliefert wird.
+	\item Rufen Sie die Webseite einer anderen VM im Browser auf (mit HTTP ohne TLS-Verschlüsselung).
+	\item Zeichnen Sie diesen Aufruf parallel mit Wireshark auf und finden Sie heraus, welche Befehle der Browser an den Server zum  Abruf der HTML-Seite gesendet hat. Welcher Port wurde dazu verwendet?
+	\item Verbinden Sie sich nun mit dem Kommandozeilen-Programm \emph{telnet} mit dem selben Server und Port.
+	\item Nachdem die Verbindung hergestellt wurde, tippen Sie die Befehle ein, die auch durch den Browser gesendet wurden und schauen Sie, ob Sie als Antwort die Startseite des Webservers erhalten.
+	\item Welche der vom Browser gesendeten Befehle müssen Sie mindestens eingeben, um die Webseite zu sehen?
+	\item Wenn Sie zu einem Server eine Verbindung aufbauen, wird serverseitig ein Timeout gestartet, so das, wenn nicht innerhalb einer gewissen Zeitspanne eine Anfrage kommt, der Server die Verbindung beendet. Wenn Sie etwas umfangreichere Befehle an den Server senden müssen, oder das Ganze ohne manuellem Eintippen automatisieren wollen, können Sie das Tool \emph{netcat} nutzen.
+	\begin{enumerate}
+		\item Schreiben Sie dieselben HTTP-Befehle zum Abruf der Webseite jetzt in eine lokale Textdatei (alle Zeilenumbrüche beachten!).
+		\item Lassen Sie sich den Inhalt der Datei auf der Kommandozeile nach Std-Out ausgeben (\emph{cat}).
+		\item Leiten Sie diese Ausgabe mittels einer Pipe als Eingabe in den Befehl \emph{netcat} um. Rufen Sie \emph{netcat} dabei mit  Parametern so auf, dass es eine Verbindung wieder zum gleichen Webserver und Port wie bisher aufbaut.\\
+ Wenn Sie alles richtig gemacht haben, sehen Sie wieder die Startseite des Webservers.
+	\end{enumerate}
+	\item Damit bei Klartext-Protokollen keine Nutzerdaten durch Fremde mitgelesen werden können, werden von vielen Diensten die eigentlich originalen Protokolle in eine TLS-Verbindung verpackt, um die Daten für die Anwendung transparente zu verschlüsseln.\\
+Ein Programm um beliebige Verbindungen nachträglich mit SSL/TLS zu versehen ist Teil des \emph{OpenSSL}-Toolkits. \footnote{Als Sicherheitsbewusste Informatiker sollten Sie jedoch eher auf LibreSSL setzen!} Mit dem Befehl \emph{openssl s\_server} können Sie Serveranwendungen, welche kein TLS unterstützen aber über Std-In Befehle entgegennehmen darüber absichern. Mit dem Befehl \texttt{openssl s\_client} wiederum können Sie Client-Verbindungen mit TLS-Unterstützung aufbauen oder auch manuell ausführen.
+	\begin{enumerate}
+		\item Zeichnen Sie alle Abrufe der Webseite mit mit Wireshark auf und prüfen Sie, was sie dort sehen können.
+		\item Bauen Sie noch einmal testweise eine HTTP-Verbindung mit \emph{telnet} oder \emph{netcat} zum Webserver des Rechenzentrums der HTW (\url{www.rz.htw-berlin.de}) auf und fragen Sie die Startseite an.
+ 		\item Nutzen Sie nun anstelle von \emph{telnet} das Programm \texttt{openssl s\_client} um eine Verbindung zum gleichen Webserver aber auf dem \emph{HTTPS} Port aufzubauen (Welcher Port wird für HTTPS genutzt?). Rufen Sie nach erfolgreichem Verbindungsaufbau wieder die Startseite ab.
+ 		\item Welche Informationen über den TLS-gesicherten Server bekommen Sie mit \texttt{openssl s\_client}? Wo sehen Sie z.B. die Gültigkeit des Zertifikates? Den Zeitraum der Gültigkeit? Wer hat das Zertifikat ausgestellt?
+	\end{enumerate}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- E-Mail mit POP3, IMAPv4 \& SMTP}}\end{center}\vskip0.25in
+Zum Abruf von E-Mails gibt es die beiden Protokolle \emph{POP3} und \emph{IMAPv4}.
+\begin{enumerate}
+	\item Bauen Sie nun mit \texttt{openssl s\_client} eine gesicherte Verbindung zum einem Ihrer Mail-Server (z.B. dem der HTW-Berlin: \url{mail.rz.htw-berlin.de}) auf und loggen Sie sich auf Ihrem Account ein, um dann Ihre Mails abzurufen.\\
+	{\color{red}\textbf{Achtung -- bitte loggen Sie sich nicht ohne TLS aus dem Labor heraus auf einem Mailserver ein. Andere Studierende werden sicherlich parallel Wireshark  laufen lassen und könnten dann Ihre Zugangsdaten sehen!}}
+	\item Bauen Sie mit \texttt{openssl s\_client} eine Verbindung zum POP3-SSL Port auf und loggen Sie sich mit Ihren Nutzerdaten ein. Anschließend rufen Sie erst die Liste aller Nachrichten und dann eine spezielle Nachricht ab, um sie zu lesen. (Eine beispielhafte POP3-Session mit den notwendigen Befehlen finden Sie leicht im Netz oder z.B. bei Wikipedia).
+	\item Setzen Sie das Gleiche mit \emph{IMAP} um.
+	\textbf{Hinweis}: alle Mail-Protokolle unterstützen auch das \emph{STARTTLS} Kommando. Damit kann eine nicht gesicherte Verbindung nachträglich noch mit TLS abgesichert werden. Sie bauen also im Klartext z.B. zum POP3 Server auf dem Standard-Port eine Verbindung auf und senden dann im Klartext das Kommando \texttt{STARTTLS}. Daraufhin wird auf diesem Port eine verschlüsselte Verbindung aufgebaut und alle nachfolgenden Befehle können nicht mehr von anderen mitgelesen werden. OpenSSL/LibreSSL unterstützt dies auch für etliche Protokolle.
+	\item Starten Sie \texttt{openssl s\_client} und mit dem Parameter \texttt{starttls} eine gesicherte Verbindung zum POP3-Standard-Port. Versuchen Sie sich dann mit falschen Login-Daten anzumelden. Beenden Sie die Verbindung.
+ 	\item Zeichnen Sie den Verbindungsaufbau parallel mit Wireshark auf und prüfen Sie, was sie davon sehen können.
+	\textbf{Hinweis}: Sollten Sie kein E-Mail-Programm griffbereit haben, können Sie das natürlich auch das per Hand erledigen. Das SMTP-Protokoll ist ebenfalls relativ einfach und text-basiert.
+ 	\item Bauen Sie mit \texttt{openssl s\_client} nacheinander eine Verbindung zu allen drei SMTP-Ports auf. Finden Sie heraus, welche Ports direkt mit SSL gesichert sind und welche Ports mit STARTTLS nachträglich gesichert werden müssen.
+ 	\item Loggen Sie sich nun auf dem SSL-Port mit openssl ein und versenden Sie eine E-Mail.\\
+ 	\textbf{Hinweis}: Viele Server nutzen inzwischen beim Versand zur Spambekämpfung \emph{SMTP-AUTH} (SMTP-Authentication) um nur eigenen Nutzern zu erlauben, Mails an fremde Server zu versenden. An eigene E-Mail-Adressen des SMTP-Server können Sie aber immer senden (d.h. wenn Sie mit dem SMTP-Server der HTW verbunden sind, können sie immer eine E-Mail an eine Empfängeradresse \enquote{s0XXXXXX@htw-berlin.de} senden. Wollen Sie eine E-Mail an z.B. \enquote{...@posteo.de} senden, müssen Sie sich vorher authentifizieren.
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- Domain Name System (DNS)}}\end{center}\vskip0.25in
+\begin{enumerate}
+	\item DNS-Requests:
+\begin{enumerate}
+		\item Fragen Sie mit jedem der Kommando der Hausaufgaben jeweils einmal einen Hostnamen (bspw. \url{www.htw-berlin.de}), einen Domainnamen (htw-berlin.de) und eine IP-Adresse (141.45.5.100) ab.
+		\item Schauen Sie sich die Ausgabe von \emph{dig} bei der Abfrage der IP-Adresse genauer an -- dort werden Sie in der \enquote{Question Section} sehen, das nach dem A-Resource-Record mit dem Namen 141.45.5.100 gefragt wurde. Wenn Sie den Namen zu dieser IP-Adresse suchen -- welchen Resource-Record müssen Sie dann anstelle des A-Records erfragen? 
+		\item In welcher Form müssen Sie dann die IP-Adresse angeben? (Test mit dig -t <record-type> <richtiges-format-ip-adresse>).
+		\item Denken Sie sich einen Domainnamen aus, den es wahrscheinlich geben könnte, aber den noch niemand vom Netzwerk der HTW-Berlin aus innerhalb der letzten Stunden angefragt hat (z.B. \url{www.uriminzokkiri.com} oder \url{www.northkoreatech.org}). Erfragen Sie diesen Namen zweimal kurz hintereinander via \emph{dig} und vergleichen Sie die beiden Ausgaben. Worin unterscheiden sich beide Einträge? Begründen Sie diese Unterschiede!
+		\item Erfragen Sie mit \emph{dig} und \emph{nslookup} den zuständigen Mail-Server für die Domain \url{htw-berlin.de}.
+		\item Erzwingen Sie mit \emph{dig} und \emph{nslookup}, das die Namensauflösung nicht mit dem Standard-Nameserver des Betriebssystems, sondern mit einem öffentlichen Nameserver (bspw.: 9.9.9.9) erfolgt. Testen Sie am Besten zuerst mit dig, da dies Ihnen immer sagt, welche Nameserver sie genutzt haben.
+	\end{enumerate}
+	\item DNS-Resolver: Das Listing zeigt die \enquote{resolv.conf} eines Servers. 
+	\begin{lstlisting}[style=Bash, language=Bash]
+# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)
+#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+nameserver 141.45.3.100
+search f4.htw-berlin.de
+\end{lstlisting} \label{dns}
+Was bedeuten die Einträge mit den Schlüsselwörtern: \enquote{nameserver} und \enquote{search}?
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,143 @@
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{csquotes}
+\usepackage{tasks}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (WiSe 2019/20)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 06 -- Netzwerksicherheit}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 6 -- Netzwerksicherheit}}
+\end{center}
+\paragraph{Voraussetzungen:}
+Wie in den vorigen Übungen sollte Sie in der Lage sein ein eigenes statisches Netzwerk aufzubauen. D.h. Ihr Netzwerk sollten den Anforderungen des Übungsblattes 5 genügen (Routed LAN) -- es gibt einen Router der zwei Subnetze verbindet und einen Backbone-Router, der für die Vernetzung der Bankreihen, sowie den Uplink sorgt. Das Adressschema kann der Tabelle \ref{adress_scheme} entnommen werden.
+\begin{table}[H]
+\caption{Adressschema für das Labor}
+\label{adress_scheme}
+\centering
+\begin{tabular}{|c|c|}\hline
+ & \textbf{IP  || IP-Range} \\ \hline
+ $LAN_X$ & 10.0.$X$.$Y$/Size \\ \hline
+ Backbone & 10.10.10.100 + $\rho$ \\ \hline
+ Labornetz & 10.0.0.0/8 \\ \hline
+ Uplink & 10.10.10.254 \\ \hline
+ DNS & 10.10.10.254 \\ \hline
+\end{tabular}
+\end{table} 
+Nachdem Ihr Netzwerk aufgebaut ist:
+\begin{itemize}
+	\item Überprüfen Sie ob sich Ihre VMs untereinander erreichen können.
+	\item Überprüfen Sie ob alle VMs den Uplink erreichen können und ob externe Adresse (d.h. IP-Adressen außerhalb des Labors) erreichbar sind.
+	\item Überprüfen Sie ob die Namensauflösung funktioniert.
+\end{itemize}
+
+
+\begin{center}\Large{\textbf{Aufgabe A -- SSH Basics}}\end{center}\vskip0.25in
+Die folgenden Aufgaben stellen verschiedene Arten der verschlüsselten Kommunikation zwischen Prozessen oder Rechnern dar. Zunächst sollen Sie sich mit dem Umgang mit SSH vertraut machen, anschließend werden einige theoretische Konzepte aus der Theorie in die Praxis umgesetzt. Sodass Sie sich ohne Passwort auf anderen Maschinen einloggen können, bestimmte User sich nur noch einloggen dürfen oder ausschließlich ausgewählte Kommandos verfügbar sind. 
+\begin{enumerate}
+\item Starten Sie Wireshark, sodass Sie den anfallenden Netzwerkverkehr analysieren können.
+\begin{tasks}
+	\task Loggen Sie sich via SSH auf dem Uranus-Server (\url{uranus-ai.f4.htw-berlin.de}) ein! Achten Sie darauf, dass zu viele Fehlversuche dazu führen, dass der Server das gesamte Labor blockt.
+	\task Was bedeuten die Abfragen zur \enquote{authenticity} die Ihnen beim ersten mal gestellt wird. (Auf den VMs sollte dies der Fall sein!)
+	\task Wie können Sie den Fingerprint prüfen? Mit welchem Programm können Sie sich diesen anzeigen lassen?\\
+	Bspw.: \small{ \emph{SHA256:KsUg4lOc91/iJBYFkQhxeI/YGkcnKV2uKUXFNP1ymiw root@xen (ECDSA)}})
+	\task Starten Sie in Wireshark einen neuen Traffic-Mitschnitt auf dem Ethernet-Netzwerkinterface. Anschließend soll eine neue SSH-Session von einem anderen Rechner gestartet werden. Analysieren Sie auszugsweise die entsprechenden Pakete! Was wird von Traffic verschlüsselt, was können Sie einsehen? 
+	\task Sie müssen sich bis jetzt immer via Passwort authentifizieren, d.h. Ihr Login erfolgt aufgrund eines Passworts. Ist Ihr Passwort in einem der ersten Pakete zu finden? Wenn es nicht zu finden ist, wie konnten Sie sich dennoch erfolgreich anmelden? (Welcher kryptografische Mechanismus greift hier ein...)
+	\task Wenn Sie die entsprechenden Wireshark Mitschnitte ausgewertet haben, ist Ihnen aufgefallen, dass dort ein \enquote{Key Exchange} stattfindet. Welches kryptografische Verfahren wird dort verwendet und ist dies eine symmetrisches oder asymmetrisches Kryptografieverfahren?
+\end{tasks}
+	\item Ermöglichen Sie nun den Login mittels SSH zum Linux-SSH-Server \textbf{ohne} das Nutzerpasswort angeben zu müssen.\\
+	\textbf{Achtung:} Wenn Sie sich auf dem Uranus ohne Passwort anmelden wollen, muss eine bereits existierende SSH-Verbindung auf dem Uranus-Server vorhanden sein, da ihr Home-Directory erst im Anschluss gemountet wird und ihr hinterlegter Public-Key ansprechbar ist.
+\begin{tasks}(1)
+	\task Generieren Sie sich ein SSH-Schlüsselpaar! Nutzen Sie hierfür die recherchierten Parameter aus Ihren Notizen.
+	\task Beim generieren des Schlüssels werden Sie aufgefordert eine Passphrase einzugeben. Der Private-Key ist durch eine Passphrase geschützt, sodass dieser geheime Schlüssel nur von Ihnen geöffnet werden kann. Wie ist die Passphrase zu wählen? Was gilt es zu beachten?
+	\task Verbinden Sie sich von Rechner zu Rechner ohne ein Passwort zu nutzen. D.h. Sie sollten über das eigene LAN hinaus auf eine andere VM via SSH zugreifen können. Sie könne sich hierfür ein neuen Nutzer anlegen (\emph{useradd}).
+	\task Setzen Sie die Anzahl der maximalen Login-Fehlversuche auf drei!
+	\task Erlauben Sie dem Nutzer \emph{student} nur noch das Auflisten des Home-Verzeichnis, wenn er sich via SSH verbunden hat.
+	\task Setzen Sie als Anmeldeverfahren SSH auf reine Public-Key-Kryptografie. Hat dies eventuell auch Nachteile?
+\end{tasks}
+
+\begin{center}\Large{\textbf{Aufgabe B -- SSH-Forwarding}}\end{center}\vskip0.25in
+	\item Mit SSH können Sie beliebige TCP-Verbindungen über die verschlüsselte SSH-Verbindung \enquote{tunneln}. Somit wird es Ihnen möglich, Server zu erreichen, zu denen Sie ansonsten direkt keinen Zugriff haben, weil sie hinter einer Firewall befinden oder der Datenverkehr anderweitig gefiltert wird (Packet-Filtering).\\
+	Konfigurieren Sie das Port-Forwarding unter SSH -- ermöglichen Sie dazu folgende Zugriffe:
+	\begin{tasks}(1)
+		\task Nehmen Sie ein lokales Port-Forwarding auf die Website der HTW Berlin vor. Hierzu soll ein SSH-Tunnel (Source-Port 8080) aufgebaut werden, der den Verkehr auf den Standard HTTP-Port 80 führt (Destination Port 80).
+		\task Ihre VM logt sich per SSH auf einem anderen VM SSH-Server ein und leitet den lokalen Port 2200 auf den Port 22 des dortigen Systems weiter. Danach sollten Sie sich mit SSH über den lokalen Port mit dem SSH-Server des fremden SSH-Server verbinden können.
+		\task Konfigurieren Sie eine Remote Port-Forward -- stellen Sie dazu eine SSH-Verbindung vom einer anderen VM zu Ihrer VM als SSH-Server her. Leiten Sie den Port 8880 des SSH-Server nun über Ihren Client zum Webserver der URL \url{www.htw-berlin.de} weiter. Im folgenden kann sich nun jede VM mit Ihrer VM auf Port 8880 verbinden, um die Webseite der HTW-Berlin zu besuchen.
+	\end{tasks}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- VPN via Wireguard}}\end{center}\vskip0.25in
+In den Hausaufgaben haben Sie sich bereits mit dem Wireguard-Tutorial auseinandergesetzt. Nun ist es an der Zeit ein eigenes VPN aufzusetzen.
+\begin{enumerate}
+	\item Setzen Sie mithilfe Wireguards ein eigenes VPN um. Nehmen Sie hierfür die Notizen der Hausaufgaben zu Hilfe.
+	\item Es soll pro Bankreihe ein VPN-Server geben. Sodass sich andere Hosts via Wireguard nun als Teilnehmer eines der anderen Netzwerke verbinden kann.
+	\begin{itemize}
+		\item Als Server müssen Sie einen entsprechenden VPN-Server aufsetzten. 
+		\item Nehmen Sie entsprechen die Konfiguration der Clients vor, sodass Sie sich mit dem Server verbinden können.
+	\end{itemize}
+	\item Finden Sie heraus, ob Sie tatsächlich Teil des VPN-Netzwerkes sind. Wie können Sie überprüfen, ob Sie tatsächlich Teilnehmer eines virtuellen Netzwerkes sind?
+	\item Untersuchen Sie via Wireshark wie der Traffic aussieht. Können Sie den kryptografischen Handshake ausfindig machen?
+\end{enumerate}
+
+\end{document}

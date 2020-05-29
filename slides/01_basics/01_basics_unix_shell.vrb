@@ -1,0 +1,7 @@
+\frametitle{Beispiele}
+\begin{lstlisting}[style=Bash, language=Bash]
+date > foo.txt
+echo "student name" >> studi_list_1.csv
+head < studi_list_1.csv
+sort studi_list_1.csv studi_list_2.csv | uniq -u > clean_list.csv
+	\end{lstlisting}

@@ -1,0 +1,418 @@
+\documentclass[xcolor=dvipsnames,aspectratio=169]{beamer}
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}
+\setdefaultlanguage{german}
+
+\usetheme{Berlin}
+\usecolortheme[named=LimeGreen]{structure}
+\usepackage{beamerthemesplit} % kam neu dazu
+			
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{pictures/}}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{caption}
+\usepackage{multimedia}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{acronym}
+\usepackage{lmodern}
+\usepackage{multicol}
+\usepackage{menukeys}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\lstset{
+    escapeinside={(*}{*)}
+}
+
+\lstdefinestyle{Java}{
+  showspaces=false,
+  showtabs=false,
+  tabsize=2,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\footnotesize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=7pt,
+  %moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%},
+  captionpos=b
+}
+
+\lstdefinestyle{basic}{  
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=7pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{black},
+  captionpos=b,
+  keywordstyle=\color{blue}\bf,
+  commentstyle=\color{gray},
+  stringstyle=\color{green},
+  keywordstyle={[2]\color{red}\bf},
+}
+
+
+\lstdefinelanguage{custom}
+{
+morekeywords={public, void},
+sensitive=false,
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]",
+}
+
+
+\lstdefinestyle{BashInputStyle}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{green!20},
+  linewidth=0.9\linewidth,
+  xleftmargin=0.1\linewidth
+}
+
+\lstdefinestyle{Bash}{
+basicstyle=\tiny\ttfamily,
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\tiny\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{green!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+\lstloadlanguages{Python}
+\lstset{language=Python,
+basicstyle=\small\ttfamily,
+	tabsize=4,
+	frame=single,
+	basicstyle=\tiny,
+	upquote=true,
+	numbersep=5pt,
+	numbers=left,
+	%commentstyle=\color{green} % Kommentare blau drucken
+	stringstyle=\ttfamily, % Strings im Code Schreibmaschinenähnlich - setzt sich etwas vom Code ab
+	showstringspaces=false,
+	columns=fullflexible,
+  	backgroundcolor=\color{gray!10},
+  	%linewidth=1.0\linewidth,
+  	breaklines=true
+}
+
+%Logo in the upper right just change if you know what you are doing^^
+\addtobeamertemplate{frametitle}{}{%
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=2pt] at (current page.north east) {\includegraphics[height=1.8cm]{htw}};
+\end{tikzpicture}}
+
+\begin{document}
+\bibliographystyle{alpha}
+\title{Netzwerke -- Übung SoSe 2020}
+\subtitle{Python 101\\
+\href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
+		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
+
+\author{Benjamin Tröster}
+
+\date{}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Python}
+	\begin{itemize}
+		\item Nicht die Schlange, sondern großartige britische Comedy
+	\end{itemize}
+\end{frame}
+
+\section*{Road-Map}
+\begin{frame}
+\frametitle{Road-Map}
+\begin{multicols}{2}
+  \tableofcontents
+\end{multicols}
+\end{frame}
+
+
+\section{Einführung}
+\begin{frame}{Was ist Python}
+Python: Dynamische Programmiersprache, die unterschiedliche Programmierparadigma unterstützt:
+\begin{itemize}
+	\item Prozedural -- C, Fortran
+	\item Objektorientiert -- Smalltalk, Java
+	\item Funktionla -- LISP, Haskell
+\end{itemize}
+Also ist Python eine Multi-Paradigma Sprache, wie C++ oder Rust.
+Standard: Python Byte-Code wird im Python-Interpreter ausgeführt $\rightarrow$ 
+Plattformunabhängiger Code
+\end{frame}
+
+\begin{frame}{Warum Python?}
+Extrem vielfältige Programmiersprache
+\begin{itemize}
+	\item Website development, data analysis, server maintenance, numerical analysis, ...
+	\item Syntax is clear, easy to read and learn (almost pseudo code)
+	\item Common language
+	\item Intuitive object oriented programming
+	\item Full modularity, hierarchical packages
+	\item Comprehensive standard library for many tasks
+	\item Big community
+	\item Simply extendable via C/C++, wrapping of C/C++ libraries
+	\item \textbf{Focus: Programming speed}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Python Zen}
+\begin{itemize}
+	\item 20 software principles that influence the design of Python:
+	\begin{enumerate}
+		\item Beautiful is better than ugly.
+		\item Explicit is better than implicit.
+		\item Simple is better than complex.
+		\item Complex is better than complicated.
+		\item Flat is better than nested.
+		\item Sparse is better than dense.
+		\item Readability counts.
+		\item Special cases aren’t special enough to break the rules.
+		\item Although practicality beats purity.
+		\item Errors should never pass silently.
+		\item Unless explicitly silenced.
+		\item ...
+	\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\section{Hello, World!}
+\begin{frame}[fragile]{Hello, World!}
+\begin{lstlisting}[language=Python]
+#!/usr/bin/env python3
+#This is a commentary
+print("Hello world!")
+\end{lstlisting}
+\begin{lstlisting}[language=Bash ,backgroundcolor=\color{green!20}]]
+$ python3 hello_world.py
+Hello world!
+$
+\end{lstlisting}
+\begin{lstlisting}[language=Bash ,backgroundcolor=\color{green!20}]]
+$ chmod u+x hello_world.py
+$ ./hello_world.py
+Hello world!
+$
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Hello, World!}
+\begin{lstlisting}[language=Python]
+#!/usr/bin/env python3
+name = input("What’s your name?")
+print("Hello", name)
+\end{lstlisting}
+\begin{lstlisting}[language=Bash ,backgroundcolor=\color{green!20}]]
+$./hello_user.py
+What’s your name? Dieter
+Hello Dieter
+$
+\end{lstlisting}
+\end{frame}
+
+\section{Typing}
+\begin{frame}{Strong and Dynamic Typing}
+\textbf{Strong Typing:}
+\begin{itemize}
+	\item Object is of exactly one type! A string is always a string, an integer always an integer
+	\item Counterexamples: PHP, JavaScript, C: char can be interpreted as short, void * can be everything
+\end{itemize}
+\textbf{Dynamic Typing:}
+	\begin{itemize}
+		\item No variable declaration
+		\item Variable names can be assigned to different data types in the course of a program
+		\item An object’s attributes are checked only at run time 
+		\item Duck typing (an object is defined by its methods and attributes)
+		\begin{quote}
+		When I see a bird that walks like a duck and swims like a duck and quacks like a duck, I call that bird a duck.
+		\end{quote}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Example: Strong and Dynamic Typing}
+\begin{lstlisting}[language=Python]
+#!/usr/bin/env python3
+number = 3
+print(number, type(number))
+print(number + 42)
+number = "3"
+print(number ,type(number))
+print(number + 42)
+\end{lstlisting}
+
+\begin{lstlisting}[language=Bash ,backgroundcolor=\color{green!20}]]
+3 <class ’ int ’>
+45
+3 <class ’ str ’>
+Traceback(most recent call last ):
+File "types.py" ,line 7, in <module>
+print(number + 42)
+TypeError: can only concatenate str (not "int") to str
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{REPL}
+The interpreter can be started in interactive mode:
+\begin{lstlisting}[language=Bash ,backgroundcolor=\color{green!20}]]
+$ python3
+Python 3.7.2 ( default , May 23 2019 , 03:15:18)
+[GCC 10.1.0] on freebsd
+Type "help" , "copyright" , "credits" or "license" for
+more information .
+>>> print (" hello world")
+hello world
+>>> a = 3 + 4
+>>> print (a)
+7
+>>> 3 + 4
+7
+>>>
+\end{lstlisting}
+\end{frame}
+
+\section{Python2 vs. Python3}
+\begin{frame}
+\begin{table}
+\centering
+\begin{tabular}{|l|c|c|} \hline
+& \textbf{Python2} & \textbf{Python3} \\ \hline
+shebang & \texttt{\#!/usr/bin/python} & \texttt{\#!/usr/bin/python3} \\ \hline
+IDLE & idle & idle3 \\ \hline
+print cmd (syntax) & print & print() \\ \hline
+input cmd (syntax) & raw\_input() & input() \\ \hline
+unicode & u"..." & all strings \\ \hline
+integer type & int/long & int (infinite) \\ \hline
+\end{tabular}
+\end{table}
+\end{frame}
+
+\section{Numerical Data Types}
+\begin{frame}[fragile]{Numerical Data Types}
+\begin{itemize}
+	\item int: integer numbers (infinite)
+	\item float: corresponds to double in C
+	\item complex: complex numbers (j is the imaginary unit)
+\end{itemize}
+
+\begin{lstlisting}[language=Python]
+a = 1
+c = 1.0
+c = 1 e0
+d = 1 + 0j
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]{Operators on Numbers}
+\begin{itemize}
+	\item Basic arithmetics: + , - , * , /\\
+	hint: Python $2 \Rightarrow 1/2 = 0$\\
+	Python $3 \Rightarrow 1/2 = 0.5$
+	\item Div and modulo operator: // , \% , divmod(x, y)
+	\item Absolute value: abs(x)
+	\item Rounding: round(x)
+	\item Conversion: int(x) , float(x) , complex(re [, im=0])
+	\item Conjugate of a complex number: x.conjugate()
+	\item Power: x ** y , pow(x, y)
+	\item Result of a composition of different data types is of the "bigger" data type.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+ \begin{tabular}{cc}
+ \hspace*{-1.3cm} 
+ \parbox{0.65\linewidth}{
+\begin{itemize}
+	\item Operations:
+	\begin{itemize}
+		\item AND: x \& y
+		\item OR: x | y
+		\item exclusive OR (XOR): x \textasciitilde~ y
+		\item invert: \textasciitilde  x
+		\item shift right n bits: x >> n
+		\item shift left n bits: x << n
+	\end{itemize}
+Use bin(x) to get binary representation string of x .
+\end{itemize} } 
+& \begin{tabular}{l}
+ \begin{tabular}{c}
+ \hspace*{-1.1cm}
+           \begin{lstlisting}[language=Python]
+>>> print ( bin (6) , bin (3))
+0 b110 0 b11
+>>> 6 & 3
+2
+>>> 6 | 3
+7
+>>> 6 ^ 3
+5
+>>> ~0
+-1
+>>> 1 << 3
+8
+>>> pow (2 ,3)
+8
+>>> 9 >> 1
+4
+>>> print ( bin (
+\end{lstlisting}
+           \end{tabular}
+\end{tabular}\\
+\end{tabular}
+
+\section{Strings}
+\begin{frame}{Strings}
+Data type: str
+\begin{itemize}
+	\item s = 'spam' , s = "spam"
+	\item Multiline strings: s = """spam"""
+	\item No interpretation of escape sequences: $s = r"sp nam"$
+	\item Generate strings from other data types: str(1.0)
+\end{itemize}
+
+\end{frame}
+\end{frame}
+
+
+
+
+
+\end{document}
