@@ -3,5 +3,4 @@
 date > foo.txt
 cat id_rsa.pub >> authorized_keys
 head < index.html
-sort studi_list_1.csv studi_list_2.csv | uniq -u > drop_out_list.txt
 	\end{lstlisting}

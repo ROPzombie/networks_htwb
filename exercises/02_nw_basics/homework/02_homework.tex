@@ -132,12 +132,12 @@ Sie planen in Vierergruppen die Netzinfrastruktur für ein kleines LAN mit je vi
 	Ordnen Sie die Geräte auf der Skizze so an, wie sie auch vor ihnen im Raum bzw. auf dem Tisch angeordnet sein sollten.
 	\item[4.)] Planen Sie die Netzkonfiguration
 \begin{tasks}[counter-format=(tsk[r])](1)	
-	\task Recherchieren Sie kurz was eine IP-Adresse ist (zunächst genügt ein grobes Verständnis). Welche Aufgabe haben diese Adressen in einem Netzwerk?\\
+	\task~ Recherchieren Sie kurz was eine IP-Adresse ist (zunächst genügt ein grobes Verständnis). Welche Aufgabe haben diese Adressen in einem Netzwerk?\\
 	\textbf{Hinweis:} Ein guter Start wäre: \url{https://de.wikipedia.org/wiki/IP-Adresse}
-	\task Momentan werden vor allem \emph{IPv4} und \emph{IPv6} als Netzwerkschichtprotokolle genutzt. Recherchieren Sie nur \textbf{kurz} einige wichtige Unterschiede zwischen \emph{IPv4} und \emph{IPv6}.
-	\task Recherchieren Sie was eine Subnetzmaske ist und wofür diese gebraucht wird.
-	\task Bestimmte IP-Adressbereiche werden nicht ins Internet weitergeleitet, sie werden als private IP-Adressen bezeichnet. Diese Adressen gibt es sowohl unter \emph{IPv4} als auch unter \emph{IPv6}. Recherchieren Sie, welche IP-Adressbereiche nicht ins Internet geroutet werden.
-	\task Wählen Sie beispielhaft eine Netzwerkadresse (IP-Addresse -- ip address) und Subnetzmaske (subnet mask) für einen möglichst kleinen IP-Adressbereich, der genau für vier Raspberry Pis ausreicht. Als Hilfestellung können Sie folgenden Link nutzen:
+	\task~ Momentan werden vor allem \emph{IPv4} und \emph{IPv6} als Netzwerkschichtprotokolle genutzt. Recherchieren Sie nur \textbf{kurz} einige wichtige Unterschiede zwischen \emph{IPv4} und \emph{IPv6}.
+	\task~ Recherchieren Sie was eine Subnetzmaske ist und wofür diese gebraucht wird.
+	\task~ Bestimmte IP-Adressbereiche werden nicht ins Internet weitergeleitet, sie werden als private IP-Adressen bezeichnet. Diese Adressen gibt es sowohl unter \emph{IPv4} als auch unter \emph{IPv6}. Recherchieren Sie, welche IP-Adressbereiche nicht ins Internet geroutet werden.
+	\task~ Wählen Sie beispielhaft eine Netzwerkadresse (IP-Addresse -- ip address) und Subnetzmaske (subnet mask) für einen möglichst kleinen IP-Adressbereich, der genau für vier Raspberry Pis ausreicht. Als Hilfestellung können Sie folgenden Link nutzen:
 	\begin{itemize}
 		\item \url{https://www.calculator.net/ip-subnet-calculator.html}
 		\item \url{https://www.tunnelsup.com/subnet-calculator/}
@@ -151,10 +151,10 @@ Um den Übungsbetrieb etwas effizienter nutzen zu können, sollen Sie sich zunä
 	\item Im letzten Übungsblatt haben Sie bereits das Rechtemodell kennengelernt. Verschiedene NutzerInnen haben verschiedene Rechte -- für die Konfiguration des Systems sollen im allgemeinen nur bestimmte Nutzer zuständig sein. Recherchieren Sie welche Rechte der \emph{root}-User hat und was das Kommando \emph{sudo} in diesem Zusammenhang leistet.
 	\item In Betriebssystemen gibt es verschiedene Dienste/ Hintergrunddienste (Daemons genannt), die die Verwaltung des Systems in Teilen organisieren. Da Raspbian das Betriebssystem auf den Raspberry Pis ist, kommt Systemd zum Einsatz. \footnote{Eigentlich war Systemd als Alternative des System-V Init-Daemons gedacht, hat aber über die Zeit immer mehr Funktionalitäten bekommen.}
 	\begin{tasks}
-		\task Recherchieren Sie einige wichtige Dienste, die durch Systemd gesteuert werden.
-		\task Systemd verfügt über die Möglichkeit bestimmte Dienste zu starten, stopen, etc. Recherchieren Sie wie der entsprechende Befehl lautet. Das Wiki bzw. die Man-Page ist eine gute Anlaufstelle!\\
+		\task~ Recherchieren Sie einige wichtige Dienste, die durch Systemd gesteuert werden.
+		\task~ Systemd verfügt über die Möglichkeit bestimmte Dienste zu starten, stopen, etc. Recherchieren Sie wie der entsprechende Befehl lautet. Das Wiki bzw. die Man-Page ist eine gute Anlaufstelle!\\
 		Notieren Sie sich die Syntax Wort für Wort, sowie die Bedeutung jedes Wortes (Tokens). 
-		\task Wichtige Dienste für die nächste Laborübungen sind der Networking-Service und DHCP. Notieren Sie sich:
+		\task~ Wichtige Dienste für die nächste Laborübungen sind der Networking-Service und DHCP. Notieren Sie sich:
 		\begin{itemize}
 			\item[i] Wie der Status eines Daemons abgefragt werden kann.
 			\item[ii] Wie ein Daemon gestartet, gestoppt werden kann.
@@ -166,19 +166,14 @@ Um den Übungsbetrieb etwas effizienter nutzen zu können, sollen Sie sich zunä
  %https://www.digitalocean.com/community/tutorials/how-to-use-iproute2-tools-to-manage-network-configuration-on-a-linux-vps
  % goo.gl/w1MN5x
  	\item Bringen Sie in Erfahrung, wie Sie die Konfiguration bereits existierende Netzwerkkonfigurationen mit den Tools \emph{ip} und \emph{ifconfig} in Erfahrung bringen.
-	\item Recherchieren und notieren Sie sich, wie mithilfe des Befehls \emph{ip addr} Netzwerkadapter(n) eine (oder mehrere) IP-Adressen und Subnetzmasken zugewiesen wird.\\
-	Wie wird dies mit \emph{ifconfig} gehandhabt.\\
-	(Auch hier gilt: Notieren Sie sich das Kommando sowie dessen Bedeutung Wort/Schrittweise)!
+	\item Recherchieren und notieren Sie sich, wie mithilfe des Befehls \emph{ip addr} Netzwerkadapter(n) eine (oder mehrere) IP-Adressen und Subnetzmasken zugewiesen wird. Wie wird dies mit \emph{ifconfig} gehandhabt. (Auch hier gilt: Notieren Sie sich das Kommando sowie dessen Bedeutung Wort/Schrittweise)!
 	\item Recherchieren Sie, wie Sie die IP-Konfiguration in einer Datei festlegen und speichern können, sodass diese weiterhin nach einem Neustart gültig ist.\\
 	\textbf{Achtung:} Bedenken Sie für welches Betriebssystem diese Konfiguration erfolgen soll!
 	\begin{tasks}(1)
-		\task In welcher Datei wird die Konfiguration abgelegt?
-		\task Welcher User kann auf diese Datei zugreifen?
-		\task Notieren Sie sich, wie eine Konfiguration beispielhaft aussieht und was die einzelnen Zeilen bedeuten!
+		\task~ In welcher Datei wird die Konfiguration abgelegt?
+		\task~ Welcher User kann auf diese Datei zugreifen?
+		\task~ Notieren Sie sich, wie eine Konfiguration beispielhaft aussieht und was die einzelnen Zeilen bedeuten!
 	\end{tasks}
-	\item Recherchieren Sie wie der Status eines Netzwerkadapters mit den \emph{net-tools} und \emph{iproute2} abgefragt werden kann.\\
-	Welche Stati kann ein Adapter besitzen?\\
-	Wie kann der Status geändert werden?
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe C -- Ping}}\end{center}\vskip0.25in

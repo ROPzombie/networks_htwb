@@ -107,7 +107,7 @@ morestring=[b]",
 
 \begin{document}
 \bibliographystyle{alpha}
-\title{Netzwerke -- Übung SoSe 2019}
+\title{Netzwerke -- Übung WiSe 2018/19}
 \subtitle{Einfach Netzwerke \& OSI Layer 2\\
 		\href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
 		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
@@ -141,54 +141,47 @@ morestring=[b]",
 		\item Stand des letzten Übungsblatts
 		\item Fragen?
 	\end{itemize}
+	\item Präsentation des Theorieteils
 \end{itemize}
 \end{frame}
 
 
-\subsection{Requirements}
+\subsection{Präsentation}
 \begin{frame}
-\frametitle{1.) Requirements}
+\frametitle{1.) Topologien}
 	\begin{itemize}
-		\item Für die heutige Übung sind wichtig:
-		\begin{itemize}
-			\item Grundlagen in Netzwerktopologien
-			\item IP-Adressierung, Aufbau und Nutzung von \emph{IPv4}
-			\item Aufbau, Funktion, Nutzung von Subnetzmasken
-			\item Grundlegendes zu Daemons
-			\item Tooling von \emph{systenctl}, \emph{ip addr}, \emph{ifconfig}, \emph{ping}
-		\end{itemize}
+		\item Erläutern Sie was eine Netzwerktopologie ist.
+		\item Diskutieren Sie anhand einiger Beispiele verschiedene Topologien.
+		\item Diskutieren Sie geeignete Netzwerktopologie für Ihr geplantes Netzwerk und Veranschaulichen Sie deren Umsetzung mit geeigneten Symbolen. (Nur die Topologie!)
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Architektur}
+\begin{frame}
+\frametitle{2.) IP}
 	\begin{itemize}
-		\item Was ist eine NW-Topologie?
-		\item Welche typischen Topoligien werden in Netzwerken eingesetzt?
-		\item Welche Topoliegie haben Sie für die Umsetzung eines geswitchten LANs benutzt?
+		\item Erläutern Sie was eine IP-Adresse ist und nennen Sie wesentliche Unterschiede zwischen IPv4 und IPv6.
+		\item Nennen Sie die drei privaten IPv4-Adressbereiche!
+		\item Erklären Sie was eine Subnetzmaske ist und wofür diese gebraucht wird. 
+		\item Diskutieren Sie ein theoretische Umsetzung Ihres Netzwerkes aufgrund von IPv4 mit geeigneten IP-Adressen und Subnetzmasken. (Aufbauend auf Ihre Topologie)
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{IPv4}
+\begin{frame}
+\frametitle{3.) Daemons \& Tools I}
 	\begin{itemize}
-		\item Was ist eine IP-Adresse? Wie sind \emph{IPv4}-Adressen aufgebaut?
-		\item Wozu brauchen Sie Subnetzmasken?
-		\item Wie werden IP-Adressen und Subnetzmasken zusammen genutzt?
+		\item Erläutern Sie was ein Daemon ist und nennen Sie einige wichtige Dienste.
+		\item Erklären Sie die Syntax von Systemd (im speziellen \emph{systemctl}) beispielhaft. D.h. wie werden Dienste gestartet, gestoppt etc.
+		\item Diskutieren Sie die Unterschiede der Werkzeugsammlungen \emph{iproute2} und der BSD \emph{net-tools}.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Daemons}
+\begin{frame}
+\frametitle{4.) Tools II}
 	\begin{itemize}
-		\item Was sind Daemons und welche Aufgaben übernehmen diese?
-		\item Wie können unter Linux Daemons administriert werden?
+		\item Erläutern Sie die Syntax der Tools \emph{ip addr} und \emph{ifconfig} zur Vergabe von IP-Adressen.
+		\item Erklären Sie was \emph{ping} ist und wozu dies verwendet wird.
+		\item Erläutern Sie die Syntax des Tools \emph{ping} beispielhaft.
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Tooling}
-	\begin{itemize}
-		\item Wie kann die konfiguration der Netzwerkadapter vorgenommen werden?
-		\item Wie können Sie die aktuelle Konfiguration eines Adapters in Erfahrung bringen?
-		\item Mit welchen Werkzeugen könne \emph{IPv4}-Adressen und Subnetzmasken gesetzt werden?
-		\item Wie werden Links aktiviert?
-	\end{itemize}
-\end{frame}
 \end{document}

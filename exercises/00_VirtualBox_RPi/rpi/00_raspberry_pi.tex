@@ -15,7 +15,7 @@
 \usepackage{amsthm}%get theorems and proofs done
 \usepackage{graphicx}%get pictures & graphics done
 \graphicspath{{pictures/}}%folder to stash all kind of pictures etc
-\usepackage{hyperref}%for links to web
+\usepackage[pdftex,hidelinks]{hyperref}%for links to web
 \usepackage{amssymb}%symbolics for math
 \usepackage{amsfonts}%extra fonts
 \usepackage []{natbib}%citation style
@@ -31,7 +31,7 @@
 \usepackage{dsfont}
 \usepackage{stmaryrd}
 \usepackage{geometry}
-
+\usepackage{hyperref}
 \usepackage{fancyhdr}
 \usepackage{menukeys}
 
@@ -87,7 +87,7 @@ Das Image für die Raspberry Pis liegt auf dem Uranus-Server der HTW Berlin unte
 \paragraph{Installation unter Unix, Linux \& MacOS}~\\
 Falls Sie \emph{scp} nutzen wollen, sieht der Befehl wie folgt aus:
 \begin{lstlisting}[style=Bash, language=Bash]
-scp -r s0XXXXXX@uranus-ai.f4.htw-berlin.de:~/share/lehrende/troester/netzwerke/rpi/ ~/
+scp -r s0XXXXXX@uranus.f4.htw-berlin.de:~/share/lehrende/troester/netzwerke/rpi/ ~/
 		\end{lstlisting}
 Um sicher zu gehen, dass beim Download keine Fehler aufgetreten sind und Sie das richtige Image bezogen haben können Sie eine kryptografische Prüfsumme berechnen:
 

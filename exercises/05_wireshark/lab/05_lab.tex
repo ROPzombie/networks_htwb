@@ -1,0 +1,244 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+\usepackage{multicol}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke Übung (SoSe 2019)}
+\rhead{Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 05 -- Wireshark}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+\pdfpkresolution=2400%higher resolution
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 05 -- Wireshark}}\\
+\end{center}
+Hilfreiche Tools:
+\begin{multicols}{3}
+\begin{itemize}
+	\item netstat, ss
+	\item arp
+	\item ip neigh
+	\item ip -s -s neigh flush all
+	\item arp -d
+	\item 
+\end{itemize}
+\end{multicols}
+\begin{center}
+\Large{\textbf{Aufgabe A - Setup \& Wireshark 101}}
+\end{center}\vskip0.25in
+Nachdem im theoretischen Teil mithilfe der Tutorials, sowie Ihrer Recherche die Grundlagen für die Nutzung von Wireshark gelegt haben, sollen Sie dieses Wissen nun anwenden.
+\begin{enumerate}
+	\item Schalten Sie zunächst, wenn nicht bereits geschehen, das DHCP aus! Setzen Sie anschließend das Netzwerk wie in der vorigen Übung mit den Ihn bekannten Tools um. Halten Sie dabei das gewohnte Adressschema ein:
+\begin{table}[H]
+\caption{Adressschema für das Labor}
+\label{adress_scheme}
+\centering
+\begin{tabular}{|c|c|}\hline
+ & \textbf{IP  || IP-Range} \\ \hline
+ $LAN_X$ & 10.0.$X$.Y/Size \\ \hline
+ Backbone & 10.10.10.100 + $\rho$ \\ \hline
+ Labornetz & 10.0.0.0/8 \\ \hline
+ Uplink & 10.10.10.254 \\ \hline
+ DNS & 10.10.10.254 \\ \hline
+\end{tabular}
+\end{table} 
+	\item Ist Ihr Netzwerk soweit Einsatzbereit? Nutzen Sie die Tools \emph{ip}, \emph{ifconfig}, \emph{ss} und \emph{netstat} um die nachfolgenden Fragen zu beantworten.
+	\begin{tasks}(1)
+		\task~ Haben Ihre Hosts die richtigen IP-Adressen?
+		\task~ Können Sie andere Rechner im Labornetzwerk erreichen?
+		\task~ Ist Ihr Uplink funktionstüchtig? D.h. haben Sie Zugang ins Internet?
+		\task~ Funktioniert Ihre Namensauflösung? M.a.W. können Sie Hosts anhand ihrer Namen auflösen?
+	\end{tasks}
+	Falls einer die oben genannten Punkte nicht erfüllt, sollten Sie dies abstellen. Dazu können Sie eine manuelle Konfiguration vornehmen (Übung 3 \& 4).
+	\item Überprüfen Sie, ob Ihr Nutzer der Gruppe \emph{wireshark} angehört. \footnote{Sollte dies nicht der Fall sein, müssen Sie dies vornehmen. Das Tool \emph{adduser} bzw. \emph{usermod} kann dies vornehmen.}
+	\item Starten Sie Wireshark (wenn Sie möchten können Sie Wireshark auch in der Shell ausführen). Finden Sie sich zurecht! Wiresharks grafische Oberfläche sollte im wesentlich dem entsprechen, was Sie in den Tutorials gesehen haben. Finden Sie die Eingabemaske für das Capturing. Für alle nachfolgenden Aufgaben sollen die Mitschnitte auf dem Interface \emph{eth0} vorgenommen werden. 
+	\item Erzeugen Sie Traffic (beispielsweise durch Nutzung des Browsers).
+	\item Analysieren Sie den eben aufgenommenen Mitschnitt, sodass Ihnen der Workflow mit Wireshark vertrauter wird.
+	\begin{itemize}
+		\item Welche Pakete treffen Sie sehr häufig an?
+		\item Wenden Sie einige Filter aus den Hausaufgaben auf Ihren Traffic an (Filtern nach Protokoll, IP, MAC,...).
+	\end{itemize}
+\end{enumerate}
+
+\begin{center}
+\Large{\textbf{Aufgabe B - Bestimmung des physischen Rechners zu einer IP-Adresse -- ARP}}
+\end{center}\vskip0.25in
+Mit dem zweiten Übungsblatt haben Sie ein geswitchtes Netzwerk umgesetzt. Wie schon angesprochen sind Switches jedoch Link-Layer-Devices und kommen ohne IP-Adressen aus. Dennoch mussten Sie IP-Adressen konfigurieren. Sie haben bereits theoretisch recherchiert wie die Zuordnung von physischer Adresse zu einer IP-Adresse vonstatten geht. Im Folgenden sollen Sie herausfinden, ob die Auflösung von IP-Adresse auf physische Adresse wirklich analog zu Ihren theoretischen Recherchen abläuft.
+\begin{enumerate}
+\item Finden Sie in Wireshark heraus, wie die Adressauflösung funktioniert.
+\begin{tasks}[counter-format=(tsk[r])](1)
+	\task~ Leeren Sie zunächst den ARP-Cache.
+	\task~ Pingen Sie nun einen Rechner an, den Sie vorhin noch nicht \glqq angepingt\grqq\ haben. Die dafür ausgetauschten Pakete (und wahrscheinlich einige mehr) werden \glqq gesnifft\grqq.
+	\task~ Beenden sie das Mitschneiden des Netzwerksverkehrs und setzen Sie als Filtern die MAC-Adresse ihres Adapters.
+	\task~ Versuchen Sie über den Mitschnitt herauszufinden, wie die Bestimmung des zugehörigen Netzadapters und die MAC-Adresse erfolgt.
+\end{tasks}
+\item Damit Ihr Rechner nicht jedes mal diese Daten abfragen muss, werden diese Informationen lokal in einem Cache zwischengespeichert (\glqq gecacht\grqq).
+\begin{tasks}(1)
+	\task~ Mit welchem Programm können Sie sich den ARP-Cache anzeigen lassen?
+	\task~ Lassen Sie zwei Raspberry Pis die IP-Adressen tauschen. Benutzen sie die Kommandozeile, sodass Sie dies anschließend wieder rückgängig machen könne. Wann und wie kann ein dritter Raspberry Pi die beiden nun \glqq anpingen\grqq?
+\end{tasks}
+\end{enumerate}
+
+\begin{center}
+\Large{\textbf{Aufgabe C - ARP-Cache-Poisoning}}
+\end{center}\vskip0.25in
+Wie in den Hausaufgaben bereits zu erahnen war, dürfen Sie nun ein wenig Unruhe in Ihren Netzwerken stiften!\\
+Sie sollen in diesem Teil der Laborübung ein ARP-Spoofing des Routers übernehmen. Um dies zu erreichen, sollen Sie den ARP-Cache so manipulieren, sodass sämtlicher Verkehr zwischen Ihren LANs $A$ und $B$ nicht mehr über den Router geleitet wird, sondern über den Angreifenden Host.
+\begin{enumerate}
+	\item Zunächst müssen Sie Angreifen und Opfer in Ihren Netzwerk auswählen. Die sollte weder der Router, noch der Backbone-Router sein. Vermerken Sie sich entsprechend die IP-Adressen.
+	\item Analysieren Sie den ARP-Cache des anzugreifenden Systems.
+	\item Da der angreifende Host als MITM-Router fungiert, muss auch hier das Routing aktiviert sein und eine Default-Route zum Backbone angelegt werden, sodass der Abgefangene Traffic auch beim Ziel ankommt.
+	\item Im Ordner \path{~/arp_poison/} liegt ein Python-Skript, welche für den Angriff genutzt werden kann. Bevor Sie dies einsetzen: Schauen Sie sich das Skript erneut an. Wie muss dieses Skript ausgeführt werden?
+	\item Führen Sie das ARP-Cache-Poisoning mithilfe des Python-Skripts durch. Lassen Sie sowohl auf dem angreifenden als auch angegriffenen System Wireshark mitlaufen.
+	\item Betrachten Sie den ARP-Cache während des Angriffs, sowie einige Zeit nachdem Angriff.
+	\item Ziehen Sie ein Fazit aus dem eben durchgeführten Angriff!
+\end{enumerate}
+
+\begin{center}
+\Large{\textbf{Aufgabe D - Unencrypted Password Sniffing}}
+\end{center}\vskip0.25in
+Nachdem Sie nun auch praktisch mit Wireshark Ihre ersten Erfahrungen gesammelt haben, sollen Sie mithilfe des Sniffers Passwörter im unverschlüsselte Traffic \glqq dumpen\grqq. Dazu ist ein kleines Setup notwendig. Ihr Netzwerk sollte nach Möglichkeiten aus zwei Subnetzen sowie einem Router bestehen. In jedem Subnetz soll ein Webserver aufgesetzt werden.
+\begin{enumerate}
+	\item Pro Bankreihe sollen je zwei Apache Webserver aufgesetzt werden, pro Subnetz je ein Webserver.\\
+	Der Apache Webserver liefert Ihnen eine Default-Seite. Für diese Übung reicht dies aus.
+	\item Nicht jeder Nutzer soll auf den Inhalt Ihrer Webseite zugreifen dürfen, daher soll eine einfache Passwortabfrage den Inhalt Ihrer Website sichern. Richten Sie eine Passwortauthentifizierung ein, die auf dem Webserver im Subnetz A dem Nutzer \emph{web} und im Subnetz B dem User \emph{bew} Zugriff gewährt und allen anderen Nutzern kein Zugriff erlaubt. 
+	\item Nehmen Sie für die Konfiguration des Webservers ein Backup vor! D.h. alle Dateien die Sie ändern müssen, sollen zuvor gesichert werden. Kopieren Sie entsprechend die Dateien, mit den Ihnen bekannten Kommandozeilenbefehlen im gleichen Ordner, sodass sich im gleichen Ordner die Originaldatei, als auch eine Kopie befindet. Die Kopie kann beispielsweise die Dateiendung \emph{.bck} tragen. \footnote{Es gibt anschließend also eine \path{/etc/apache2/apache2.conf} und eine \path{/etc/apache2/apache2.conf.bck} Datei.}
+	\item Als Hilfestellung für den Webserver können Sie wie folgt vorgehen:
+	\begin{itemize}
+	\item Für das Binding des Webservers muss in der Apache Konfiguration (s. \path{/etc/apache2/apache2.conf}) die IP-Adresse und optional der Port mit dem Befehl \emph{Listen} gesetzt werden. 
+	\begin{lstlisting}[style=Bash, language=Bash]
+Listen IP:Port 
+\end{lstlisting} \label{apache}
+	\item Die Passwortauthentifizierung kann mithilfe des Kommandos \emph{htpasswd} eingeleitet werden.
+\begin{lstlisting}[style=Bash, language=Bash]
+sudo htpasswd -c /etc/apache2/.htpasswd YOURUSERNAME
+\end{lstlisting} \label{htpasswd}
+	\item Anschließend kann in der Datei \path{/etc/apache2/apache2.conf} entsprechend der Inhalt Ihrer Website geschützt werden.
+\begin{lstlisting}[style=Bash, language=Bash]
+<Directory "/var/www/html">
+  AuthType Basic
+  AuthName "Speak, friend and enter"
+  AuthUserFile "/etc/apache2/.htpasswd"
+  Require user YOURUSERNAME
+
+  Order allow,deny
+  Allow from all
+</Directory>
+\end{lstlisting} \label{conf}
+	\item Mit dem Tool \emph{apachectl} kann die Konfiguration des Webservers überprüft und anschließend der Apache hochgefahren werden.
+\begin{lstlisting}[style=Bash, language=Bash]
+sudo apachectl configtest
+sudo apachectl start
+\end{lstlisting} \label{apchectl}
+\end{itemize}
+	\item Der Administrator des Routers ist überaus neugierig und soll die verwendeten Nutzernamen/Passwort Kombinationen ausschließlich durch Analyse des Netzwerkverkehrs in Erfahrung bringen.
+	\begin{tasks}(1)
+		\task~ Analysieren Sie den Traffic -- In welchem Protokoll müssen Sie suchen?
+		\task~ Stellen Sie entsprechen den Filter in Wireshark ein.
+		\task~ Wie könne Sie im gesamten Traffic noch weiter filtern, sodass Sie das Paket mitsamt Nutzernamen und Passwort finden?
+	\end{tasks}
+	\end{enumerate}
+\begin{center}\Large{\textbf{System Reset}}\end{center}\vskip0.25in
+\begin{enumerate}
+	\item \textbf{Sofern Sie keine eigene SD-Karte nutzen:} Setzen Sie die Einstellungen des Raspberry Pis bzw. des Betriebssystems zurück die Sie vorgenommen haben! D.h. setzen Sie das Betriebssystem auf den \emph{dhcpcd} zurück, nehmen Sie alle vorgenommen Änderungen zurück.
+	\item Nehmen Sie alle vorgenommen Einstellungen zurück. D.h. schalten Sie den Apache-Webserver aus, stellen Sie \textbf{alle} ursprünglichen Konfigurationen wieder her. Haken Sie zumindest folgende Liste ab:
+	\begin{itemize}
+	\item Eigene IP-Config:
+	\begin{itemize}
+		\item \path{/etc/network/interfaces}
+	\end{itemize}
+	\item Routing/Forwarding:
+	\begin{itemize}
+		\item Alle persistenten Routen gelöscht?
+		\item Forwarding aktiviert? (on the fly oder persistent?)
+		\item \path{/etc/systctl.conf}
+		\item \path{/proc/sys/net/ipv4/ip_forward}
+	\end{itemize}
+	\item DNS
+	\begin{itemize}
+		\item DNS Einträge verändert?
+		\item \path{/etc/resolv.conf}
+	\end{itemize}
+	\item Apache
+	\begin{itemize}
+		\item Ist der Apache \emph{disabled}
+		\item Haben Sie die \path{/etc/apache2/apache2.conf} zurückgesetzt?
+		\item Haben Sie die \path{/etc/apache2/.htpasswd} gelöscht?
+		\item \emph{apachectl configtest} aufgeführt?
+	\end{itemize}
+\end{itemize}
+\end{enumerate}
+\end{document}

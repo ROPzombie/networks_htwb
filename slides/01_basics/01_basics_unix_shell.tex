@@ -121,7 +121,7 @@ morestring=[b]",
 
 \begin{document}
 \bibliographystyle{alpha}
-\title{Netzwerke -- Übung SoSe 2019}
+\title{Netzwerke -- Übung WiSe 2018/19}
 \subtitle{Grundlagen *nix \& Shell\\
 \href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
 		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
@@ -164,11 +164,11 @@ morestring=[b]",
 \begin{frame}
 	\frametitle{Raspberry Pi}
 \begin{itemize}
-	\item Raspberry Pi 3 Model B+ -- \ac{soc} \url{https://www.raspberrypi.org/}
+	\item Raspberry Pi 3 Model B -- \ac{soc} \url{https://www.raspberrypi.org/}
 	\item Architektur: ARM Cortex (64-Bit) Broadcom BCM2837
 	\item Quad Core: 4 $\times$ ARM Cortex-A53 @ 1.2GHz
-	\item 1GB LPDDR2 (1,2 GMHz)
-	\item 10/100/1000 Ethernet, 2.4GHz 802.11n wireless
+	\item 1GB LPDDR2 (900 MHz)
+	\item 10/100 Ethernet, 2.4GHz 802.11n wireless
 	\item 4 USB2 ports
 	\item Raspbian 9 Stretch -- Debian Fork \\ \url{https://raspbian.org/}
 \end{itemize}
@@ -187,7 +187,7 @@ morestring=[b]",
 	\item 1969 entwickelt in den Bell Laboratories
 	\item Bekannte Vertreter:
 	\begin{itemize}
-	\item \ac{bsd}, SunOS/ Solaris, Minix, OpenBSD, IllumOS, FreeBSD
+	\item \ac{bsd}, SunOS/ Solaris, Minix
 	\item \url{https://de.wikipedia.org/wiki/Berkeley_Software_Distribution}
 	\end{itemize}
 \end{itemize} } 
@@ -241,7 +241,7 @@ morestring=[b]",
 		\begin{itemize}
 			\item als Abstraktion des Rechnersystems
 		\end{itemize}
-		\item Verwaltung und Operationen auf den Ressourcen
+		\item Verwaltung der Ressourcen
 		\begin{itemize}
 			\item physische Ressourcen
 			\item logische Ressourcen
@@ -256,7 +256,7 @@ morestring=[b]",
 \subsection{Architektur (monolithischer Kernel)}
 \begin{frame}
 	\frametitle{Aufbau eines Betriebssystems: Ringmodell}
-	\vspace{-.7cm}
+	\vspace{-.8cm}
  \begin{tabular}{cc} 
  \hspace*{-1.3cm} 
  \parbox{0.65\linewidth}{
@@ -276,7 +276,8 @@ morestring=[b]",
 	\end{itemize}
 	\item Anwendungsprogramme
 	\begin{itemize}
-		\item Standardsoftware \& 3rd-Party-Software
+		\item Standardsoftware des Betriebssystems 
+		\item 3rd-Party-Software
 	\end{itemize}
 
 \end{itemize} } 
@@ -372,8 +373,8 @@ Linux/ Unix sind Mehrbenutzersysteme, d.h. mehrere Nutzer können simultan auf e
 	\end{itemize}
 	\item Raspberry Pi:
 	\begin{itemize}
-		\item Benutzername: student
-		\item Gruppen: student, users, wireshark,...
+		\item Benutzername: pi
+		\item Gruppen: users, wheel,...
 	\end{itemize}
 \end{itemize}
 \end{frame}
@@ -520,7 +521,7 @@ Zusammensetzung der Berechtigung
 	\begin{itemize}
 		\item Auf den Laborrechner: \keys{\winmenu} (Windowstaste) und dann einfach Terminal eingeben
 		\item Alternativ: \keys{\ctrl + \Alt + t} (Str + Alt + t)
-		\item Abbrechen eines Kommandos: \keys{\ctrl + c} (Str + c)
+		\item Abbrechen eines Kommandos: \keys{\ctrl + c} ((Str + c)
 		\item Beenden/Schließen des Terminals: \keys{\ctrl + d} (Str + d) oder einfach \emph{exit} eintippen
 	\end{itemize}
 \end{frame}
@@ -583,7 +584,6 @@ Zusammensetzung der Berechtigung
 date > foo.txt
 cat id_rsa.pub >> authorized_keys
 head < index.html
-sort studi_list_1.csv studi_list_2.csv | uniq -u > drop_out_list.txt
 	\end{lstlisting}
 \end{frame}
 

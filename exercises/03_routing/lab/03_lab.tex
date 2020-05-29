@@ -110,25 +110,22 @@ labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
 	
 \begin{center}\Large{\textbf{Aufgabe A -- Umsetzung des Routings}}\end{center}\vskip0.25in
 %\setlist[enumerate, 1]{itemsep=\baselineskip}
-Setzen Sie das aus der Planung hervorgegangene Netzwerk (bzw. die Netzwerke) um.
+Setzen Sie das aus der Planung hervorgegangene Netzwerk (bzw. die Netzwerke) mit den Ihn bekannten Tools um.
 \begin{enumerate}
-	\item Vergleichen Sie innerhalb Ihrer Gruppe die Ergebnisse der Hausaufgaben, sodass Sie Ihr Vorgehen koordinieren können.
 	\item \textbf{Für die Hosts:}\\
 	\begin{tasks}(1)
-		\task Beschriften Sie die aus den Hausaufgaben hervorgegangene Skizze mit den in der Gruppe zu vergebenen IP-Adressen.
-		\task Setzen Sie die IP-Adressen und Routen mithilfe der Kommandos \emph{ip add} und \emph{ip route [add|delete|replace]} aus dem \emph{iproute2}-Werkzeugkasten bzw. den Networking-Tools \emph{ifconfig} und \emph{route add}.\\
-		Achten Sie darauf, ob Sie ein Default-Gateway definieren oder ein \glqq herkömmliches\grqq\ Gateway! Beides ist möglich, jedoch erweitern Sie bald Ihr Netzwerk, wodurch sich dies ändern könnte.
-		\task Analysieren Sie die Ihnen vorliegende Routing-Tabelle. Was bedeuten die Einträge? Bzw. entspricht die Ausgabe Ihren Erwartungen?
+		\task~ Beschriften Sie die aus den Hausaufgaben hervorgegangene Skizze mit den in der Gruppe zu vergebenen IP-Adressen.
+		\task~ Setzen Sie die IP-Adressen und Routen mithilfe der Kommandos \emph{ip add} und \emph{ip route [add|delete|replace]} aus dem \emph{iproute2}-Werkzeugkasten bzw. den Networking-Tools \emph{ifconfig} und \emph{route add}.  Achten Sie darauf, ob Sie ein Default-Gateway definieren oder ein \glqq herkömmliches\grqq\ Gateway! Beides ist möglich, jedoch erweitern Sie bald Ihr Netzwerk, wodurch sich dies ändern könnte.
+		\task~ Nachdem Sie die Routen entsprechend Ihrer Planung eingetragen haben, sollten Sie schauen, wie die Routing-Tabelle aussieht. Analysieren Sie die Ihnen vorliegende Routing-Tabelle. Was bedeuten die Einträge? Bzw. entspricht die Ausgabe Ihren Erwartungen?
 	\end{tasks}
 	\item \textbf{Für den Router:}\\
 	Der Router benötigt eine etwas andere Konfiguration. 
 	\begin{tasks}(1)
-		\task Konfigurieren Sie am Router die IP-Adressen des Netzwerkadapters. Wenn Ihr Router zwischen zwei Netzwerken vermittelt, sollte dieser beide Netzwerke kennen. D.h. Ihr Router ist Teilnehmer an beiden Netzwerken und benötigt zwei IP-Adressen, für jedes Netzwerk eine.\\
-		Anm.: Gewöhnlich hat der Router die erste verfügbare Adresse im Netzwerk, beachten Sie dennoch die Netz- und Broadcast-Adresse.
-		\task Versuchen Sie den Router aus beiden Netzwerken via \emph{ping} zu erreichen.
-		\task Testen Sie welche der anderen IP-Adressen Sie nun anpingen können und welche nicht.
-	\end{tasks}
-	\item Sie können mithilfe eines kleine Chats testen, ob Pakete tatsächlich auf dem Router ankommen. Dafür basteln Sie eine kleine  Client-Server-Lösung. Beide Seiten nutzen das Tool \emph{netcat -- \emph{nc}}. Das Listing \ref{netcat_server} zeigt die Seite des Servers. Dieser Stellt den Server bereit, der Client darf sich anschließend mithilfe eines \emph{Sockets (Tupel aus IP-Adresse und Port)} verbinden (s. Listing \ref{netcat_client}). 
+		\task~ Konfigurieren Sie am Router die IP-Adressen des Netzwerkadapters. Wenn Ihr Router zwischen zwei Netzwerken vermittelt, sollte dieser beide Netzwerke kennen. D.h. Ihr Router ist Teilnehmer an beiden Netzwerken und benötigt zwei IP-Adressen, für jedes Netzwerk eine.
+		\task~ Nachdem der Router konfiguriert wurde, sollten die Raspberry Pis aus den beiden Netzen versuchen diesen via Ping zu erreichen.
+		\task~ Testen Sie welche der anderen IP-Adressen Sie nun anpingen können und welche nicht.
+		\end{tasks}
+		\item Sie können mithilfe eines kleine Chats testen, ob Pakete tatsächlich auf dem Router ankommen. Dafür basteln Sie eine kleine  Client-Server-Lösung. Beide Seiten nutzen das Tool \emph{netcat -- nc}. Das Listing \ref{netcat_server} zeigt die Seite des Servers, dieser Stellt den \glqq Server\grqq\ bereit, der Client darf sich anschließen mithilfe eines \emph{Sockets (Tupel aus IP-Adresse und Port)} verbinden (s. Listing \ref{netcat_client}). 
 		
 	\begin{lstlisting}[style=Bash, language=Bash, label={netcat_server}]
 #Server port > 1024 
@@ -143,22 +140,20 @@ nc <ip_of_server> <port_number>
 #example
 nc 10.0.0.1 4711
 		\end{lstlisting}
-		\item \textbf{Alternativ:} Wenn Sie bereits mit Wireshark gearbeitet haben, können Sie auch dies benutzen um festzustellen, ob die Pakete korrekt ankommen. 
+		\item \textbf{Alternativ:} Wenn Sie bereits mit Wireshark gearbeitet haben können Sie auch dies benutzen, um festzustellen, ob die Pakete korrekt ankommen. 
 	\item \textbf{Router: Forwarding}\\
-	Im Idealfall sollten Sie den Router auf beiden IP-Adressen erreichen können -- andere Rechner außerhalb ihres Netzes antworten Ihnen nicht (Sie können dies ruhig austesten!).\\
-	Das Weiterleiten von Paketen muss auf dem Router explizit erlaubt werden, dies hat Sicherheitsgründe -- ansonsten könnten Pakete von Fremden im Netz beliebig versendet werden (Bspw.: Wenn Sie in Ihrem Notebook neben ihrem WiFi noch eine WWAN-Karte für teure LTE-Verbindugen betreiben, könnten andere Teilnehmer \glqq kostengünstig\grqq\ mitsurfen.)
+	Im Idealfall sollten Sie den Router auf beiden IP-Adressen erreichen können -- andere Rechner außerhalb ihres Netzes antworten Ihnen nicht (Sie können dies ruhig austesten!). Das Weiterleiten von Paketen muss auf dem Router explizit erlaubt werden, dies hat Sicherheitsgründe -- ansonsten könnten Pakete von Fremden im Netz beliebig versendet werden (Bspw.: Wenn Sie in Ihrem Notebook neben ihrem WiFi noch eine WWAN-Karte für teure LTE-Verbindugen betreiben, könnten andere Teilnehmer \glqq kostengünstig\grqq\ mitsurfen.)
 	\begin{tasks}(1)
-		\task Schauen Sie sich die Routing-Tabelle auf dem Router an. Welche Informationen können Sie diesem entnehmen?
-        	\task Muss am Router eine Anpassung der Routing-Tabelle vorgenommen werden?
-        	\task Aktivieren Sie das Forwarding im Betriebssystem des Routers. Ihre Umsetzung \textbf{soll keine persistente Lösung} sein! 
-		\task Testen Sie jeweils mit einem \emph{ping} aller beteiligten Rechner, welche Netzwerke und IP-Adressen Sie erreichen können und welche nicht.
-		\task \textbf{Wenn etwas nicht funktioniert:} Notieren Sie sich auftretende Fehlermeldungen und vergleichen Sie deren Ursache mit Ihren Recherchen aus den Hausaufgaben.
-		\task Nutzen Sie erneut den Chat-Server mit \emph{netcat} um zu überprüfen, ob Ihr Netzwerk korrekt funktioniert.
+		\task~ Schauen Sie sich die Routing-Tabelle auf dem Router an. Welche Informationen können Sie diesem entnehmen?
+        \task~ Muss am Router eine Anpassung der Routing-Tabelle vorgenommen werden, so das dieser weiß wohin er die Pakete senden muss?
+        \task~ Aktivieren Sie das Forwarding im Betriebssystem des Routers, sodass ein Routing möglich ist. Ihre Umsetzung \textbf{muss} eine nicht persistente Lösung sein! D.h. es soll in keine Datei geschrieben werden.
+		\task~ Testen Sie jeweils mit einem \glqq ping\grqq\ aller beteiligten Rechner, welche Netzwerke und IP-Adressen Sie erreichen können und welche nicht.
+		\task~ Notieren Sie sich auftretende Fehlermeldungen und vergleichen Sie deren Ursache mit Ihren Recherchen aus den Hausaufgaben.
+		\task~ Nutzen Sie erneut den Chat-Server mit \emph{netcat} um zu überprüfen, ob Ihr Netzwerk korrekt funktioniert. D.h. zwei Hosts aus unterschiedlichen Teilen Ihres Netzwerkes sollen miteinander kommunizieren.
 	\end{tasks}
-\end{enumerate}
-
-\begin{center}\Large{\textbf{Aufgabe B -- Umsetzung des Backbones}}\end{center}\vskip0.25in
-Sie erweitern nun das vorhandene Netzwerk dergestalt, dass ein weiterer Rechner aus jeder Reihe zum Router umgebaut wird. Wenn genug Raspberry Pis vorhanden sind, kann auch ein zusätzlicher Raspberry Pi an den Switch angeschlossen werden. Der neue Router soll alle Pakete, die an Rechner außerhalb des eigenen Netzes (Bankreihe) gehen, in die anderen Reihen weiterleiten können. Somit können Sie dann jeden beliebigen Raspberry Pi im Labor anpingen. Die Router sorgen dafür, dass alle Pakete über das \glqq Backbone\grqq\ zu ihrem Ziel geleitet werden. Im wesentlichen soll das Netzwerk Abbildung \ref{backbone} entsprechen. 
+	
+\begin{center}\Large{\textbf{Aufgabe B -- Umsetzung des Backbones \& Uplinks}}\end{center}\vskip0.25in
+Sie erweitern nun das vorhandene Netzwerk dergestalt, dass ein weiterer Rechner aus jeder Reihe zum Router umgebaut wird. Wenn genug Raspberry Pis vorhanden sind, kann auch ein zusätzlicher Raspberry Pi an den Switch angeschlossen werden. Der neue Router soll alle Pakete, die an Rechner außerhalb des eigenen Netzes gehen, in die anderen Reihen weiterleiten können. Somit können Sie dann jeden beliebigen Raspberry Pi im Labor anpingen. Die Router sorgen dafür, dass alle Pakete über das \glqq Backbone\grqq\ zu ihrem Ziel geleitet werden. Im wesentlichen soll das Netzwerk Abbildung \ref{backbone} entsprechen. 
 \begin{figure}[H]
 	\center
 	\includegraphics[scale=0.2]{backbone}
@@ -182,38 +177,37 @@ Sie erweitern nun das vorhandene Netzwerk dergestalt, dass ein weiterer Rechner 
 \textbf{Achtung:} Da es in dem Backbone-Netz fünf gleichwertige Router gibt, können Sie hier nicht mit \glqq Default-Routen\grqq\ arbeiten! Sie müssen auf den Backbone-Rechnern nun mehrere explizite Routen mit einem Zielnetzwerk und zugehöriger Subnetzmaske eintragen.
 \begin{enumerate}
 	\item Aufsetzen des Backbones:
-	\begin{tasks}(1)
-		\task Wählen Sie einen Rechner aus Ihrer Reihe der noch nicht als Router fungiert. Geben Sie diesem Router eine zweite IP-Adresse 10.10.10.X, wobei $X=100 + \rho$ ist und $\rho$ Ihrer Reihe entspricht.\\
-		\task Aktivieren Sie auf dem Backbone ebenfalls das Forwarding.
-		\task Tragen Sie alle Routen zu den anderen Reihen ein. Tragen Sie ebenfalls eine Route in das Subnetz für das $LAN_x$ ein, in dem der Backbone-Router selbst nicht Teilnehmer ist.
-		\task Prüfen Sie mit \emph{ping}, ob Sie verschiedene Rechner innerhalb, sowie außerhalb Ihres Netzwerkes erreichen können -- bei welchen Rechner(n) klappt es und bei welchen nicht?
-		\task Überprüfen Sie die Routen Ihrer Hosts! Haben die einfachen Hosts entsprechende Default-Routen? Hat Ihr Router eine Default-Route? Setzen Sie die Routen entsprechend, sodass im Anschluss alle Hosts sich untereinander erreichen können, als auch den Router und den Backbone-Router.
-		\task Was müssen Sie jetzt noch an der Konfiguration einer oder aller anderen Rechner Ihrer Reihe anpassen, damit sich wirklich alle Rechner anpingen können.
-		\task Befragen Sie als Hilfestellung den aktuellen Routing-Tabelle Ihres Betriebssystems. Sie können hierfür die Tools \emph{ip route, route, netstat -r} nutzen.
-		\task Prüfen Sie mit \emph{ping} ob Sie jetzt wirklich alle Rechner erreichen können.
-		\task Prüfen Sie mit \emph{Wireshark} auf dem neuen Backbone-Router, ob auch alle Pakete wirklich über diesen Rechner geleitet werden. Sie sollen ausschließen könne, dass irgendein Rechner eine \glqq Abkürzung\grqq\ nimmt.
-		\task Sie können erneut den Chatserver mit \emph{netcat} betreiben, um sich zu vergewissern, dass Ihr Netzwerk funktioniert.
-	\end{tasks}
+\begin{tasks}(1)
+	\task Wählen Sie einen Rechner aus Ihrer Reihe der noch nicht als Router fungiert. Geben Sie diesem Router eine zweite IP-Adresse 10.10.10.X, wobei $X=100 + \rho$ ist und $\rho$ Ihrer Reihe entspricht.\\
+	\task Aktivieren Sie auf dem Backbone ebenfalls das Routing und tragen Sie alle Routen zu den anderen Reihen ein.
+	\task Prüfen Sie mit \emph{ping}, ob Sie verschiedene Rechner innerhalb, sowie außerhalb Ihres Netzwerkes erreichen können -- bei welchen Rechner(n) klappt es und bei welchen nicht?
+	\task Überprüfen Sie die Routen Ihrer Hosts! Haben die einfachen Hosts entsprechende Default-Routen? Hat Ihr Router eine Default-Route? Setzen Sie die Routen entsprechend, sodass im Anschluss alle Hosts sich untereinander erreichen können, als auch den Router und den Backbone-Router.
+	\task Was müssen Sie jetzt noch an der Konfiguration einer oder aller anderen Rechner Ihrer Reihe anpassen, damit sich wirklich alle Rechner anpingen können.
+	\task Befragen Sie als Hilfestellung den aktuellen Routing-Table Ihres Betriebssystems. Sie könne hierfür die Tools \emph{ip route, route, netstat -r} nutzen.
+	\task Prüfen Sie mit \emph{ping} ob Sie jetzt wirklich alle Rechner erreichen können.
+	\task Prüfen Sie mit \emph{Wireshark} auf dem neuen Backbone-Router, ob auch alle Pakete wirklich über diesen Rechner geleitet werden. Sie sollen ausschließen könne, dass irgendein Rechner eine \glqq Abkürzung\grqq\ nimmt.
+	\task Sie können wie in der vorigen Übung einen kleinen Chatserver mit Netcat betreiben, um sich zu vergewissern, dass Ihr Netzwerk funktioniert.
+\end{tasks}
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe C -- Einrichtung des Uplinks}}\end{center}\vskip0.25in
-Seitdem Sie den DHCP-Dienst auf den Raspberry Pis ausgeschalteten, haben Sie keinen Uplink ins Internet mehr. Das soll sich mit dieser Aufgabe ändern.
+Seitdem Sie den DHCP-Dienst auf den Raspberry Pis ausgeschaltet haben, haben Sie keinen Uplink ins Internet mehr. Das soll sich mit dieser Aufgabe ändern.
 \begin{enumerate}
-	\item Richten Sie die Verbindung zum Uplink ein, sodass alle Raspberry Pis Ihres Netzwerkes eine Verbindung ins Internet bekommen.
-	\begin{tasks}
-		\task Erweitern Sie den Backbone-Router, sodass dieser den Uplink im Labor nutzen kann. Der Uplink ist auf dem Server im Dell-Rack untergebracht und besitzt die IP-Adresse: \url{10.10.10.254}. Wie Sie bereits vermuten werden, muss Ihr Router nun die Pakete in dieses Netz bzw. an diesen Knoten weiterleiten können. Konfigurieren Sie entsprechend Ihren Router zunächst mit den Ihnen bekannten Tools.
-		\task Welche Art Route müssen Sie auf dieses Gateway konfigurieren? \textbf{Hinweis:} Alle Pakete, die nicht an die Netzwerke des Labors adressiert sind, sollten dieses Gateway passieren.
-  		\task Befragen Sie als Hilfestellung den aktuellen Routing-Tabelle Ihres Betriebssystems. Sie könne hierfür die Tools \emph{ip route, route, netstat -r} nutzen.
-  		\task Setzen Sie auf Ihrem Backbone das Network-Address-Translation mithilfe von \emph{iptables} um.
- 		\task Da auf dem Uplink bereits ein DNS-Server arbeitet, müssen Sie sich keine Sorgen hierüber machen. Sie sollten nun sowohl IP-Adressen als auch Host-Names adressieren können.\\
- 		Anmerkung: Die Auflösung von Hostnames kann evtl. etwas dauern, da das Betriebssystem erst die änderung in der Datei \path{/etc/resolv.conf} anpassen muss.
- 		\task Versuchen Sie die Website des Instituts für Mathematik und Informatik der Freien Universität Berlin anzupingen.
- 		(\url{mi.fu-berlin.de})
+	\item Um den Raspberry Pis eine Möglichkeit zu geben sich mit dem Internet zu verbinden, soll ein Uplink eingerichtet werden. Das heißt: Ihr konfigurierter Backbone-Router soll dafür sorgen, dass sie beispielsweise die Webseite der FU-Berlin anpingen können (die HTW-Berlin unterdrückt \emph{ICMP} aus nicht einsehbaren Gründen).
+\begin{tasks}
+  \task Erweitern Sie den Backbone-Router, sodass dieser den Uplink im Labor nutzen kann. Der Uplink ist auf dem Server im Dell-Rack untergebracht und besitzt die IP-Adresse: \url{10.10.10.254}. Wie Sie bereits vermuten werden, muss Ihr Router nun die Pakete in dieses Netz bzw. an diesen Server weiterleiten können. Konfigurieren Sie entsprechend Ihren Router zunächst mit den Ihnen bekannten Tools \glqq on the fly \grqq.
+  \task Welche Art Route müssen Sie auf dieses Gateway konfigurieren? \textbf{Hinweis:} Alle Pakete, die nicht an die Netzwerke des Labors adressiert sind, sollten dieses Gateway passieren.
+  \task Befragen Sie als Hilfestellung den aktuellen Routing-Table Ihres Betriebssystems. Sie könne hierfür die Tools \emph{ip route, route, netstat -r} nutzen.
+  \task Nachdem die Wahl der Routen und somit das Routing erledigt ist, müssen Sie sich um das NAT kümmern. Da die HTW-Berlin noch kein \emph{IPv6} im Hochschulnetzwerk anbietet (andere Unis ebenfalls nicht!), müssen Sie Ihre privaten \emph{IPv4}-Adressen auf öffentliche abbilden. Im DHCP-Modus erledigt dies direkt der Uplink.\\
+Da Sie nun selbst für Ihre Infrastruktur verantwortlich sind, müssen Sie dies übernehmen. Mithilfe von \emph{iptables} kann ein Masquerading vorgenommen werden (SNAT). Das Masquerading übernimmt die Aufgabe, die Pakete Ihrer internen Netzwerke zu übersetzen und die Replies entsprechend wieder in das Netzwerk zu schicken.\\
+Setzen Sie Ihrem Backbone das Network-Address-Translation mithilfe von \emph{iptables} um.
+  \task Da auf dem Uplink bereits ein DNS-Server arbeitet, müssen Sie sich keine Sorgen hierüber machen. Sie sollten nun sowohl IP-Adressen als auch Host-Names adressieren können. (Anmerkung: Die Auflösung von Hostnames kann evtl. etwas dauern, da das Betriebssystem erst die änderung in der Datei \path{/etc/resolv.conf} anpassen muss.)
+  \task Versuchen Sie die Website der Freien Universität Berlin anzupingen.
 \end{tasks}
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe D -- IPv6}}\end{center}\vskip0.25in
-Da \emph{IPv4} ein etwas betagteres Protokoll ist und Sie Fit für die Zukunft sein sollten, sollen Sie abschließend Ihr Netzwerk mittels \emph{IPv6} umsetzen. Da \emph{IPv6} eine wesentlich größere IP-Range besitzt ist in der Nachfolgenden Tabelle ein mögliches Adressschema aufgezeigt. Auch hier gilt: \emph{IPv6} hat mehr Adressen, was Sie jedoch nicht dazu verleiten soll, verschwenderisch damit umzugehen!
+Da \emph{IPv4} ein etwas betagteres Protokoll ist und Sie Fit für die Zukunft sein sollten, sollen Sie abschließend Ihr Netzwerk mittels \emph{IPv6} umsetzen. Da \emph{IPv6} eine wesentlich größere IP-Range besitzt ist in der Nachfolgenden Tabelle ein mögliches Adressschema aufgezeigt. Auch hier gilt: \emph{IPv6} hat mehr Adressen, dies sollte Sie jedoch nicht dazu verleiten, verschwenderisch damit umzugehen!
 \begin{table}[H]
 \centering
 \begin{tabular}{ll}
@@ -224,17 +218,15 @@ Da \emph{IPv4} ein etwas betagteres Protokoll ist und Sie Fit für die Zukunft s
  IPv6 addresses & fd0d:a5a0:170a:5fd7:xxxx:xxxx:xxxx:xxxx 
 \end{tabular}
 \end{table}
-Sie sollen im Folgenden ein statisches \emph{IPv6}-Netzwerk umsetzen. Ein Routing außerhalb unseres Labornetzwerkes ist leider nicht möglich, da die HTW-Berlin momentan kein \emph{IPv6} einsetzt.
+Sie sollen im Folgenden ein statisches \emph{IPv6}-Netzwerk umsetzen. Ein Routing außerhalb unseres Labornetzwerkes ist leider nicht möglich, da die HTW Berlin momentan kein \emph{IPv6} einsetzt.
 \begin{enumerate}
 	\item Adaptieren Sie Ihren Netzwerkaufbau von \emph{IPv4} auf \emph{IPv6}. D.h. der grundsätzliche Aufbau des Netzwerkes soll nicht verändert werden, Ihr Netzwerk soll um die Möglichkeit von \emph{IPv6} erweitert werden.
-	\item Gehen Sie sicher, dass keine Adressdoppelung vorkommen. Es ist ausreichend, wenn jede Bankreihe eine eindeutige Netzadresse besitzt, Sie müssen nicht innerhalb einer Bankreihe zwei Subnetze aufspannen.
 	\item Vergeben Sie in Ihrem Netzwerk entsprechende Adressen. Vergessen Sie nicht entsprechende Adressen für die Router zu setzen.
 	\item Setzen Sie Routen, sodass die Raspberry Pis sich über ihre LANs hinweg erreichen.
 	\item Testen Sie Ihre Netzwerke mit \emph{ping}.
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Reset}}\end{center}\vskip0.25in
-\begin{enumerate}
 \item \textbf{Sofern Sie keine eigene SD-Karte nutzen:} Setzen Sie die Einstellungen des Raspberry Pis bzw. des Betriebssystems zurück die Sie vorgenommen haben! D.h. setzen Sie das Betriebssystem auf den initialen Zustand samt \emph{dhcp} zurück. Haken Sie zumindest folgende Liste ab:
 \begin{itemize}
 	\item Eigene IP-Config zurücksetzen:
@@ -258,7 +250,7 @@ Sie sollen im Folgenden ein statisches \emph{IPv6}-Netzwerk umsetzen. Ein Routin
 	\item DHCPcd:
 	\begin{itemize}
 		\item \emph{sudo systemctl enable dhcpcd}
-		\item bzw. \emph{nw\_default.sh}
+		\item \emph{nw\_default.sh}
 	\end{itemize}
 \end{itemize}
 \end{enumerate}

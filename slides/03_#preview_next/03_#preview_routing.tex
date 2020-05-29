@@ -107,7 +107,7 @@ morestring=[b]",
 
 \begin{document}
 \bibliographystyle{alpha}
-\title{Netzwerke -- Übung SoSe 2019}
+\title{Netzwerke -- Übung WiSe2018/19}
 \subtitle{Routing\\
 		\href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
 		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
@@ -174,13 +174,12 @@ morestring=[b]",
 		\begin{itemize}
 			\item Paketzuordnung (Frames) aufgrund von MAC-Adressen zu IP-Adressen (ARP bzw. NDP)
 			\item Nur innerhalb eines LAN's, nicht darüber hinaus!
-			\item Physikalische Topologie: Bus, Multi-Bus, Crossbar, Point-to-Point, Stern -- je nach Umsetzung der Hardware
+			\item Physikalische Topologie: Bus bzw. Multi-Bus (Cisco Referenz sagt Point-to-Point!)
 			\item Logische Topologie: Stern
 		\end{itemize}
 		\item Router -- Layer 3
 		\begin{itemize}
-			\item Entkopplung der Endpunkte
-			\item Paketzuordnung anhand von Routing-Protokollen
+			\item Paketzuordnung anhand von Routing-Protokollen -- bspw.: IP
 			\item Über die eigene Grenzen hinweg mithilfe von Routing \& Forwarding
 		\end{itemize}
 	\end{itemize}
@@ -196,11 +195,12 @@ morestring=[b]",
 		\item Repeater, Hub -- Physical Layer $\rightarrow$ Bits
 		\item Switch -- Data Link Layer $\rightarrow$ Frames
 		\item \textbf{Routing -- Network Layer $\rightarrow$ Paketorientiert -- bspw. IPv4/IPv6}
-		\item Transport Layer: TCP, UDP, Quicc, MPTCP,...  $\rightarrow$ Datagrams
+		\item Transport Layer TCP, UDP, Quic, MPTCP,...  $\rightarrow$ Datagrams
 	\end{itemize}} 
 & \begin{tabular}{l}
  \begin{tabular}{c}
-           \includegraphics[scale=0.6]{osi}
+ \hspace*{-1.6cm}
+           \includegraphics[scale=0.125]{osi}
            \end{tabular}
 \end{tabular}\\
 \end{tabular}
@@ -209,12 +209,12 @@ morestring=[b]",
 \section{Network Layer}
 \subsection{Aufgaben}
 \begin{frame}
-	\frametitle{Aufgaben des Network Layer}
+	\frametitle{Network Layer}
 	\begin{itemize}
 		\item Weiterleitung von Paketen über Zwischenrechner zum Ziel (Forwarding)
 		\item Wahl der Routen, Anpassung, Optimierung (Routing)
 		\item Vermittlungsarten: Leitungsvermittlung vs. Paketvermittlung
-		\item Für die Übungen: Paketvermittlung
+		\item Für die Übungen (Routing): Paketvermittlung
 	\end{itemize}
 \end{frame}
 
@@ -231,14 +231,11 @@ morestring=[b]",
 			\item Besitzt i.d.R. mehrere Schnittstellen (wie Hub \& Switch)
 			\begin{itemize}
 				\item Raspberry Pi hat nur ein echten physikalischen Ethernet-Adapter
-				\item Ein physikalischer Adapter kann mehrere logische Adressen besitzen
-				\item Bei \emph{IPv6} zwingend notwendig
+				\item Keine Sorge, wir basteln uns mehrere virtuelle Adapter
 			\end{itemize}
 		\end{itemize}				
 	\end{itemize}
 \end{frame}
-
-\section{Gateways}
 \begin{frame}
 	\frametitle{Geräte -- Gateways}
 	\begin{itemize}
@@ -257,21 +254,15 @@ morestring=[b]",
 
 \subsection{Adressierung}
 \begin{frame}
-	\frametitle{Adressierung: Link Layer}
+	\frametitle{Adressierung}
+	\vspace{-0.75cm}
 	\begin{itemize}
 		\item Schicht 2: Physische Adressen
 		\begin{itemize}
 			\item Nachrichtenversand durch Ansprechen tatsächlicher, physischer Geräte
-			\item Weiterleitung vorwiegend elektrisch 
-			\item Minimale Fehlerprüfung
+			\item Weiterleitung vorwiegend elektrisch (Repeater, Hubs) bzw. mit minimaler Fehlerprüfung (Switches)
 		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}
-	\frametitle{Adressierung: Network Layer}
-	\begin{itemize}
-\item Schicht 3: Logische Adressen
+		\item Schicht 3: Logische Adressen
 		\begin{itemize}
 			\item Entkopplung tatsächlich, physischer Ebene von semantisch, logischer Ebene
 			\item Hierarchiebildung auf logischer Ebene (Netzbildung)
@@ -311,14 +302,28 @@ bei jeder Weiterleitung neu adressiert werden
 \begin{frame}
 	\frametitle{Tools II -- OS}
 	\begin{itemize}
-		\item Routing ist deutlich komplexer $\rightarrow$ Aufgabe des Betriebssystems
+		\item Routing ist deutlich komplexer $\rightarrow$ Aufgabe des Betriebssystems bzw. der Hard- \& Software des Routers
 		\item BS sorgt für das Finden von Routen und das weiterleiten von Paketen
-		\item Routing kann statisch oder dynamisch, verteilt oder zentral umgesetzt werden
-		\begin{itemize}
-			\item Dynamisch: Routing-Algorithmen (Dijkstra- \& Bellman-Ford-Algorithmus)
-			\item Statisch: per Hand -- in großen Netzwerken unhandlich und unüblich
-		\end{itemize}
+		\item Routing erfolgt aufgrund von Routing-Algorithmen (Dijkstra- \& Bellman-Ford-Algorithmus)
 		\item Routing muss explizit erlaubt werden!
 	\end{itemize}
 \end{frame}
+
+\section{Empfehlungen}
+\begin{frame}{Nerd-Wochenmarkt}
+Empfehlung der Woche:
+\begin{itemize}
+	\item Request for Comments -- Der RFC Podcast
+	\begin{itemize}
+		\item IP Routing I: \url{https://requestforcomments.de/archives/343}
+		\item IP Routing II: \url{https://requestforcomments.de/archives/351}
+		\item IP Routing III: \url{https://requestforcomments.de/archives/374}   
+	\end{itemize}
+	\item Datengarten des CCCB
+	\begin{itemize}
+		\item Technik und Wahrheit \url{https://media.ccc.de/v/dg-82}
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
 \end{document}

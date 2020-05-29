@@ -36,24 +36,6 @@
     escapeinside={(*}{*)}
 }
 
-\lstdefinestyle{Java}{
-  showspaces=false,
-  showtabs=false,
-  tabsize=2,
-  breaklines=true,
-  showstringspaces=false,
-  breakatwhitespace=true,
-  commentstyle=\color{pgreen},
-  keywordstyle=\color{pblue},
-  stringstyle=\color{pred},
-  basicstyle=\footnotesize\ttfamily,
-  numbers=left,
-  numberstyle=\tiny\color{gray}\ttfamily,
-  numbersep=7pt,
-  %moredelim=[il][\textcolor{pgrey}]{$$},
-  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%},
-  captionpos=b
-}
 
 \lstdefinestyle{basic}{  
   basicstyle=\footnotesize\ttfamily,
@@ -107,7 +89,7 @@ morestring=[b]",
 
 \begin{document}
 \bibliographystyle{alpha}
-\title{Netzwerke -- Übung SoSe 2019}
+\title{Netzwerke -- Übung WiSe2018/19}
 \subtitle{Routing\\
 		\href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
 		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
@@ -141,54 +123,76 @@ morestring=[b]",
 		\item Stand des letzten Übungsblatts
 		\item Fragen?
 	\end{itemize}
+	\item Präsentation des Theorieteils
 \end{itemize}
 \end{frame}
 
 
-\subsection{Requirements}
-\begin{frame}{1.) Requirements}
-Für die Routing Übung sind wichtig:
-\begin{itemize}
-	\item \glqq Sattelfest\grqq\ in \emph{IPv4} \& \emph{IPv6}
+\section{Präsentation}
+\subsection{Routing I}
+\begin{frame}
+\frametitle{1.) Routing}
 	\begin{itemize}
-		\item IP-Adressierung, Aufbau und Nutzung von \emph{IPv4}, \emph{IPv6}
-		\item Aufbau, Funktion, Nutzung von Subnetzmasken	
-	\end{itemize}
-	\item Routing, Routing-Tables, Forwarding
-	\item Topologien \& NW-Architektur
-	\item NAT
-	\item Tooling: \emph{ip addr}, \emph{ifconfig}, \emph{ip route}, \emph{route} \emph{ping}
-	\item \emph{iptables}, \emph{sysctl}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Architektur}
-	\begin{itemize}
-		\item Welche Topologie/Architektur kann für das Netzwerk samt Backbone eingesttzt werden?
-		\item Welche Topoliegie haben Sie für die Umsetzung eines geswitchten LANs benutzt?
+		\item Erläutern Sie die Aufgaben eines Routers! Auf welcher Ebene des OSI-Modells arbeitet der Router, auf welcher der Switch?
+		\item Wie erfolgt im Groben die Umsetzung des Routings? D.h. was macht der Router?
+		\item Nennen Sie einige Routing-Protokolle.
+		\item Ist \emph{IPv4}/\emph{IPv6} ein Routing-Protokoll?
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{IPv4, IPv6}
+\subsection{Routing II}
+\begin{frame}
+	\frametitle{2.) Routing II}
 	\begin{itemize}
-		\item Wie sind \emph{IPv4}-, \emph{IPv6}-Adressen aufgebaut?
-		\item Wie müssen die Subnetzmasken für Ihre NW gesetzt werden, was gilt es zu beachten?
-		\item Wie sehen die Subnetzmasken unter \emph{IPv6} aus?
+		\item Erläutern Sie, wie Router und IP-Protokoll zusammenhängen.
+		\item Erläutern Sie, wenn möglich anhand eines Beispiels, wie sich bis jetzt (Stand letztes Übungsblatt) Ihre Raspberry Pis gefunden haben.
+		\item Erklären Sie wie der Router die Zuordnung der Geräte vornimmt. (D.h. woher weiß ein Router, wann er ein Paket weiterschicken soll und wann nicht.)
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{NAT}
+\subsection{CIDR \& LAN-Umsetzung}
+\begin{frame}
+	\frametitle{3.) CIDR \& Routing -- theoretische Umsetzung}
 	\begin{itemize}
-		\item Was wird unter \emph{NAT} verstanden? Wo und wie wird \emph{NAT} eingesetzt?
+		\item Erläutern Sie die wesentlichen unterscheide zwischen CIDR und klassenbasierten Adressen? (Verdeutlichen Sie dies anhand von Beispielen)
+		\item Diskutieren Sie die theoretische Umsetzung Ihres Netzwerkes! (Inkl. Skizze, IP-Adressen, Subnetzmasken etc.)
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Tooling}
+\subsection{Tools}
+\begin{frame}
+	\frametitle{4.) Tools}
 	\begin{itemize}
-		\item Wie kann die konfiguration der Netzwerkadapter vorgenommen werden?
-		\item Mit welchen Werkzeugen könne \emph{IPv4}-, \emph{IPv6}-Adressen und Subnetzmasken gesetzt werden?
-		\item Wie können Routing-Tabellen bearbeitet werden?
-		\item Wie kann das \emph{NAT} umgesetzt werden?
+		\item Erläutern Sie die Funktion und Syntax des \emph{iproute2}-Tools \emph{ip route}.
+		\item Erläutern Sie analog dazu das Tool \emph{route} aus dem \emph{net-tools}-Werkzeugkasten.
+		\item Diskutieren Sie, wie eine persistente Lösung des Routers aussehen könnte.
 	\end{itemize}
 \end{frame}
+
+\begin{frame}
+\frametitle{5.) Gateways \& Router}
+	\begin{itemize}
+		\item Erklären Sie die den Unterschied zwischen Router und Gateway. Nennen und erläutern Sie unterschiedliche Gateway-Arten. 
+		\item Erläutern Sie den Unterschied zwischen Forwarding und Routing.
+		\item Nennen Sie die für das Routing im Linux-Kernel genutzte Datenstruktur.
+		\item Erläutern Sie im wesentlichen welche zwei Möglichkeiten für das Einschalten des Routings im Linux-OS vorhanden sind. Zeigen Sie die Umsetzung beispielhaft.
+	\end{itemize}
+\end{frame}
+
+\subsection{ICMP}
+\begin{frame}
+\frametitle{6.) ICMP}
+	\begin{itemize}
+		\item Erklären Sie kurz was \emph{ICMP} ist. 
+		\item Erläutern Sie die Fehlermeldungen:
+		\begin{itemize}
+			\item connect: network is unreachable
+			\item Destination Host Unreachable
+			\item Destination Network Unreachable
+			\item keine Antwort auf ein Ping
+		\end{itemize}
+		Was will Ihnen der Rechner hiermit sagen?
+	\end{itemize}
+\end{frame}
+
 \end{document}

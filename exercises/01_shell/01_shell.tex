@@ -34,19 +34,6 @@
 \usepackage{fancyhdr}
 \usepackage{menukeys}
 
-%settings colors for links
-\hypersetup{
-    colorlinks,
-    linkcolor={blue!50!black},
-    citecolor={blue},
-    urlcolor={blue!80!black}
-}
-
-\definecolor{pblue}{rgb}{0.13,0.13,1}
-\definecolor{pgreen}{rgb}{0,0.5,0}
-\definecolor{pred}{rgb}{0.9,0,0}
-\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
-
 \pagestyle{fancy}
 \lhead{Netzwerke Übung (SoSe 2019)}
 \rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
@@ -152,13 +139,13 @@ bck-i-search: _
         \textbf{Kommandos:} \textcolor{blue}{\emph{touch}, \emph{mkdir}, \emph{cd}}
 		\task Überprüfen Sie die Dateigröße der Datei \textit{shell\_tutorial.md}.\\
 		\textbf{Kommandos:} \textcolor{blue}{\emph{ls}, \emph{stat}, \emph{du}}
-		\task Fügen Sie mithilfe der Umleitung der Standardausgabe die Zeilen \glqq Shell Tutorial\grqq, sowie eine Zeile mit dem aktuellen Datum ein.\\
-		\textbf{Kommandos:} \textcolor{blue}{\emph{echo}, \emph{date}, \emph{>>}, bzw. \emph{>}}
+		\task Fügen Sie mithilfe der Umleitung der Standardausgabe die Zeilen \glqq Shell Tutorial\grqq, sowie die Zeile mit dem aktuellen Datum ein.\\
+		\textbf{Kommandos:} \textcolor{blue}{\emph{echo}, \emph{>>}, bzw. \emph{>}}
 		\begin{itemize}
 			\item \small Verwenden Sie für das Einfügen des Textes keinen Editor, sondern einen Befehl und eine Weiterleitung (Umleitung der Standardausgabe).
 		\end{itemize}
 		\task Geben Sie die erste Zeile der Datei auf der Kommandozeile aus.\\
-		\textbf{Kommandos:} \textcolor{blue}{\emph{head}, \emph{tail}, \emph{more}, \emph{less}}
+		\textbf{Kommandos:} \textcolor{blue}{\emph{head}, \emph{tail}}
 		\task Öffnen Sie Ihr Cheat-Sheet mithilfe das Programms \emph{gedit} bzw. \emph{retext}. Notieren Sie sich alle Befehle, sowie deren Bedeutung, sodass Sie eine erste Anlaufstelle für die nächsten Übungen haben. Dieses Dokument (Sie können auch mehrere anlegen) sollten Sie fortan als Notizzettel für die Laboraufgaben nutzen!
 		\task Navigieren Sie in Ihr Heimatverzeichnis. Legen Sie folgenden Ordner, sowie Unterordner mithilfe des \emph{mkdir}-Kommandos an: \path{exercise_notes/tutorials}.
 		\task Kopieren Sie die Datei bzw. den Ordner \emph{shell\_tutorial} in das eben angelegte Verzeichnis.\\
@@ -177,16 +164,16 @@ bck-i-search: _
           \task Lassen Sie sich den Namen ihres Rechners ausgeben.\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{hostname}}
           \task Legen Sie einen Ordner \emph{.nfo} an. Schreiben Sie die Ausgaben Ihres Nutzernamens, Gruppenzugehörigkeit sowie den Namen des genutzten Rechners in die Datei \emph{info.nfo} in den Ordner \emph{.nfo}.
-          \task Nutzen Sie \emph{ls} und prüfen Sie, ob Sie den Ordner wiederfinden können! Finden Sie heraus, wie Sie mithilfe des \emph{ls} Kommandos trotzdem diesen versteckten (hidden folder) Ordner finden können.   
+          \task Nutzen Sie ls und prüfen Sie, ob Sie den Ordner wiederfinden können! Finden Sie heraus, wie Sie mithilfe des \emph{ls} Kommandos trotzdem diesen versteckten (hidden folder) Ordner finden können.   
           \task Öffnen Sie ein zweites Terminal und melden Sie sich mit dem Kommando:
           \begin{itemize}
-          \item[\$]ssh s0XXXX@uranus-ai.f4.htw-berlin.de
+          \item[\$]ssh s0XXXX@uranus.f4.htw-berlin.de
           \end{itemize}
            auf dem Server Uranus an (s0XXXX entspricht hierbei Ihrer Matrikelnummer). \footnote{Falls Sie sich nicht auf den Uranus verbinden können, nutzen Sie den vor Ihn stehenden Pluto-Rechner} \\
            Lassen sich ihren Nutzernamen und ihre Gruppenzugehörigkeit, wie auch den Rechnernamen ausgeben. Schreiben Sie den Inhalt dieses mal in eine Datei \emph{s0XXXXX.nfo}.\\
            Mit folgendem Kommando können Sie die Datei remote kopieren: 
            \begin{itemize}
-          \item[\$]scp s0XXXX@uranus-ai.f4.htw-berlin.de:\textasciitilde /s0XXXXX.nfo \textasciitilde/.nfo/
+          \item[\$]scp s0XXXX@uranus.f4.htw-berlin.de:\textasciitilde /s0XXXXX.nfo \textasciitilde/.nfo/
           \end{itemize}
           \task Vergleiche Sie die beiden Dateien!\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{diff}}
@@ -194,7 +181,7 @@ bck-i-search: _
           \textbf{Kommandos:} \textcolor{blue}{\emph{rm}}
           \task Wie finden Sie heraus, welche Benutzer noch auf dem Uranus-Server eingeloggt sind und wie lange diese auf dem Server angemeldet sind.\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{who}, \emph{last}, \emph{lastlog}}
-          \task Bringen Sie auf beiden Systemen das genutzte Betriebssystem (Distribution), sowie dessen Kernel in Erfahrung.\\
+          \task Bringen Sie auf beiden Systemen das genutzte Betriebssystem, sowie dessen Kernel in Erfahrung.\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{lsb\_release}, \emph{cat \path{/etc/os-release}}, \emph{uname}}
           \task Loggen Sie sich aus dem Uranus-Server aus.\\
           \textbf{Kommandos:} \textcolor{blue}{\emph{exit}, \keys{\ctrl +d}}
@@ -229,18 +216,16 @@ Die Man-Pages finden Sie als Website auch im Internet. \footnote{\url{https://li
         \task Nennen Sie Möglichkeiten den Inhalt der Datei \textit{reboot\-\_permission.txt} anzeigen lassen. Welche Rechte besitzt diese Datei?
         \task Wie würde das Kommando lauten um die Rechte der Datei \textit{reboot\-\_permission.txt} so zu ändern, sodass der Nutzer lesen und schreiben kann, Nutzer der gleichen Gruppe nur lesen und alle anderen keinen Zugriff haben. (Jeweils oktal und symbolisch.) 
         \task Können Sie den Laborrechner mit dem Kommando \textit{reboot} neu starten? Falls nicht, warum? 
-        \task Führen Sie einen Reboot des Systems durch -- Achtung speichern Sie alle offenen Dateien, sodass Sie keine ungespeicherten Daten verlieren!
+        \task Führen Sie einen Reboot des Systems durch -- Achtung speichern Sie alle offenen Dateien, sodass Sie keine eventuellen Daten verlieren!
   \end{tasks}
-  \item Was ist nach dem Neustart aus dem Ordner der Aufgabe \texttt{A Shell Basic -- 2h)} geworden?
+  \item Was ist nach dem Neustart aus dem Ordner der Aufgabe \emph{A Shell Basic -- 2h)} geworden?
 \end{enumerate}
 \begin{center}\Large{\textbf{VI/Vim}}\end{center}\vskip0.25in
 \begin{enumerate}
 	\item Der Standardeditor unter Unix ist \emph{vi}, dieser ist auf jedem System vorhanden. Bearbeiten Sie folgendes Tutorial:\\
-	\url{http://www.openvim.com/}\\
-	Ein Cheat-Sheet kann unter:\\
-	\url{https://www.fprintf.net/vimCheatSheet.html}\\
-	bezogen werden, sodass die Nutzung etwas leichter fällt.\\
-	Sie müssen zunächst kein vi-Guru werden, jedoch sollten Sie wissen, wie Dateien geöffnet, geschlossen, gespeichert werden, sowie wie im vi/vim navigiert wird und wie Sie den vi verlassen können. Notieren Sie sich in Ihrem Cheat-Sheet wie Sie vorgegangen sind!
+	\url{http://www.openvim.com/}
+	Eine Cheat-Sheet kann unter: \url{https://www.fprintf.net/vimCheatSheet.html} bezogen werden, sodass die Nutzung etwas leichter fällt.\\
+	Sie müssen zunächst kein vi-Guru werden, jedoch sollten Sie wissen, wie Dateien geöffnet, geschlossen, gespeichert werden, sowie wie im vi/vim navigiert wird und wie sie den vi verlassen können. Notieren Sie sich in Ihrem Cheat-Sheet wie sie vorgegangen sind!
 	\item Speichern Sie ihr Cheat-Sheet ab! In der nächsten Übung kopieren Sie sich diesen Notizzettel auf Ihren Raspberry Pi.
 \end{enumerate}
 
@@ -252,7 +237,7 @@ Zusammenfassend: Eine IP-Adresse ist nichts anderes als ein eindeutige Netzwerka
 \begin{enumerate}
 	\item Finden Sie die IPv4-Adresse Ihres Rechners heraus. Es gibt mehrere Möglichkeiten dies zu tun!\\
 	\textbf{Kommandos:} \textcolor{blue}{\emph{ip addr}, \emph{ifconfig}}
-	\item Neben Ihrem Rechner sind auch die Rechner der Kommilitonen im Labornetz erreichbar. Ähneln sich die Adressen der Rechner? Liegt den Adressen ein bestimmtes Schema zu Grunde?\\
+	\item Neben Ihren werden auch die Rechner der Kommilitonen im Labornetz erreichbar sein, sehen sich Ihre Adressen ähnlich? Liegt dem Adressen ein bestimmtes Schema zu Grunde?\\
 	\item Diskutieren Sie was hinter dem Adressierungsschema stecken könnte.
 \end{enumerate}
 

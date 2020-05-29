@@ -137,9 +137,9 @@ cat /etc/os-release
 	\item[7.)] Nutzen Sie diese Information um im Falle von Fehlern/ Fehlkonfigurationen für das Betriebssystem nach möglichen Lösungen zu recherchieren. Es ist schlau in einer Suche den Namen des Betriebssystems vorkommen zu lassen. Sie wollen keine Lösungen für Windows finden.
 	\item[8.)] In der letzten Laborübung haben Sie bereits begonnen sich ein Cheat-Sheet zu schreiben. Dieses können Sie weiterentwickeln. Mit folgendem Befehl kopieren Sie den Ordner der letzten Übung. 
 	\begin{lstlisting}[style=Bash, language=Bash]
-scp -r s0xxxxxx@uranus-ai.f4.htw-berlin.de:~/exercise_notes/tutorials/ ~/
+scp -r s0xxxxxx@uranus.f4.htw-berlin.de:~/exercise_notes/tutorials/ ~/
 		\end{lstlisting}
-		Darüber hinaus sind einige Cheat-Sheets im Ordner \path{~/share/lehrende/troester/netzwerke/exercises/cheat_sheets/} verfügbar.
+		Darüber hinaus sind einige Cheat-Sheets im Ordner \path{~/share/lehrende/troester/netzwerke/exercises/cheat_sheets} verfügbar.
 \end{itemize}
 	
 \begin{center}
@@ -185,23 +185,22 @@ haben, sein Gateway kennen und das DNS richtig konfiguriert sein, der Webserver 
 In der Hausaufgabe haben Sie ein kleines Netzwerk geplant, dies soll in Vierergruppen mit der vorhandenen Hardware umgesetzt werden.
 \begin{itemize}
 	\item[1.)] Beschriften Sie die Skizze aus der Planungsphase mit Gerätename und evtl. den Namen der Gruppenmitglieder.
-	\item[2.)] Legen Sie für die Gruppe eine Netzwerkadresse samt Subnetzmaske fest.\\
-	Das Netzwerk sollte der IP-Range 10.0.$X.Y$ genügen. D.h. $X$ ist durch ihre Bankreihe bestimmt und $Y$ entspricht dem Host.\\
-	Die IP-Adressen 10.0.0.0 und 10.0.0.255 können nicht belegt werden.
-	\item[3.)] Vergeben Sie für jeden Raspberry Pi eine \emph{IPv4}-Adresse, tragen Sie diese auf Ihrer Skizze ein.
+	\item[2.)] Legen Sie für die Gruppe eine Netzwerkadresse/ IP-Adresse und Subnetzmaske fest. Das Netzwerk sollte der IP-Range 10.0.X.Y genügen. D.h. $X$ ist durch ihre Bankreihe bestimmt und $Y$ entspricht dem Host. Die IP-Adressen 10.0.0.0, 10.0.0.254 und 10.0.0.255 können nicht belegt werden.
+	\item[3.)] Vergeben Sie für jeden Raspberry Pi eine IP-Adresse, tragen Sie diese auf Ihreer Skizze ein.
 	\item[4.)] Umsetzen der Konfiguration:
+%\begin{tasks}[counter-format=(tsk[r])](1)
 \begin{tasks}(1)
-	\task Lassen Sie sich im Terminal die aktuelle Netzwerkkonfiguration mit \emph{ifconfig} und \emph{ip addr} anzeigen. Haben Sie eine IP-Adresse (\emph{inet}) und Subnetzmaske (\emph{netmask})?
-	\task Richten Sie die Raspberry Pis mit den Ihnen bekannten Befehlen ein und notieren Sie sich die Kommandos in Ihrem Cheat-Sheet. D.h. Sie müssen nun manuell \emph{IPv4}-Adressen vergeben, sodass Ihre Raspberry Pis miteinander kommunizieren können. Nutzen Sie hierfür Werkzeuge aus beiden Werkzeugkästen (\emph{iproute2}, \emph{net-tools}).
-	\task Lassen Sie sich im Terminal die neue Netzwerkkonfiguration mit \emph{ifconfig} oder \emph{ip addr} anzeigen.
+	\task~ Lassen Sie sich im Terminal die aktuelle Netzwerkkonfiguration mit \emph{ifconfig} und \emph{ip addr} anzeigen. Haben Sie eine IP-Adresse (inet) und Subnetzmaske (netmask)?
+	\task~ Richten Sie die Raspberry Pis mit den Ihnen bekannten Befehlen ein und notieren Sie sich die Kommandos in Ihrem Cheat-Sheet. D.h. Sie müssen nun manuell IP-Adressen vergeben, sodass Ihre Raspberry Pis miteinander kommunizieren können. Nutzen Sie hierfür Werkzeuge aus beiden Werkzeugkästen (\emph{iproute2}, \emph{net-tools}).
+	\task~ Lassen Sie sich im Terminal die neue Netzwerkkonfiguration mit \emph{ifconfig} oder \emph{ip addr} anzeigen.
 \end{tasks}
 \item[4.)] Testen des Netzes
 \begin{tasks}(1)
-	\task Testen Sie, ob sich Ihre Raspberry Pis gegenseitig mit dem Befehl \emph{ping} \glqq anpingen\grqq\ können. Lassen Sie dabei einen der drei anderen Raspberry Pis außen vor und merken Sie sich welcher das war.
-	\task Starten Sie Ihren Raspberry Pi per Kommandozeile neu. Pingen Sie einen der beiden bereits \glqq angepingten\grqq\ Raspberry Pis erneut an. Funktioniert es immer noch?
-	\task Lassen Sie sich die Netzwerkkonfiguration erneut anzeigen.
-	\task Setzen Sie eine persistente Netzwerkkonfiguration mittels Dateien um.
-	\task Setzen Sie alle vorgenommenen Konfigurationen zurück. D.h. Sie müssen veränderte Systemdateien in den ursprünglichen Zustand zurücksetzen. Es stehen einige Shell-Skripte bereit. Diese laufen mit root-Rechten und müssen daher mit dem Schlüsselwort \emph{sudo} ausgeführt werden.
+	\task~ Testen Sie, ob sich Ihre Raspberry Pis gegenseitig mit dem Befehl \emph{ping} \glqq anpingen\grqq\ können. Lassen Sie dabei einen der drei anderen Raspberry Pis außen vor und merken Sie sich welcher das war.
+	\task~ Starten Sie Ihren Raspberry Pi per Kommandozeile neu. Pingen Sie einen der beiden bereits \glqq angepingten\grqq\ Raspberry Pis erneut an. Funktioniert es immer noch?
+	\task~ Lassen Sie sich die Netzwerkkonfiguration erneut anzeigen.
+	\task~ Setzen Sie eine persistente Netzwerkkonfiguration mittels Dateien um. Nutzen Sie dabei einen Commandline-Editor ihrer Wahl z.B. \emph{vi/vim} oder \emph{emacs}.
+	\task~ Setzen Sie alle vorgenommenen Konfigurationen zurück. D.h. Sie müssen veränderte Systemdateien in den ursprünglichen Zustand zurücksetzen. Es stehen einige Shell-Skripte bereit. Diese laufen mit root-Rechten und müssen daher mit dem Schlüsselwort \emph{sudo} ausgeführt werden.
 	\begin{itemize}
 		\item Mithilfe des Scripts \emph{reset\_network\_config.sh} können Sie die \path{/etc/network/interfaces} zurücksetzten
 		\item Das Kommando \emph{systemctl enable dhcpcd} sorgt dafür, dass der DHCP-Client-Dämon dauerhaft aktiviert wird.
@@ -212,8 +211,8 @@ In der Hausaufgabe haben Sie ein kleines Netzwerk geplant, dies soll in Vierergr
 \begin{center}\Large{\textbf{Fakultativ -- Here be Dragons... Network-Discovery}}\end{center}\vskip0.25in
 Nachdem Sie Ihr System wieder in die Ausgangslage versetzt haben, sollen Sie im nächsten Schritt das Labornetzwerk erkunden. Frei nach dem Motto \glqq Here be dragons\grqq \footnote{\url{https://en.wikipedia.org/wiki/Here_be_dragons}} sind im Labor neben den Raspberry Pis auch andere Maschinen Online. In späteren Übungen werden Sie diese fragwürdigen Geräte genauer begutachten.
 \begin{enumerate}
-	\item Ein Tool um Informationen über Geräte im LAN zu sammeln sind \emph{arping} und \emph{arp-scan}. Schauen Sie in der Manpage oder in der Hilfe nach, wie diese Tools zu nutzen sind. 
-	\item Erstellen Sie sich eine kurze Übersicht über die aktiven Maschinen im Netzwerk. Neben Ihren Raspberry Pis sollten auch andere Systeme auftauchen. Die Unterscheidung kann mithilfe der Adressen als auch anhand der Hostnamen erfolgen.
+	\item Ein Tool um Informationen über Geräte im LAN zu sammeln sind \emph{arping} und \emph{arp-scan}. Schauen Sie in der Manpage oder in der Hilfe nach, wie diese Tools zu nutzen sind, wenn Sie alle lokal erreichbaren Rechner ermitteln wollen
+	\item Erstellen Sie sich eine kurze Übersicht über die aktiven Maschinen im Netzwerk. Neben Ihren Raspberry Pis sollten auch andere Systeme auftauchen. Die Unterscheidung kann mithilfe der Adressen als auch anhand der Hostnamen erfolgen. Bei den Adressen müssen Sie nur schauen, welche Hosts nicht den im Aufgabenteil \emph{C} gestellten Adressschema genügen.
 	\item Sie sollen noch ein wenig mehr über die dubiosen Maschinen in Erfahrung bringen. Mit dem Tool \emph{nmap} können Sie einen Port-Scan starten. Dies ermöglicht Ihnen herauszufinden, welche Dienste auf den jeweiligen Maschinen laufen.\\
 	Starten Sie einen Port-Scan!\\
 	Die Ausgabe liefert Ihnen einige Informationen -- offene Ports sind Dienste die das System im Netzwerk für andere Teilnehmer anbietet. Manche können auch direkt im Webbrowser aufgerufen werden, beispielsweise die Ports 80 und 443 (viele andere auch, diese beiden sind jedoch die Standardports für HTTP-Websites).
