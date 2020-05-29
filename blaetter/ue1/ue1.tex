@@ -1,0 +1,200 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%LaTeX template for papers && theses									%%
+%%Done by the incredible ||Z01db3rg||									%%
+%%Under the do what ever you want license								%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage[pdftex,hidelinks]{hyperref}%for links to web
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+
+\pagestyle{fancy}
+\lhead{Benjamin Tröster\\Netzwerke Seminaristische Übung (WS17/18)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 1 -- Grundlagen Linux \& Shell}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+\pdfpkresolution=2400%higher resolution
+
+%settings colors for links
+%\hypersetup{
+ %   colorlinks,
+  %  linkcolor={blue!50!black},
+   % citecolor={blue},
+    %urlcolor={blue!80!black}
+%}
+
+%\usepackage[pagetracker=true]{biblatex}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+
+\DeclareMathOperator{\id}{id}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Übungsblatt 1 -- Shell Grundlagen}
+}
+
+\begin{document}
+\center
+\Large{\textbf{Übungsblatt 1 -- Shell Grundlagen}}\\
+\large{\textbf{\textcolor{red}{Hinweis:} Versuchen Sie die Übungsblätter soweit wie möglich ohne Hilfe von Google, Stackoverflow, Stackexchange zu lösen. Sie sollen eigene Lösungswege finden und nicht professionell Suchmaschinen bedien können. Ausnahmen sind natürlich Aufgaben, in denen explizit recherchiert werden soll}
+\begin{center}\Large{\textbf{Shell}}\end{center}\vskip0.25in
+%\setlist[enumerate, 1]{itemsep=\baselineskip}
+\begin{enumerate}
+\item Navigation:\\
+Ziel dieser Aufgabe ist die grundlegende Navigation unter Linux zu verstehen.\\
+  
+	\begin{itemize}
+		\item[a)] Mit folgendem Befehl laden sie die eine Liste mit Befehlen in ihr Downloadverzeichnis. Tippen sie Jedes Zeichen, auch Leerzeichen, ab und bestätigen Sie den Befehl mit Enter:\\
+		\begin{lstlisting}[style=Bash, language=Bash]
+$ cd Downloads && curl -O https://files.fosswire.com/2007/08/fwunixref.pdf
+		\end{lstlisting}
+
+		 Im Verzeichnis Downloads befindet sich nun ein PDF-Dokument, dass die wesentlichen Kommandos für den Umgang mit dem Terminal enthält. Zu jedem Kommando ist eine Kurzbeschreibung vorhanden. Öffnen Sie die Datei im Dateimanager und lösen Sie mit ihrer Hilfe folgende Aufgaben. Es können ein oder mehrere Befehle auf der Kommandozeile auszuführen sein.
+		\item[b)] Lassen Sie sich ihr aktuelles Verzeichnis auf der Kommandozeile ausgeben!
+		\item[c)] Lassen sie sich den Inhalt des Verzeichnisses ausgeben.
+		\item[d)] Navigieren Sie via cd in den Ordner \path{/var}
+		\item[e)] Springen Sie vom vorherigen Ordner in den übergeordneten Ordner
+		\item[f)] Navigieren Sie in ihr Heimatverzeichnis.
+		\item[g)] Recherchieren Sie den Unterschied zwischen relativen und absoluten Pfaden in Dateisystemen.
+		\item[h)] Lassen Sie sich mit dem Befehl \glqq history\grqq\ die letzten Befehle Anzeigen, die im Terminal ausgeführt wurden. 
+		\item[i)] Benutzen sie die Pfeiltasten \keys{\arrowkeyup} und \keys{\arrowkeydown} um die letzten Befehle auf die Commandline zu bringen. Hiermit können Sie Sie durch die History navigieren, wobei \keys{\arrowkeyup} in Richtung älterer Befehle navigiert.
+		\item[j)] Pfade zu einem Verzeichnis kann man relativ und absolut Angeben. Recherchieren sie den Unterschied.
+		\item[k)] Mit der Tastenkombination \keys{\ctrl +r} öffnen Sie ein interaktive Suche der History. Unter Ihrem Command-Prompt erscheint folgendes:\\
+		\begin{lstlisting}[style=Bash, language=Bash]
+bck-i-search: _
+		\end{lstlisting}
+		In diesem können Sie nach bereits benutzten Befehlen such. Wenn Sie beispielsweise cd Eingeben sehen Sie den zuletzt genutzten Befehl, durch wiederholtes drücken dieser Kombination können sie nach allen Befehlen die History durchsuchen, die die Suchwörter enthält.
+	\end{itemize}
+
+  \item Sie sollen Ihre eigene HTW-Internetseite ins Netz stellen. Dazu sollen Dateien angezeigt, erzeugt, umbenannt, verschoben und kopiert werden. Zunächst soll eine Datei offline angelegt werden, anschließend bereiten Sie diese vor, sodass Sie als Ihre persönliche HTW-Seite im Netz steht.\\
+        \begin{tasks}(1)
+        \task Um lästige Tipparbeit zu vermeiden bieten viele Shells eine Autovervollständigung an. Mit \keys{\tab}-Taste können die nutzen -- Sie müssen lediglich die ersten Buchstaben tippen und können durch (mehrmalige) drücken \keys{\tab}`s den begonnenen Befehl vervollständigen.  
+        \task Erzeugen Sie das Verzeichnis \textit{website\_online} und wechseln Sie in das Verzeichnis, erzeugen Sie darin eine leere Datei mit dem Dateinamen \textit{hello\_home.txt}.
+	\begin{itemize}
+		\item[•] \small Verwenden Sie zum Anlegen der Datei keinen Editor, sondern einen Kommandozeilenbefehl.
+		\end{itemize}
+		\task Überprüfen Sie die Dateigröße der Datei \textit{hello\_home.txt}. 
+		\task Fügen Sie in die Datei die Zeilen \glqq Hello Home\grqq, sowie die Zeile 'Dieser Text ist noch offline' ein.
+		\begin{itemize}
+			\item \small Verwenden Sie für das Einfügen des Textes keinen Editor, sondern einen Befehl und eine Weiterleitung.
+		\end{itemize}
+		\task Geben Sie die erste Zeile der Datei auf der Kommandozeile aus.
+		\task Wechseln Sie in ihr Heimat-Verzeichnis und erstellen Sie dort den Ordner \textit{public\_html}. Dieser Ordner kann so modifiziert werden, dass das Verzeichnis über das Internet erreichbar ist. Kopieren Sie hierzu die Datei \textit{hello\_home.txt} in Ihr \textit{public\_html}-Verzeichnis.
+		\task Benennen Sie die eben kopierte Datei \textit{hello\_home.txt} in \textit{index.html} um.
+		\task Der Fachbereich 4 betreibt einen Webserver, der die Inhalte des \textit{public\_html} anzeigt kann. Unter der Adresse \url{https://studi.f4.htw-berlin.de/~s0XXXXXX} finden Sie Ihre abgelegte Seite. Versuchen Sie die Seite mittels eines Browsers zu öffnen.
+		\task Die Seite ist über den Browser noch nicht erreichbar. Lassen Sie sich die Rechte der Datei \textit{index.html} anzeigen. Die Datei sollte noch keine Leserechte, setzen Sie die entsprechende Rechte. Welche Nutzer müssen Lesezugriff bekommen? Laden Sie anschließend erneut die Website über den Browser (\keys{f5}).
+		\task Der Inhalt stimmt nun nicht mehr. Öffnen Sie die Datei in einem Editor (vi, vim, emacs, nano, gedit) und ändern Sie den Inhalt. z.B. in \glqq Hello World!\grqq.
+		\task Leeren Sie den Inhalt der Datei \textit{hello\_home.txt} und schreiben Sie zwei Zeilen z.B. \glqq Aktuelles:\grqq und \glqq 16.10.2017 Erste Übung\grqq.
+		\task Hängen Sie mit einem Befehl den Inhalt von \textit{hello\_home.txt} and die \textit{index.html} an.
+          \task Kopieren Sie die Datei(en) des Ordners \textit{public\_html} in das Verzeichnis \path{/var} .
+        \end{tasks}
+  
+
+  \item Basic Commands:
+        \begin{tasks}(1)       
+          \task Lassen Sie sich ihren Nutzernamen und ihre Gruppen auf dem Terminal ausgeben. 
+          \task Melden Sie sich mit dem Kommando:
+          \begin{itemize}
+          \item[\$]ssh s0XXXX@uranus.f4.htw-berlin.de
+          \end{itemize}
+           auf dem Server Uranus an und lassen sich ihren Nutzernamen und ihre Gruppenzugehörigkeit ausgeben. Gibt es Unterschiede in den Gruppen- oder Nutzernamen? 
+           \item Warum können Sie sich mit gleichen Nutzernamen an zwei Systemen gleichzeitig anmelden? Könnten Sie sich erneut vom Laborrechner aus am Uranus-Rechner anmelden?
+          \task Wie finden Sie heraus, welche Benutzer noch auf dem Uranus-Server eingeloggt sind und wie lange diese auf dem Server angemeldet sind.
+          \task Lassen Sie sich den Namen ihres Rechners ausgeben (einmal auf dem Laborrechner und einmal auf dem Uranus).
+          \task Loggen Sie sich aus dem Uranus-Server aus.
+          \task Viele Linux-Systeme habe eine Quota -- eine Beschränkung des Speicherverbrauchs, ist diese auf den Laborrechnern vorhanden? Falls ja, wie sieht diese aus? (Aktuell ist der Befehl Quota nicht installiert, mithilfe von \textbf{df -h} könne Sie sich dennoch den Status des Dateisystems ausgeben lassen.
+        \end{tasks}
+ 
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Manpages \& Hilfe}}\end{center}\vskip0.25in
+Nicht immer hat man eine so hilfreiche PDF zur Hand. Im folgenden lernen Sie verschiedene Informationsquellen für Befehle kennen.
+\begin{enumerate}
+	\item Führen Sie den Befehl \glqq info\grqq aus und manövrieren Sie sich mit \keys{\tab}, den Pfeiltasten und \keys{\return} durch die Hilfe. Schließen mit \keys{q}.
+	\item Suchen Sie sich einen Befehl aus, der heute schon benutzt oder genannt wurde und versuchen Sie den Parameter --help, -help oder -h um eine kurze Übersicht über den Befehl zu bekommen.
+    \item Geben Sie durch: 
+    \begin{lstlisting}[style=Bash, language=Bash]
+man HIERBEFEHLEINFUEGEN
+		\end{lstlisting}
+		den eben gewählten Befehl ein, sodass das Manual (die sogenannte Man-Page) zum Befehl geöffnet wird.\\
+		 Nutzen Sie die Pfeiltasten, die Bild hoch/runter (\keys{pageup \arrowkeyup}/ \keys{pageup \arrowkeydown}) oder Leertaste (\keys{\Space}) Tasten zum lesen. Schließen mit \keys{q}.
+		\item Die Man-Pages finden Sie als Website auch im Internet. Suchen sie nach \glqq man page\grqq\ und einem Befehl in einer Suchmaschine.
+\end{enumerate}
+\begin{center}\Large{\textbf{User \& Rechte}}\end{center}\vskip0.25in
+%\setlist[enumerate, 1]{itemsep=\baselineskip}
+\begin{enumerate}
+
+\item Nutzer \& Gruppen -- Rechte für alle!
+	\begin{tasks}(1)
+        \task Erklären Sie die Bedeutung der Spalten 1 -- 7 der Ausgabe ls -la in ihrem Heimatverzeichnis.
+        \task Finden Sie die Datei/ das Programm \textit{reboot}, die den Neustart des Systems veranlassen kann. Lassen Sie sich die Rechte der Datei \textit{reboot} ausgeben!
+        \task Wer ist der Eigentümer und wie sehen die Berechtigungen für Nutzer, Gruppe und Andere in symbolischer, oktaler und binärer Schreibweise aus?
+        \task Schreiben Sie die Ergebnisse der vorigen Aufgabe in die Datei \textit{reboot\-\_permission.txt}.
+        \task Nennen Sie Möglichkeiten sich den Inhalt der Datei \textit{reboot\-\_permission.txt} anzeigen lassen. Welche Rechte besitzt diese Datei?
+        \task Ändern Sie die Rechte der Datei \textit{reboot\-\_permission.txt}, sodass der Nutzer lesen und schreiben kann, Nutzer der gleichen Gruppe nur lesen und alle anderen keinen Zugriff haben nur mithilfe der Oktaldarstellung. 
+        \task Geben Sie den Nutzern von Others lesenden Zugriff mithilfe der symbolischen Schreibweise.
+        \task Können Sie den Laborrechner mit dem Kommando \textit{reboot} neu starten? Falls nicht, warum? 
+        \task Warum können Sie trotzdem einen Neustart über die grafische Oberfläche durchführen?
+  \end{tasks}
+  \item Was ist nach dem Neustart aus dem Ordner der Aufgabe Shell -- 2k) geworden?
+\end{enumerate}
+
+\end{document}

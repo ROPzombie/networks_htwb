@@ -1,0 +1,177 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%LaTeX template for papers && theses									%%
+%%Done by the incredible ||Z01db3rg||									%%
+%%Under the do what ever you want license								%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage[pdftex,hidelinks]{hyperref}%for links to web
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+
+\pagestyle{fancy}
+\lhead{Benjamin Tröster\\Netzwerke Seminaristische Übung (WS17/18)}
+\rhead{\includegraphics[scale=0.5]{htw2}}
+\lfoot{Übungsblatt 6 -- Application Layer}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  %linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+\pdfpkresolution=2400%higher resolution
+
+%settings colors for links
+%\hypersetup{
+ %   colorlinks,
+  %  linkcolor={blue!50!black},
+   % citecolor={blue},
+    %urlcolor={blue!80!black}
+%}
+
+%\usepackage[pagetracker=true]{biblatex}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\begin{document}
+\begin{center}
+~\\
+\Large{\textbf{Übungsblatt 6 -- Application Layer}}
+\end{center}
+\large{\textbf{\textcolor{red}{Hinweis:} Versuchen Sie die Übungsblätter soweit wie möglich ohne Hilfe von Google, Stackoverflow, Stackexchange zu lösen. Sie sollen eigene Lösungswege finden und nicht professionell Suchmaschinen bedien können. Ausnahmen sind natürlich Aufgaben, in denen explizit recherchiert werden soll}
+
+\begin{center}\Large{\textbf{Aufgabe A -- Secure Shell mit openSSH}}\end{center}\vskip0.25in
+Die folgenden Aufgaben stellen verschiedene Arten der verschlüsselten Kommunikation zwischen Prozessen oder Rechnern dar -- von einer einfachen Verschlüsselung einzelner Ports zum sicheren Zugriff auf einzelne Dienste. Auch das Aufsetzen eines kompletten VPN, das transparent für alle darüber laufenden Services ist, wäre mit SSH möglich.\\
+\paragraph{Voraussetzungen:}
+Da Sie bis jetzt Ihr eigenes Netzwerk aufgesetzt haben und u.U. kein DNS und Uplink ins Internet vorhanden ist, sollte dies geändert werden. In diesem Fall können Sie alle persistierten Einträge löschen und anschließend die Raspberry Pis mit DHCP betreiben.\\
+Sie sollte hierfür die Konfigurationen in der \emph{/etc/network/interfaces} überprüfen (default in Raspbian -- s. Listing \ref{interfaces}).
+\begin{lstlisting}[style=Bash, language=Bash]
+# interfaces(5) file used by ifup(8) and ifdown(8)
+
+# Please note that this file is written to be used with dhcpcd
+# For static IP, consult /etc/dhcpcd.conf and 'man dhcpcd.conf'
+
+# Include files from /etc/network/interfaces.d:
+source-directory /etc/network/interfaces.d
+\end{lstlisting} \label{interfaces}
+Wenn Sie den DNS-Dienst selbst konfiguriert haben, ändern Sie entsprechend die \emph{/etc/resolv.conf}. Anschließend muss der Networking-Service abgeschaltet und das DHCP wieder eingeschaltet werden. Achten Sie darauf, dass Ihre Hostnames korrekt gesetzt wurden, d.h. sowohl in der \emph{/etc/hostname} als auch in der \emph{/etc/hosts}.
+\begin{lstlisting}[style=Bash, language=Bash]
+#Abschalten des Networking-Service
+sudo systemctl status networking.service
+sudo systemctl stop networking.service
+sudo systemctl disable networking.service
+# Einschalten des DHCP
+sudo systemctl enable dhcpcd
+reboot
+# Nach dem Reboot
+sudo systemctl status dhcpdcd
+ping -c 1 google.de
+\end{lstlisting} \label{dhcp}
+\begin{enumerate}
+\item Loggen Sie sich auf dem Raspberry Pi ein. Auf den Raspberry Pis kann mit \emph{startx} die GUI gestartet werden, sodass Sie die Verbindungen auch via Wire\-shark analysieren können. 
+\begin{tasks}(1)
+	\task Loggen Sie sich via SSH auf dem Uranus-Server (\url{uranus.f4.htw-berlin.de}) ein!\\ \textbf{Alternativ} können Sie sich auch auf einen anderen Raspberry Pi einloggen.
+	\task Was bedeuten die Abfragen zur \glqq authenticity\grqq\ die Ihnen beim ersten mal gestellt wird.
+	\task Wie können Sie den Fingerprint prüfen? Mit welchem Programm können Sie sich diesen anzeigen lassen?\\ Bspw.:. \small{ \emph{SHA256:KsUg4lOc91/iJBYFkQhxeI/YGkcnKV2uKUXFNP1ymiw root@xen (ECDSA)}})
+	\task Starten Sie in Wireshark einen neuen Traffic-Mitschnitt auf dem Netzwerk-Interface \emph{eth0}. Anschließend soll eine neue SSH-Session von einem anderen Rechner gestartet werden. Analysieren Sie auszugsweise die entsprechenden Pakete! Was wird von Traffic verschlüsselt, was können Sie einsehen? 
+	\item Finden Sie das OSI-Modell bei der Analyse wieder? D.h. ist dort eine Art Hierarchie/ Verschachtelung wiederzuerkennen?
+	\item Sie müssen sich bis jetzt immer via Passwort authentifizieren, d.h. Ihr Login erfolgt aufgrund eines Passworts. Ist Ihr Passwort in einem der ersten Pakete zu finden? Wenn es nicht zu finden ist, wie können Sie sich dennoch erfolgreich anmelden?
+	\task Wenn Sie die entsprechenden Wireshark Mitschnitte ausgewertet haben, ist Ihnen aufgefallen, dass dort ein \glqq Key Exchange\grqq stattfindet. Welches kryptografische Verfahren wird dort verwendet und ist dies eine symmetrisches oder asymmetrisches Kryptografieverfahren?
+\end{tasks}
+\item Ermöglichen Sie nun das Login mittels SSH zum Linux-SSH-Server \textbf{ohne} das Nutzerpasswort angeben zu müssen. \textbf{Achtung:} Wenn Sie sich auf dem Uranus ohne Passwort anmelden wollen, muss eine bereits existierende SSH-Verbindung auf dem Uranus-Server vorhanden sein, da ihr Home-Directory erst im Anschluss gemountet wird und ihr hinterlegter Public-Key ansprechbar ist.
+\begin{tasks}(1)
+	\task Generieren Sie sich einen SSH-Schlüssel! Recherchieren Sie \textbf{kurz} welche Schlüssellänge und welche Schlüsselarten für Ihren Einsatz im Labor sinnvoll sind. Wie hängen Schlüssellänge und Sicherheit zusammen?
+	\item Beim generieren des Schlüssels werden Sie aufgefordert eine Passphrase einzugeben. Was ist das und ist die Passphrase gleichzusetzen mit dem Schlüssel oder Passwort? 
+	\task Verbindung von Linux zu Linux: Verbinden Sie sich von Rechner zu Rechner ohne ein Passwort zu nutzen. Wenn Ihr Raspberry Pi vom Laborrechner aus erreichbar ist können Sie von dort auch versuchen sich einzuloggen (Das wäre auch unter Windows mit dem Tool PuTTy möglich!)
+	\task Lassen sich die SSH-Schlüssel zwischen den verschiedenen Clients weiterverwenden/konvertieren? Oder muss andernfalls für jeden Client ein eigener Schlüssel generiert werden.
+	\task Wie kann aus Sicherheitsgründen ein Login ohne Passwort eingeschränkt werden, so das nur bestimmte Kommandos via SSH ausgeführt werden können? 
+	\task In manchen Fällen ist es ratsam den Zugriff via SSH nur auf einige Nutzer zu beschränken. Recherchieren Sie wie das aussehen müsste.
+	\task Setzen Sie die Anzahl der maximalen Login-Fehlversuche auf drei!
+	\task Erlauben Sie dem Nutzer Pi nur noch das Auflisten des Home Verzeichnis, wenn er sich via SSH verbunden hat.
+	\task Setzen Sie als Anmeldeverfahren SSH auf reine Public-Key-Kryptografie. Hat dies eventuell auch Nachteile?
+\end{tasks}
+	\item Mit SSH können Sie beliebige TCP-Verbindungen über die verschlüsselte SSH-Verbindung \glqq tunneln\grqq. Somit wird es Ihnen möglich, Server zu erreichen, zu denen Sie ansonsten direkt keinen Zugriff haben, weil sie hinter einer Firewall stehen oder der Datenverkehr anderweitig gefiltert wird.\\
+	Konfigurieren Sie das Portforwarding unter SSH. Ermöglichen Sie dazu folgende Zugriffe:
+	\begin{tasks}(1)
+		\task Recherchieren Sie kurz welche Weiterleitungsmöglichkeiten SSH Ihnen bietet.
+		\task Sie sollen von Ihrem Raspberry Pi aus ein lokales Portforwarding auf die Seite der HTW vornehmen. Hierzu soll ein SSH-Tunnel aufgebaut werden mit den Source-Port 8080 und dem HTTP-Port 80 für den Ziel-Port.
+		\task Ihr Raspberry Pi logt sich per SSH auf anderen Raspberry Pi SSH-Server ein und leitet den lokalen Port 2200 auf den Port 22 des dortigen Systems weiter. Danach sollten Sie sich mit SSH über den lokalen Port mit dem SSH-Server des fremden SSH-Server verbinden können.
+	\end{tasks}
+\end{enumerate}
+\begin{center}\Large{\textbf{Aufgabe B -- Domain Name System -- DNS}}\end{center}\vskip0.25in
+Das Domain Name System ist ein dezentrales System, dessen primäre Aufgabe die Adressauflösung von Domain zu IP-Adresse. M.a.W. DNS bietet eine Abbildung von Domain auf IP-Adresse. Im Laufe der Jahre sind hierzu einige Tools entwickelt worden: whois, host, dig, nslookup.
+\begin{enumerate}
+	\item DNS Informationen abfragen
+	\begin{tasks}(1)
+		\task Recherchieren Sie kurz wie die einzelnen Tools zu benutzen sind! Wird eine Empfehlung abgegeben, welche Tools heute nicht mehr genutzt werden (sollten)?
+		\task Fragen Sie mit jedem der vier Tools auf der Kommandozeile jeweils einmal einen Hostnamen (bspw. \url{www.htw-berlin.de}), einen Domainnamen (htw-berlin.de) und eine
+IP-Adresse 141.45.5.100 ab.
+		\task Schauen Sie sich die Ausgabe von \emph{dig} bei der Abfrage der IP-Adresse genauer an -- dort werden Sie in der \glqq Question Section\grqq\ sehen, das nach dem A-Resource-Record mit dem Namen 141.45.5.100 gefragt wurde. Wenn Sie den Namen zu dieser IP-Adresse suchen -- welchen Resource-Record müssen Sie dann anstelle des A-Records erfragen? 
+		\task In welcher Form müssen Sie dann die IP-Adresse angeben? (Test mit dig -t <record-type> <richtiges-format-ip-adresse>).
+		\task Denken Sie sich einen Domainnamen aus, den es wahrscheinlich geben könnte, aber den noch niemand vom Netzwerk der HTW-Berlin aus innerhalb der letzten Stunden angefragt hat (z.B. www.uriminzokkiri.com oder www.northkoreatech.org). Erfragen Sie diesen Namen zweimal kurz hintereinander via dig und vergleichen Sie die beiden Ausgaben. Worin unterscheiden sich beide Einträge? Begründen Sie diese Unterschiede!
+		\task Erfragen Sie mit host, dig und nslookup den zuständigen Mail-Server für die Domain \url{htw-berlin.de}.
+		\task Erzwingen Sie mit \emph{host, dig} und \emph{nslookup}, das die Namensauflösung nicht mit dem Standard-Nameserver des Betriebssystems, sondern mit dem öffentlichen Nameserver (bspw.: 9.9.9.9) erfolgt. Testen Sie am Besten zuerst mit dig oder nslookup , da diese Ihnen immer sagen, welche Nameserver sie genutzt haben. \emph{host} liefert diese Information nur, wenn Sie explizit eigene Server angefordert haben.
+	\end{tasks}
+	\item DNS-Resolver: Das Listing zeigt die \glqq resolv.conf\grqq eines Servers. 
+	\begin{lstlisting}[style=Bash, language=Bash]
+# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)
+#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+nameserver 141.45.3.100
+search f4.htw-berlin.de
+\end{lstlisting} \label{dns}
+\begin{tasks}(1)
+	\task Was bedeuten die Einträge mit den Schlüsselwörtern: \glqq nameserver\grqq und \glqq search\grqq ?
+\end{tasks}
+\end{enumerate}
+
+\end{document}

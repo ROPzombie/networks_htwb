@@ -1,0 +1,156 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%LaTeX template for papers && theses									%%
+%%Done by the incredible ||Z01db3rg||									%%
+%%Under the do what ever you want license								%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage[pdftex,hidelinks]{hyperref}%for links to web
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+
+\pagestyle{fancy}
+\lhead{Benjamin Tröster\\Netzwerke Seminaristische Übung (WS17/18)}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 3 -- OSI Layer 3}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\ttfamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  columns=fullflexible,
+  %xleftmargin=0.5\linewidth
+}
+
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+\pdfpkresolution=2400%higher resolution
+
+%settings colors for links
+%\hypersetup{
+ %   colorlinks,
+  %  linkcolor={blue!50!black},
+   % citecolor={blue},
+    %urlcolor={blue!80!black}
+%}
+
+%\usepackage[pagetracker=true]{biblatex}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\begin{document}
+\begin{center} \Large{\textbf{Übungsblatt 3 -- OSI Layer 3}}\end{center}
+\large{\textbf{\textcolor{red}{Hinweis:}}} Versuchen Sie die Übungsblätter soweit wie möglich ohne Hilfe von Google, Stackoverflow, Stackexchange zu lösen. Sie sollen eigene Lösungswege finden und nicht professionell Suchmaschinen bedien können. Ausnahmen sind natürlich Aufgaben, in denen explizit recherchiert werden soll.\\
+Sie lernen die Raspberry Pis kennen, bauen ein eigenes Netzwerk physisch auf, planen die IP-Konfiguration des Netzes, setzen sie per Kommandozeile um und beobachten im Wireshark, wie die Rechner sich im Netz finden.
+\vskip0.5in
+
+\begin{center}\Large{\textbf{Aufgabe A - Raspberry Pi}}\end{center}\vskip0.25in
+
+\begin{itemize}
+	\item[1.)] Schalten Sie Ihre Pis an! Sie werden automatisch eingeloggt.
+	\item[2.)] Finden sich kurz auf der Commandline zurecht. \glqq Wer bin ich, wo bin ich, auf welchem Gerät bin ich?\grqq
+	\item[3.)] Geben Sie sich ein neues Passwort. Recherchieren Sie den Befehl dafür. \textbf{Achtung:} Das gilt nur wenn Sie ihre eigene mirco-SD-Karte nutzen!
+	\item[4.)] Lassen Sie sich mit den Kommandos:
+			\begin{lstlisting}[style=Bash, language=Bash]
+uname -or
+		\end{lstlisting} und
+				\begin{lstlisting}[style=Bash, language=Bash]
+cat /etc/os-release
+		\end{lstlisting} anzeigen, welches Betriebssystem und welche Distribution auf dem Pi läuft.
+	\item[5.)] Nutzen Sie diese Information um später für das Betriebssystem zu recherchieren, wie Sie Tools nutzen und Einstellungen vornehmen. Es ist schlau in einer Suche den Namen des Betriebssystems vorkommen zu lassen. Wir wollen ja keine Windowslösungen finden.
+\end{itemize}
+\vskip0.5in
+
+
+
+\begin{center}\Large{\textbf{Aufgabe B - Planung und Aufbau des physischen Netzes}}\end{center}\vskip0.25in
+Wir planen nun in Vierergruppen die Netzinfrastruktur für ein kleines LAN mit je vier Pis und bauen sie auf. Dazu liegen und stehen vor uns Netzwerkkabel, die Raspberry Pis, Switches, Monitore und Tastaturen.
+
+\begin{itemize}
+	\item[1.)] Machen Sie sich die Funktion der einzelnen Netzwerkkomponenten klar.
+	\item[2.)] Suchen Sie für Ihre Gruppe als Gruppenname ein Thema aus und Geben Sie jedem Pi einen passenden Namen mit 3 bis 10 Zeichen (z.B. Planeten, Rick-And-Morty-Charaktere, Hülsenfrüchte, you name it).
+	\item[3.)] Wählen Sie eine geeignete Netztopologie und skizzieren Sie diese auf einem Blatt mit geeigneten Symbolen (\textbf{Hinweis:} Unter \url{http://iacis.org/iis/2008/S2008_967.pdf} finden Sie auf S. 241 eine Möglichkeit, wie dies aussehen könnte).\\
+	Ordnen sie die Geräte auf der Skizze so an, wie sie auch vor ihnen im Raum bzw. auf dem Tisch angeordnet sind. 
+	\item[4.)] Beschriften Sie die Skizze entsprechend mit Gerätename und evtl. den Namen der Gruppenmitglieder.
+	\item[5.)] Bringen Sie die MAC-Adresse ihres Pis in Erfahrung und notieren Sie auch diese auf der Skizze.
+\end{itemize}
+\vskip0.5in
+
+\begin{center}\Large{\textbf{Aufgabe C - Planen und Einrichten der Netzwerkkonfiguration}}\end{center}\vskip0.25in
+In Netzwerken benötigt jeder LAN-Client eine IP-Adresse sowie eine Subnetzmaske (subnetmask). Meist werden diese automatisch vergeben, wenn wir einen Client z.B. ein Smartphone oder ein Laptop an ein LAN oder WLAN anschließen. Da wir nun aber die NetzwerkadministratorenInnen sind und wir noch kein Gerät eingerichtet haben, das diese Aufgabe übernehmen kann, richten wir das zunächst von Hand ein. Dazu planen wir unser IP-Netz auf der Skizze und setzen die Konfiguration dann per Befehlszeile (command line) auf den Raspberry Pis um.
+
+\begin{itemize}
+\item[1.)] Recherchieren Sie, welche Funktion ein DHCP-Server hat, den wir hier noch nicht haben.
+\item[2.)] Planen Sie die Netzkonfiguration
+\begin{tasks}[counter-format=(tsk[r])](1)
+	\task~ Recherchieren Sie, welche IP-Adressbereiche für LANs benutzt werden können, welche IPs also nicht im Internet benutzt werden.
+	\task~ Wählen Sie eine Netzwerkadresse (IP-Adresse) und Subnetzmaske (subnet mask) für einen möglichst kleinen IP-Adressbereich, der genau für Ihre 4 Pis ausreicht und schreiben sie Gruppenname, Netzwerkadresse und Subnetzmaske an die Tafel, sodass wir keine Dopplungen im Raum haben, wenn wir in der nächsten Übung die Netze verbinden.
+	\task~ Planen Sie für jeden Pi eine IP-Adresse und tragen diese auf der Skizze ein.
+\end{tasks}
+\item[3.)] Umsetzen der Konfiguration
+\begin{tasks}[counter-format=(tsk[r])](1)
+	\task~ Lassen Sie sich im Terminal die aktuelle Netzwerkkonfiguration mit \emph{ifconfig} oder \emph{ip addr} anzeigen. Haben sie schon eine IP-Adresse (inet) und Subnetzmaske (netmask)?
+	\task~ Übliche Befehle zum Einrichten von Netzwerkadaptern sind \emph{ifconfig} oder auch \emph{ip} aus der Werkzeugsammlung \emph{iproute2}. Der Befehl \emph{ifconfig} gilt in manchen Linux-Distributionen als veraltet (In BSD, Solaris etc. ist dies nicht der Fall!). Recherchieren Sie kurz, was die Vorteile der Linux-Werkzeugsammlung \emph{iproute2} sind und notieren sie die drei Gründe, die ihnen am meisten einleuchten.
+	\task~ Recherchieren und notieren Sie sich, wie man mit dem Befehl \emph{ip addr} für einen Netzwerkadapter eine (oder mehrere) IP-Adressen und Subnetzmasken vergibt. Wie wird dies mit \emph{ifconfig} gehandhabt. \textbf{Hinweis:}Ja -- ein Gerät kann mehrere IPs haben!
+	\task~ Richten Sie die Pis mit dem eben gelernten Befehl ein und notieren Sie das Kommando auf der Skizze.
+	\task~ Vergeben Sie außerdem den Hostnamen für ihren Pi, den Sie oben gewählt haben. Er ist später für andere Geräte im Netzwerk per DNS sichtbar. DNS steht für Domain Name System, es erlaubt eine Abbildung von Namen auf IP-Adressen (s. \url{https://en.wikipedia.org/wiki/Domain_Name_System}) 
+	\task~ Lassen Sie sich im Terminal die neue Netzwerkkonfiguration mit \emph{ifconfig} oder \emph{ip addr} anzeigen.
+\end{tasks}
+\item[4.)] Testen des Netzes
+\begin{tasks}[counter-format=(tsk[r])](1)
+	\task~ Testen Sie, ob Sie ihre Pis gegenseitig mit dem Befehl \emph{ping} \glqq anpingen\grqq\ können. Lassen Sie dabei einen der drei Anderen Pis außen vor und merken Sie sich welcher das war.
+	\task~ Starten Sie Ihren Pi per Commandline neu. Und Pingen sie einen der beiden bereits \glqq angepingten\grqq\ erneut an. Funktioniert es immer noch?
+	\task~ Lassen Sie sich die Netzwerkkonfiguration anzeigen. 
+	\task~ Vergleichen Sie dieses \glqq Verhalten\grqq\ (Vergessen nach Konfiguration und Neustart) mit dem Verhalten eines Ihnen bekannten Programms wie Word, dass sie per \glqq Maus und OK-Knopf\grqq konfigurieren.
+	\task~ Recherchieren Sie, wie sie die IP-Konfiguration in einer Datei festlegen und speichern können, sodass diese weiterhin nach einem Neustart gültig ist.
+	\task~ Setzen Sie den Netzwerkplan ihrer Gruppe erneut mit dieser Methode um. Nutzen Sie dabei einen Commandline-Editor ihrer Wahl z.B. \emph{vim} oder \emph{emacs}.
+\end{tasks}
+\end{itemize}
+
+\end{document}

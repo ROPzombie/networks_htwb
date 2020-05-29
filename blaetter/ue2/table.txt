@@ -1,0 +1,25 @@
+Ein Kabelausfall kann das Netzwerk in zwei funktionsfähige Teile
+unterteilen - Mesh, Tree, Bus funktionieren, garantiert wird es nicht
+
+Diese Topologie enthält einen Single Point of Failure - Bus (Medium!),Ring (Medium!), Star, Cellular
+
+Diese Topologie enthält einen Performance-Flaschenhals - Star, Tree(Wurzelknoten, Cellular
+
+WLAN ohne Access Point verwendet diese Topologie - Mesh
+-> Bspw. P2P, Oder ein Wifi-Gerät (mit Cable connection ins Internet) als Gateway
+
+Diese Topologie verwendet Token Ring (logisch) - Ring
+-> phyisch könnte man das mittels Hubs bauen
+-> Token Ring (physisch) - Star
+
+Ein Kabelausfall führt zum kompletten Netzwerkausfall - Ring, Bus
+
+Diese Topologie enthält keine zentrale Komponente - Bus, Ring, Mesh
+
+WLAN mit Access Point verwendet diese Topologie - Cellular
+-> s. Definition von Zelle
+
+Moderne Ethernet-Standards verwenden diese Topologie - Star
+-> Hub/Switch - es wird kein Bus eingesetzt
+
+Die Zell-Topologie kommt hauptsächlich bei drahtlosen Netzen zum Einsatz. Eine Zelle ist der Bereich um eine Basisstation (z. B. Wireless Access Point), in dem eine Kommunikation zwischen den Endgeräten und der Basisstation möglich ist. Innerhalb einer Zelle entspricht die Zell-Topologie der Bus-Topologie. Sie unterscheidet sich von einem Bus, wenn mehrere überlappende Zellen betrachtet werden (Störung durch fremde Zelle, Routing über Zellgrenzen usw.)

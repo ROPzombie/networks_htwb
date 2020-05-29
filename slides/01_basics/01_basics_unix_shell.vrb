@@ -1,6 +1,0 @@
-\frametitle{Beispiele}
-	\begin{lstlisting}[style=Bash, language=Bash]
-date > foo.txt
-cat id_rsa.pub >> authorized_keys
-head < index.html
-	\end{lstlisting}

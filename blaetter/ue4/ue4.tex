@@ -1,0 +1,168 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%LaTeX template for papers && theses									%%
+%%Done by the incredible ||Z01db3rg||									%%
+%%Under the do what ever you want license								%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+\usepackage[ngerman]{babel}%for special german letters etc			
+%\usepackage{t1enc} obsolete, but some day we go back in time and could use this again
+\usepackage[T1]{fontenc}%same as t1enc but better						
+\usepackage[utf8]{inputenc}%utf-8 encoding, other systems could use others encoding
+%\usepackage[latin9]{inputenc}			
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage[pdftex,hidelinks]{hyperref}%for links to web
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{menukeys}
+
+\pagestyle{fancy}
+\lhead{Benjamin Tröster\\Netzwerke Seminaristische Übung (WS17/18)}
+\rhead{\includegraphics[scale=0.5]{htw2}}
+\lfoot{Übungsblatt 4 -- IP \& Routing}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+
+\newlength\labelwd
+\settowidth\labelwd{\bfseries viii.)}
+\usepackage{tasks}
+\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
+=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
+\usepackage[inline]{enumitem}
+\setlist[enumerate]{% (
+labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
+
+\pdfpkresolution=2400%higher resolution
+
+%settings colors for links
+%\hypersetup{
+ %   colorlinks,
+  %  linkcolor={blue!50!black},
+   % citecolor={blue},
+    %urlcolor={blue!80!black}
+%}
+
+%\usepackage[pagetracker=true]{biblatex}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\begin{document}
+\begin{center}
+~\\
+\Large{\textbf{Übungsblatt 4 -- OSI Link \& Network Layer}}
+\end{center}
+\large{\textbf{\textcolor{red}{Hinweis:} Versuchen Sie die Übungsblätter soweit wie möglich ohne Hilfe von Google, Stackoverflow, Stackexchange zu lösen. Sie sollen eigene Lösungswege finden und nicht professionell Suchmaschinen bedien können. Ausnahmen sind natürlich Aufgaben, in denen explizit recherchiert werden soll}
+\begin{center}\Large{\textbf{Aufgabe A -- Bestimmung des physischen Rechners zu einer IP-Adresse}}\end{center}\vskip0.25in
+Wir haben den Pis nun eindeutige Adressen gegeben und an einen Switch angeschlossen. Switches (und HUBs) sind jedoch in der Regel Layer-2 Devices und kennen keine IP Adressen, können die IP-Adressen also nicht nutzen und auch keine Pakete in andere Netze weiterleiten. Einen Router konfigurieren wir erst in einer späteren Übung.\\
+Woher weiß nun Ihr Rechner, an welchen Computer bzw. an welche Netzwerkadapter er das Paket schicken muss? Dazu schauen wir uns mithilfe Wiresharks an, wie das abläuft.
+
+\begin{enumerate}
+\item Finden Sie im Wireshark heraus, wie die Adressauflösung funktioniert.
+\begin{tasks}[counter-format=(tsk[r])](1)
+	\task~ Tragen Sie Ihren User in der Gruppe wireshark ein und starten den Pi neu.
+	\task~ Starten Sie die GUI (Graphical User Interface) mit \emph{startx}.
+	\task~ Öffnen Sie \emph{Wireshark} und starten Sie das Sniffing auf dem konfigurierten Netzwerkadapter.
+	\task~ Pingen Sie nun einen Rechner an, den Sie vorhin noch nicht \glqq angepingt\grqq\ haben. Die dafür ausgetauschten Pakete (und wahrscheinlich einige mehr) werden \glqq gesnifft\grqq.
+	\task~ Beenden sie das Mitschneiden de Netzwerksverkehrs und setzen Sie als Filtern die MAC-Adresse ihres Adapters.
+	\task~ Versuchen Sie über den Mitschnitt herauszufinden, wie die Bestimmung des zugehörigen Netzadapters und die MAC-Adresse erfolgt.
+	\task~ Recherchieren Sie, wie das \emph{Address Resolution Protocol (ARP)} funktioniert und vergleichen Sie ihre Beobachtung mit dem Gelesenen.
+\end{tasks}
+\item Damit Ihr Rechner nicht jedes mal diese Daten abfragen muss, werden diese Informationen lokal in einem Cache zwischengespeichert (\glqq gecacht\grqq).
+\begin{tasks}(1)
+	\task~ Mit welchem Programm können Sie sich den ARP-Cache anzeigen lassen?
+	\task~ Lassen Sie zwei Pis die IP-Adressen tauschen. Benutzen sie die Kommandozeile, damit nach einem Neustart ihre Skizze noch stimmt. Wann/Wie kann ein dritter Pi die beiden nun \glqq anpingen\grqq?
+\end{tasks}
+\end{enumerate}	
+
+\begin{center}\Large{\textbf{Aufgabe B -- Routing Grundlagen}}\end{center}\vskip0.25in
+Bevor wir beginnen Routing in unseren Netzwerken umzusetzen, sollten einige Grundlagen erörtert werden. 
+\begin{enumerate}
+	\item Recherchieren Sie was genau die Aufgabe eines Routers ist, sowie die grobe, theoretisch Umsetzung von Routing bzw. Routern. 
+	\item Welche Sprache -- also welches Protokoll -- ist am bekanntest für das Routing? 
+	\item Machen Sie sich im groben klar, wie Router und das IP-Protokoll zusammenhängen!
+	\item Auf welche Ebene im OSI-Modell würden Sie einen Router einordnen?
+	\item \textbf{Auf dem Laborrechner} Lassen Sie sich die aktuelle Routing-Tabelle auf dem Laborrechner ausgeben. Hilfreiche Tools sind \emph{netstat} sowie \emph{ip route} aus den \emph{iproute2}-Tools oder \emph{route -n}.
+	\item Welche Rechner gehören alle zu Ihrem lokalem Netz?
+	\item An welche IP-Adresse werden alle Ihrem Rechner unbekannte IP-Pakete gesendet?
+	\item \textbf{Auf dem Raspberry Pi} Welche Rechner gehören alle zu Ihrem lokalem Netz?
+	\item Wie haben sich bis jetzt Ihre Raspberry Pis gefunden? Woher \glqq wussten\grqq\ sie, an welches Gerät die Frames zu schicken waren? Wie spielt hier Ihre eigene IP-Adresse, Ihre Subnetzmaske mit hinein?
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- Planung des Routing zwischen Netzen}}\end{center}\vskip0.25in
+Im vorigen Aufgabenblatt haben Sie zu den IP-Adressen auch eine Netzwerkmaske konfiguriert. Diese Netzwerkmaske legt fest, welche Rechner im gleichen (Sub-)Netz liegen und somit direkt angesprochen werden können. Daraus folgt aber auch, dass bestimmte Rechner außerhalb Ihres Netzes nicht direkt angesprochen werden können. Diese können via Router/Gateway erreicht werden. Wenn in Ihrem System das DHCP aktiviert ist, wird Ihnen durch das DHCP die Konfiguration abgenommen. Wir wollen in einem ersten Schritt selber einen Router betreiben, um über unsere kleinen Netze hinweg zu kommunizieren.
+\begin{enumerate}
+	\item Früher$^{TM}$ nutzte man Klassen von Adressen, heute das CIDR. Worin besteht der Unterschied? Recherchieren Sie, warum man das änderte?
+	\item Wie in der letzten Übung arbeiten Sie in Gruppen von je vier Studierenden. Unterteilen Sie Ihre Gruppe, sodass sich im Idealfall zwei Raspberry Pis in einen lokalen Netzwerk A und zwei Raspberry Pis im lokalen Netzwerk B befinden.
+	\item Um zwischen den beiden lokalen Netzwerken kommunizieren zu können benötigen Sie einen Router. Einer der Raspberry Pis soll diese Aufgabe übernehmen. Die Rechner müssen so konfiguriert werden, dass sie wissen wohin die Pakete geschickt werden -- das heißt Pakete die nicht in das eigene lokale Netzwerk gehören werden über den Router weitergereicht.\\
+	Skizzieren Sie Ihre lokalen Netzwerke, sowie das gesamte Netzwerk. Vergeben Sie entsprechend IP-Adressen und kleinst mögliche Subnetzmasken auf der Skizze. Planen Sie ebenso den Router mit entsprechenden IP-Adressen auf der Skizze ein. Achten Sie darauf, dass der Router als Verbindungsstück zwischen Ihren beiden Netzen fungiert und dementsprechend beide Netzwerke kennen muss.
+\end{enumerate}
+\begin{center}\Large{\textbf{Aufgabe D -- Umsetzung des Routing zwischen Netzen}}\end{center}\vskip0.25in
+Im letzten Teil dieses Übungsblattes sollen die geplanten Netzwerke umgesetzt werden.
+\begin{enumerate}
+	\item \textbf{Für die Clients} Setzen Sie das aus der Planung hervorgegangene Netzwerk mit den Ihn bekannten Tools um. 
+	\begin{tasks}(1)
+		\task Als Testphase sollten Sie dies noch nicht in Systemdateien schreiben, sondern wie in der vorigen Übung erst mal \glqq on the fly\grqq\ erledigen (später können diese auch persistiert werden).
+		\task Die Kommandos \emph{ip route [add|delete|replace]} aus dem \emph{iproute2}-Werkzeugkasten, wie auch die \emph{Networking-Tools} \emph{route add} ermöglichen Ihnen das Festlegen des Gateways. Achten Sie darauf, ob Sie ein Default-Gateway definieren oder ein \glqq herkömmliches\grqq\ Gateway. Worin besteht der Unterschied zwischen beiden Gateway-Varianten.	
+	\end{tasks}
+	\item \textbf{Für den Router} Der Router benötigt eine etwas andere Konfiguration als die restlichen Raspberry Pis. 
+	\begin{tasks}(1)
+		\task Konfigurieren Sie am Router die IP-Adressen des Netzwerkadapters. Wenn Ihr Router zwischen zwei Netzwerken vermittelt sollte dieser beide Netzwerke kennen, womit die Weiterleitung (Forwarding) möglich wird.
+		\task Nachdem das Gateway/Router konfiguriert wurde, sollten die Raspberries aus den beiden Netzen versuchen diesen via Ping zu erreichen.
+		\task Testen Sie, welche der anderen Rechner / IP-Adressen sie nun anpingen können und welche nicht.
+		\task Untersuchen Sie auf dem Gateway via Wireshark, ob tatsächlich Pakete ankommen! 
+	\end{tasks}
+	\item Im Idealfall sollten Sie den Router auf beiden IP-Adressen erreichen (anpingen) können -- andere Rechner außerhalb ihres Netzes antworten Ihnen nicht. Das Weiterleiten von Paketen muss auf dem Router explizit erlaubt werden, dies hat Sicherheitsgründe -- ansonsten könnten Pakete von Fremden im Netz beliebig versendet werden (bspw.: Wenn Sie in Ihrem Notebook neben ihrem WiFi noch eine WWAN-Karte für teure LTE-Verbindugen betreiben, könnte andere Teilnehmer \glqq kostengünstig\grqq\ mitsurfen.)
+	\begin{tasks}(1)
+		\task Woher weiß der Router, wann er ein Paket weiterschicken soll?
+                \task Muss beim Router eine Anpassung an der Routing-Tabelle vorgenommen werden, so das er weiß, wohin er die Pakete senden muss?
+                \task Welchen Kernel-Parameter müssen Sie aktivieren (bzw. welche Datei im /proc/sys Verzeichnis müssen sie beschreiben) damit das IP-Forwarding aktiviert wird? Welche Möglichkeiten zum Editieren dieser Datei haben Sie?
+		\task In welcher Konfigurationsdatei müssen Sie einen Eintrag vornehmen, so das das Routing
+dauerhaft beim Systemstart aktiviert wird?
+		\task Testen Sie jeweils mit einem \glqq ping\grqq\ aller beteiligten Rechner, welche Netzwerke und 
+IP-Adressen Sie erreichen können und welche nicht. Welchen Hinweis geben Ihnen dabei die verschiedenen ICMP-Fehlermeldungen -- wo wird jeweils der Fehler in der Konfiguration liegen?
+		\begin{itemize}
+			\item[a)] connect: network is unreachable
+			\item[b)] Destination Host Unreachable
+			\item[c)] Destination Network Unreachable
+			\item[d)] keine Antwort auf ein Ping
+		\end{itemize}
+	\end{tasks}  
+\end{enumerate}
+\end{document}
