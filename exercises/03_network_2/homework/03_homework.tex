@@ -47,9 +47,9 @@
 
 %Header & Footers
 \pagestyle{fancy}
-\lhead{Netzwerke Übung (WiSe 2019/20)}
-\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
-\lfoot{Übungsblatt 04 -- Switched LAN}
+\lhead{Netzwerke -- Übung\\Wintersemester 2020/21}
+\rhead{FB 4 -- Angewandte Informatik\\Hochschule für Technik und Wirtschft Berlin}
+\lfoot{Übungsblatt 03 -- Routed LAN}
 \cfoot{}
 \fancyfoot[R]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -124,6 +124,17 @@ Sie planen in Vierergruppen die Netzinfrastruktur für ein kleines LAN mit je vi
 	Bitte stellen Sie spätestens in der Übung sicher, dass Sie die Berechnung der IP-Ranges anhand der Subnetzmaske verstanden haben.
 \end{tasks} 
 \end{itemize}
+
+\begin{center}\Large{\textbf{Aufgabe B -- Routing}}\end{center}
+
+\begin{enumerate}
+	\item Was sind die Aufgaben eines Routers. Wie erfolgt, im Groben, die Umsetzung des Routings?
+	\item Machen Sie sich klar, wie Router und \emph{IP}-Protokoll zusammenhängen.
+	\item In welcher Schicht des OSI-Modells würden Sie einen Router einordnen? (Begründung!)
+	\item Wie haben sich bis jetzt Ihre VMs gefunden? Woher "'wussten" diese, welches Gerät gemeint war?
+	\item Woher weiß ein \textit{Host} (Endknoten), wann er ein Paket direkt adressieren kann und wann er es an Router/Gateway weiter schicken muss?
+	\item Woher weiß ein \textit{Router} (Zwischenknoten), wann er ein Paket weiter schicken soll und wann nicht?
+\end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe B -- Tools}}\end{center}\vskip0.25in
 Um den Übungsbetrieb etwas effizienter nutzen zu können, sollen Sie sich zunächst mit den Standardwerkzeugen der Netzwerkadministration vertraut machen. Mithilfe der Werkzeugsammlungen \emph{iproute2} sowie \emph{net-tools} wird dies in der Regel unter Linux und Unix-Betriebssystemen bewerkstelligt.
