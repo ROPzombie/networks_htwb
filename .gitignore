@@ -12,3 +12,5 @@
 *.snm
 *.csv
 *.tsv
+solutions/
+question_pool/

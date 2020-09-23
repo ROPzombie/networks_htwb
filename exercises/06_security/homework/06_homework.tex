@@ -23,6 +23,7 @@
 \usepackage{hyperref}
 \usepackage{xcolor}%nicer colors, here used for links
 \usepackage{csquotes}
+\usepackage{enumitem}
 
 %settings colors for links
 \hypersetup{
@@ -38,9 +39,9 @@
 \definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
 \pagestyle{fancy}
-\lhead{Netzwerke Übung (WiSe 2019/20)}
+\lhead{Netzwerke Übung (SoSe 2020)}
 \rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
-\lfoot{Übungsblatt 06 -- Netzwerksicherheit}
+\lfoot{Übungsblatt 05 -- Netzwerksicherheit}
 \cfoot{}
 \fancyfoot[R]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -60,15 +61,6 @@
   %xleftmargin=0.5\linewidth
 }
 
-\newlength\labelwd
-\settowidth\labelwd{\bfseries viii.)}
-\usepackage{tasks}
-\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
-=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
-\usepackage[inline]{enumitem}
-\setlist[enumerate]{% (
-labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
-
 %%here begins the actual document%%
 \newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
 
@@ -76,11 +68,10 @@ labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
 
 \begin{document}
 \begin{center}
-\Large{\textbf{Übungsblatt 06 -- Netzwerksicherheit}}
+\Large{\textbf{Übungsblatt 05 -- Netzwerksicherheit}}
 \end{center}
-Über das gesamte Semester hinweg haben Sie ein fundiertes Grundlagenwissen zu Netzwerken erworben. Da Sie als angehende Informatiker*innen sich bewusst sind, dass Daten von Ihnen selbst, als anderer Nutzer, schützenswert sind, beschäftigen Sie sich im letzten Übungsblatt mit den Themen Kryptografie und Netzwerksicherheit.
 
-\begin{center}\Large{\textbf{Aufgabe A -- Kryptografie Grundlagen}}\end{center}\vskip0.25in
+\begin{center}\Large{\textbf{Aufgabe A -- Kryptografie Grundlagen}}\end{center}
 Da Sie mit großer Wahrscheinlichkeit keine ausgebildeten Mathematiker*innen sind, beginnen Sie zunächst mit einer kurzen Recherchephase. Dies soll Ihnen helfen Licht ins Dunkel zu bringen.\\
 Hilfreiche Links:
 \begin{itemize}
@@ -90,28 +81,22 @@ Hilfreiche Links:
 \end{itemize}
 \begin{enumerate}
 	\item Begriffsklärung Kryptografie \& Chiffren:
-	\begin{tasks}(1)
-	\task Erläutern Sie die grundlegende Sicherheitszielklassen CIA (Confidentiality, Integrity, Availability) und Authenticity im Bereich der IT-Security.
-	\task Recherchieren Sie was sich hinter den Begriffen Kryptologie, Kryptografie und Kryptoanalyse verbirgt.
-	\task Worin besteht der maßgebliche Unterschied zwischen symmetrischen und asymmetrischen Kryptosystemen?
-	\task Welche Aufgaben könne kryptografisch per symmetrischen Chiffren bewältigt werden?
-	\task Welche Aufgaben könne kryptografisch per asymmetrischen Chiffren bewältigt werden?
-	\task Recherchieren Sie \textbf{kurz} welche Aufgabe der Diffie-Hellmann-Algorithmus und der Elgamal-Algorithmus haben? Wozu werden diese Verfahren für gewöhnlich genutzt?
-	\task Recherchieren Sie zunächst was unter einer Hashfunktion verstanden wird. Im Anschluss daran: Was wird unter einer kryptografischen Hashfunktion verstanden?
-	\task Was ist die Aufgabe einer kryptografischen Hashfunktion?
-	\end{tasks}
-	\item Public-Key-Kryptografie
-	\begin{tasks}(1)
-		\task Was wird unter dem Begriff Public-Key-Kryptografie verstanden?
-		\task Warum werden Public-Key-Verfahren eingesetzt? Warum sollte ein solches Verfahren genutzt werden?
-		\task Erläutern Sie den Ablauf eines Public-Key-Verfahren im groben? Sie müssen hier keine mathematischen Feinheiten beachten, wichtig ist der grundlegende Gedanke!
-	\end{tasks}
+	\begin{enumerate}
+		\item Erläutern Sie die grundlegende Sicherheitszielklassen CIA (Confidentiality, Integrity, Availability) und Authenticity im Bereich der IT-Security.
+		\item Recherchieren Sie was sich hinter den Begriffen Kryptologie, Kryptografie und Kryptoanalyse verbirgt.
+		\item Worin besteht der maßgebliche Unterschied zwischen symmetrischen und asymmetrischen Kryptosystemen?
+		\item Welche Aufgaben könne kryptografisch per symmetrischen Chiffren bewältigt werden?
+		\item Welche Aufgaben könne kryptografisch per asymmetrischen Chiffren bewältigt werden?
+		\item Recherchieren Sie \textbf{kurz} welche Aufgabe der Diffie-Hellmann-Algorithmus und der Elgamal-Algorithmus haben? Wozu werden diese Verfahren für gewöhnlich genutzt?
+		\item Recherchieren Sie zunächst was unter einer Hashfunktion verstanden wird. Im Anschluss daran: Was wird unter einer kryptografischen Hashfunktion verstanden?
+		\item  Was ist die Aufgabe einer kryptografischen Hashfunktion?
+	\end{enumerate}
 	\item Kryptografische Zertifikate \& Public-Key-Infrastruktur
-	\begin{tasks}(1)
-		\task Was wird unter einem kryptografische Zertifikat verstanden? Welchen Nutzen hat dieses Zertifikat?
-		\task Recherchieren Sie was unter einer Public-Key-Infrastruktur \emph{PKI} verstanden wird.
-		\task Recherchieren Sie was im Zusammenhang mit \emph{PKI}s unter dem Namen \emph{Chain-Of-Trust} verstanden wird.
-	\end{tasks}
+	\begin{enumerate}
+		\item Was wird unter einem kryptografische Zertifikat verstanden? Welchen Nutzen hat dieses Zertifikat?
+		\item Recherchieren Sie was unter einer Public-Key-Infrastruktur \emph{PKI} verstanden wird.
+		\item Recherchieren Sie was im Zusammenhang mit \emph{PKI}s unter dem Namen \emph{Chain-Of-Trust} verstanden wird.
+	\end{enumerate}
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe B -- Grundlagen: Secure Shell (SSH) mit openSSH}}\end{center}\vskip0.25in
@@ -148,13 +133,13 @@ Nützliche Links:
 \begin{itemize}
 	\item Recherchieren Sie was \enquote{Tunneling} im Sinne von \emph{SSH}  bedeutet.
 	\item Recherchieren Sie was unter Port-Forwarding verstanden wird.\\
-	\begin{tasks}(1)
-		\task Welche Arten von Port-Forwarding gibt es bzw. welche können mit SSH realisiert werden? Für welche Einsatzszenarien kann welches Forwarding genutzt werden?
-		\task Verdeutlichen Sie sich jeweils anhand eines Beispiels wie Forwarding genutzt werden kann.
-		\task Finden Sie heraus, wie Port-Forwarding unter Linux und SSH funktioniert.\\
+	\begin{enumerate}
+		\item Welche Arten von Port-Forwarding gibt es bzw. welche können mit SSH realisiert werden? Für welche Einsatzszenarien kann welches Forwarding genutzt werden?
+		\item Verdeutlichen Sie sich jeweils anhand eines Beispiels wie Forwarding genutzt werden kann.
+		\item Finden Sie heraus, wie Port-Forwarding unter Linux und SSH funktioniert.\\
 		Sie sollten schauen, was die Vorbedingungen sind, und welche Kommandos für das Forwarding notwendig sind.\\
 		Notieren Sie sich entsprechende Kommandos, sowie deren Bedeutung!
-	\end{tasks}
+	\end{enumerate}
 \end{itemize}
 
 \begin{center}\Large{\textbf{Aufgabe D -- TLS}}\end{center}\vskip0.25in
@@ -162,13 +147,13 @@ Ein Großteil der von Ihnen genutzten Verbindungen nutzen \emph{TLS} (früher \e
 \begin{enumerate}
 	\item Der englische Wikipedia-Artikel ist ein guter Einstieg in das \emph{TLS}-Protokoll.\\
 	\url{https://en.wikipedia.org/wiki/Transport_Layer_Security}
-	\begin{tasks}(1)
-		\task Für welche Zwecke kann \emph{TLS} genutzt werden?
-		\task Auf welcher Schicht des OSI-Modells würden Sie \emph{TLS} einordnen und welche Schicht soll dieses Protokoll absichern?
-	\end{tasks}
+	\begin{enumerate}
+		\item Für welche Zwecke kann \emph{TLS} genutzt werden?
+		\item Auf welcher Schicht des OSI-Modells würden Sie \emph{TLS} einordnen und welche Schicht soll dieses Protokoll absichern?
 	\item Beschreiben Sie kurz den wesentlichen Aufbau von \emph{TLS}.
 	\item Vollziehen Sie alles Schritte einer \emph{TLS}-Session nach!\\
 	\textbf{Hinweis:} unter \url{https://tls.ulfheim.net/} gibt es eine schöne Illustration.
+	\end{enumerate}
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe E -- VPN via Wireguard}}\end{center}\vskip0.25in
@@ -180,13 +165,13 @@ Virtual Private Networks (VPN) sind in sich geschlossene Kommunikationsnetze, di
 \end{itemize}
 \begin{enumerate}
 	\item Unter den oben gelisteten Links befinden sich einige Tutorials für den Einstieg in Wireguard.
-	\begin{tasks}(1)
-		\task Der Installationsschritt kann ausgelassen werden, da Wireguard bereits vorinstalliert ist.
-		\task Recherchieren Sie, wie die privaten und öffentlichen Schlüssel zu generieren sind und welche Besonderheiten zu beachten sind.
-		\task Was wird unter einen virtuellen Interface verstanden? Warum muss ein solches für das VPN konfiguriert werden?
-		\task Darauf aufbauend: Wie müssen die virtuellen Interfaces konfiguriert werden? Notieren Sie sich alle notwendigen Schritte!
-		\task Recherchieren Sie wie eine \emph{Wireguard}-Konfiguration automatisiert werden könnte.
-	\end{tasks}
+	\begin{enumerate}
+		\item Der Installationsschritt kann ausgelassen werden, da Wireguard bereits vorinstalliert ist.
+		\item Recherchieren Sie, wie die privaten und öffentlichen Schlüssel zu generieren sind und welche Besonderheiten zu beachten sind.
+		\item Was wird unter einen virtuellen Interface verstanden? Warum muss ein solches für das VPN konfiguriert werden?
+		\item Darauf aufbauend: Wie müssen die virtuellen Interfaces konfiguriert werden? Notieren Sie sich alle notwendigen Schritte!
+		\item Recherchieren Sie wie eine \emph{Wireguard}-Konfiguration automatisiert werden könnte.
+	\end{enumerate}
 \end{enumerate}	
 
 \end{document}
