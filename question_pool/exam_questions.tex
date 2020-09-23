@@ -1,0 +1,184 @@
+\documentclass[a4paper,twoside,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts,amstext}
+\usepackage{amsmath}
+\usepackage{german}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[
+backend=biber,
+style=alphabetic,
+%citestyle=authoryear
+]{biblatex}
+
+\addbibresource{sources.bib}
+
+\newcounter{AUFGNR}
+\setcounter{AUFGNR}{1}
+\newcommand{\AUFGABE}[2]{\vspace{0.3cm}\item[Exercise \arabic{AUFGNR}]\stepcounter{AUFGNR} #1\hfill\emph{#2}}
+
+
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\half}[1]{\frac{#1}{2}}
+
+\DeclareMathOperator{\bits}{\{0,1\}}
+\DeclareMathOperator{\Z}{\mathbb{Z}}
+\DeclareMathOperator{\M}{\mathcal{M}}
+%\DeclareMathOperator{\C}{\mathcal{C}}
+
+
+\renewcommand{\labelenumi}{(\alph{enumi})}
+
+
+\begin{document}
+
+\lstset{language=C}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+
+\pagestyle{empty}
+\hrule\medskip
+\rule{0ex}{0ex}\\[-1ex]
+
+
+\smallskip
+\noindent
+\large
+\textbf{Aufgabenpool für die (mündliche) Klausur Netzwerke}\hfill  SoSe 2020 \\[0.5ex]
+\small
+
+
+\medskip\hrule
+
+\smallskip
+\noindent
+
+
+\begin{description}
+
+\AUFGABE{}{}
+
+\AUFGABE{Netzwerkkonfiguration}{}
+
+\begin{enumerate}
+	\item Anzeigen der IP-Adresskonfiguration.
+	\begin{itemize}
+		\item Via \emph{ifconfig} \& \emph{ip a}
+		\item Wo ist die IP-Adresse hinterlegt: Aufbau der Adresse, Subnetzmaske, Device
+		\item \emph{ifconfig} Empfangene/Gesendte Daten
+		\item MAC/Ethernet: Aufbau, Nutzen,
+	\end{itemize}
+	\item Anzeigen, ob DHCP aktiv ist. (via \emph{systemctl} oder \emph{service}
+	\begin{itemize}
+		\item Was ist DHCP? Wie funktioniert das? Haben Sie das in ihrem statischen Netzwerk?
+	\end{itemize}
+	\item Wie entscheidet der Host, welche Pakete direkt übermittelt werden können und welche zwingend geroutet werden müssen?
+	\item Erläutern Sie den Unterschied zwischen Routing und Forwarding. Wann kommt welcher Mechanismus zum tragen?
+	\item Sind Router \& Gateway äquivalent?
+	\item Unterscheidung zwischen dynamischen/statischen und verteilten/zentralem Routing. Einordnung der Routing-Algorithmen Bellman-Ford \& Dijstra-Algorithmus. (Welches Problem lösen beide Algorithmen)
+	\item Welche Vor- bzw. Nachteile haben die jeweiligen Routing-Algorithmen?
+	\item Wo wird welches Verfahren umgesetzt (Protokoll) warum wird nicht das jeweils andere Verfahren genutzt?
+	\item Diskutieren Sie, ob der Bellman-Ford-Algorithmus als Link-State-Routing und der Dijstra-Algorithmus für das Distance-Vektor-Verfahren genutzt werden kann.
+	\item Anzeigen des eigene Routing-Tables. Welche Informationen könne Sie daraus entnehmen? Konkret: Was steht jeweils in den Spalten und Zeilen.
+	\begin{itemize}
+		\item \emph{route -n} was bedeuten die Einträge \texttt{0.0.0.0} als Netzadresse/Subnetzmaske?
+		\item Mehrere Default-Routen auf einem Rechner möglich?
+	\end{itemize}
+	\item NAT Erläuterung -- warum muss das umgesetzt werden?
+	\item Nimmt NAT Performance aus dem Netz? D.h. da am NAT-Gateway das Paket von einer (privaten) auf eine andere (öffentliche) Adresse umgeschrieben werden muss, könnte angenommen werden, dass NAT schlechter Performt. (Beantwortung läuft darauf hinaus, dass bei jedem Hop zumindest das TTL-Feld neu geschrieben werden muss, also der Header sowieso neu geschrieben werden muss.)
+	\item Warum nutzen wir nicht IP-Adressen global? D.h. warum sind nicht alle Rechner in einem sehr großen LAN?
+	\item Warum müssen Sie IP-Adressen selbst dann konfigurieren, obwohl sich die Rechner direkt erreichen könnten (bspw. in einem LAN-Segment)?
+\end{enumerate}
+
+\AUFGABE{DNS}{}
+
+\begin{enumerate}
+	\item Welche Aufgabe übernimmt das \emph{DNS} in der Netzwerkinfrastruktur/Internet?
+	\item Auf welcher Ebene des ISO-OSI-Models liegt DNS? Was sind Standardport und darunterliegendes Transportprotokoll?
+	\item Wie werden DNS-Name in der Regel aufgelöst? (Rekursiv/Iterrativ/Mischverfahren)
+	\item Was sind DNS-Stub-Resolver, Resolver, Root-Server und Domain-Server?
+	\item Welche Record-Types kennen Sie? Was ist deren Zweck?
+	\item DNS-Lookup via \emph{dig}
+	\begin{itemize}
+		\item ai-bahcelor.f4.htw-berlin.de
+		\item www.htw-berlin.de
+	\end{itemize}
+	Was ist zu sehen? (Record-Type, IP-Adresse etc.)
+	\item Was passiert, wenn zwei gleiche Namen kurz nacheinander abgefragt werden? Welchen Nutzen hat das?
+	\item Ihr ISP blockiert sicherlich einige Seiten. D.h. diese Domains stehen auf Black-List und sind ohne weiteres nicht erreichbar. Welche Möglichkeiten haben Sie die ISP-Netzsperre theoretisch zu umgehen?
+\end{enumerate}
+
+\AUFGABE{Traceroute}{}
+\begin{enumerate}
+	\item Routenverfolgung via \emph{traceroute}.
+	\item Welchen Nutzen hat eine Routenverfolgung? Wie wird diese umgesetzt bei \emph{traceroute}?
+	\item Welche Protokolle werden hierfür genutzt? Gibt es Alternativen?
+	\item Beispielsweise auf der Shell:
+	\begin{itemize}
+		\item 41.231.21.44
+		\item 91.198.174.192
+		\item 37.220.21.130
+		\item 80.239.142.229
+	\end{itemize}
+	Was ist zu sehen?
+	\item Warum sind hier keine DNS-Name hinterlegt worden?
+\end{enumerate}
+
+\AUFGABE{DNS \& E-Mail}{}
+\begin{table}[h]
+\caption{Adressen}
+\label{dns_mail}
+\centering
+\begin{tabular}{lll}
+\hline
+ & Bob & Alice \\ \hline
+ IP address: &  192.45.56.127 & 208.115.92.45\\
+ Local name server:& 192.47.56.2 & 208.115.92.2\\
+ SMTP server: & mail.server.org & mail.server.org\\
+ Email Address: & bob@realword.org & alice@wonderland.org\\ \hline
+\end{tabular}
+\end{table}
+\begin{enumerate}
+	\item Nehmen Sie an Bob möchte eine E-Mail an Alice senden. Um eine Verbindung mit dem SMTP-Server aufzubauen, muss der Name des Servers via DNS in eine IP-Adresse aufgelöst werden. Erläutern Sie welche Nachrichten ausgetauscht werden müssen und zwischen welchen Hosts. Die Auflösung des Domainnamen ist rein rekursive.\\
+		Nehmen Sie weiter an, dass nur der Nameserver der für die Domäne server.org zuständig ist, die Anfrage beantworten kann. (Alle Adressen sind in Tabelle \ref{dns_mail} zu sehen!)
+	\item Nun ist Alice am Zug, um Bob zu antworten. Erläutern Sie den Nachrichtenaustausch, wenn eine rein iterative Namensauflösung genutzt wird. Nehmen Sie wie in der vorigen Aufgabe an, dass das nur der Namensserver der zuständig für die Domäne server.org die Anfrage beantworten kann.
+	\item Erläutern Sie, wie Bobs SMTP-Server den für Alice verantwortlichen MTA findet.
+\end{enumerate}
+
+\AUFGABE{SSH}{}
+
+\begin{enumerate}
+	\item Was ist \emph{SSH}? Auf welchem Layer läuft \emph{SSH}, was ist der Standardport.
+	\item Wireshark: Verbindungsaufbau zum Uranus-Server der HTW. Wie sieht der Verbindungsaufbau aus. Ab wann wird ausschließlich verschlüsselt kommuniziert? Mithilfe welchen Mechanismus geschieht dies?
+	\item Sie loggen sich via Passwort ein, heißt das, dass ein Passwort übertragen wird?
+	\item Wie funktioniert die Public-Key-Kryptografie im wesentlichen?
+	\item Umsetzung SSH-Login via Pub-Key-Only. 
+	\begin{enumerate}
+		\item Welche Relevanz hat die Schlüsselgröße? 
+		\item Was schützt die SSH-Passphrase? Ist die Passphrase Ihr Nutzerpasswort der SSH-Server oder Ihres Accounts?
+		\item Können SSH-Schlüssel auf mehreren Maschinen genutzt werden? Ist dies eine sinnvolle Praxis?
+	\end{enumerate}
+	\item Wo liegen die Konfigurationen für \emph{SSH}.
+	\item Wie kann Port/Nutzername/Max-Auth/Login-Verfahren gesetzt werden?
+\end{enumerate}
+
+\end{description}
+
+\printbibliography
+\end{document}
