@@ -1,0 +1,137 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+
+\usepackage{amsmath}%get math done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{breakurl}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{tasks}
+\usepackage{csquotes}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{Netzwerke -- Übung\\Wintersemester 2020/21}
+\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
+\lfoot{Übungsblatt 02 -- Netzwerkinfrastruktur Teil 1}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  %linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 03 -- Netzwerkinfrastruktur Teil 1}}\\
+\end{center}
+
+\begin{center}\Large{\textbf{Aufgabe A - Setup}}\end{center}
+Bevor es richtig losgeht müssen sie folgende Vorbereitungen treffen.
+\begin{enumerate}
+	\item Sie benötigen drei VMs. Hierfür sollten sie ein minimales \emph{freeBSD}, ein minimales \emph{Linux} \footnote{Minimal heißt hier: ohne grafische Oberfläche/Headless} und das \emph{freeBSD} mit grafischer Oberfläche (GUI) bereithalten. \\
+Importieren Sie die VMs. Hierfür habe ich ein kurzes Video vorbereitet: \url{https://mediathek.htw-berlin.de/video/Virtualbox-Network-Preperations-amp-Cloning/276fab5dbd663d7589d12a30234da003} \footnote{Anmeldung in der Mediathek nicht vergessen!}
+	\item Ändern sie die Hostname der VMs! Jede VM sollte einen individuellen Namen bekommen. Später empfiehlt es sich die Namen den Funktionalitäten zuzuordnen oder ein festes Namensschema zu nutzen. 
+	 \item Für \emph{freeBSD}: \url{https://www.cyberciti.biz/faq/howot-freebsd-change-hostname-without-reboot/}
+	 \item Für Linux: \url{https://www.cyberciti.biz/faq/linux-change-hostname/}
+\end{enumerate}
+	
+\begin{center}
+\Large{\textbf{Aufgabe B - Anzeige der bestehenden Netzwerkkonfiguration}}
+\end{center}
+Bevor sie ein eigenes kleines Netzwerk einrichten, sollen sie sich mit den dafür Notwendigen Tools vertraut machen. Daher soll zunächst die bestehende Netzwerkkonfiguration untersucht werden.\\
+Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen Rechnern in einem Netzwerk. Jeder Rechner muss hierfür eine passende IP-Adresse haben, mit der er andere Rechner bzw. Zwischenknoten im Netz erreichen kann. Wenn Sie dem Tutorial gefolgt sind, haben die VMs jeweils drei Interfaces. Eines davon hat Zugang zu einem DHCP-Netzwerk. Somit auch eine automatisch zugeordnete IP-Adresse.
+\begin{enumerate}
+	\item Starten sie eine \emph{freeBSD} und Linux VM. 
+	\item Nutzen Sie für die nachfolgende Aufgabe beide Tools (ip addr (Linux) als auch ifconfig (\emph{freeBSD}))
+	\item Lassen Sie sich die aktuelle IP-Adresskonfiguration anzeigen.
+	\item Wo finden Sie in der Ausgabe die folgenden Informationen:
+	\begin{enumerate}
+		\item \emph{MAC}-Adresse der Netzwerkkarte
+		\item Aktuelle IP-Adresse des Systems
+		\item Subnetzmaske
+		\item Besteht eine aktive Verbindung mit dem Netzwerk?
+		\item Anzahl fehlerhafter Pakete?
+		\item Übertragene und empfangene Datenmenge?
+	\end{enumerate}
+	\item Überprüfen Sie, ob ein Netzwerkverbindung besteht. Zum Prüfen können Sie folgende Aktionen durchführen:
+	\begin{enumerate}
+		\item Auf der Kommandozeile einen Rechner mit seinem Namen anpingen (bspw.: \url{mi.fu-berlin.de}).
+		\item Ping auf eine IP-Adresse (bspw.: 160.45.117.199).
+		\item Ping auf die IP-Adresse in Ihrem Netzwerk. Bspw. lokale Router (oft IP: $192.168.172.1$ oder$192.168.0.1$ ) -- funktioniert die Kommunikation im lokalen Netz (LAN)?
+		\item Ping auf die eigene IP-Adresse -- wurde der lokale Netzwerkstack richtig gestartet?
+	\end{enumerate}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- Umsetzung des statischen Netzwerkes}}\end{center}\vskip0.25in
+Setzen Sie das aus der Planung hervorgegangene Netzwerk um. Drei VMs befinden sich im sleben \emph{LAN} und sollen miteinander kommunizieren.
+\begin{enumerate}
+	\item Schalten sie auf allen VMs für die \emph{DHCP}-Netzwerke, falls eingeschaltet, die automatische Adressvergabe aus.
+	\item Auf jeder VM:
+	\begin{enumerate}
+		\item Legen sie eine \emph{IPv4}-Adresse fest.
+		\item Ordnen sie der  \emph{IPv4}-Adresse einer Subnetzmaske zu. Diese sollte minimal sein, d.h. nur so groß, dass zumindest drei Rechner Platz finden.
+		\item Konfigurieren sie das Netzwerkgerät mit den oben genannten Werten. Achten sie darauf, dass sie das korrekte Gerät konfiguriert wird. Nutzen sie hierfür die üblichen Tools: \emph{ifconfig} und \emph{ip addr}
+	\end{enumerate}
+	\item Testen sie, ob ihr Netzwerk funktioniert. Nutzen sie \emph{ping} oder \emph{netcat} um dies zu testen.
+	\item Haben ihre VMs einen Zugang zu anderen Rechnern? Können diese Maschinen außerhalb des LANs oder gar Rechner im Internet erreichen? Erläutern sie ihre Befunde!
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe D - Fakultativ: Here be Dragons... Network-Discovery}}\end{center}\vskip0.25in
+Nachdem sie ihr erstes Netzwerk umgesetzt haben, könne sie schauen, ob noch andere Rechner in ihrem virtualBox LAN oder ihrem physischen LAN erreichbar sind. Frei nach dem Motto \enquote{Here be dragons} \footnote{\url{https://en.wikipedia.org/wiki/Here_be_dragons}}.
+\begin{enumerate}
+	\item Ein Tool um Informationen über Geräte im LAN zu sammeln sind \emph{arping} und \emph{arp-scan}. Schauen sie in der \emph{Manpage} oder in der Hilfe nach, wie diese Tools zu nutzen sind, wenn sie alle lokal erreichbaren Rechner ermitteln wollen
+	\item Erstellen sie sich eine kurze Übersicht über die aktiven Maschinen im Netzwerk.
+	\item Sie könmnen noch mehr über die dubiosen Maschinen in Erfahrung bringen. Mit dem Tool \emph{nmap} können Sie einen Port-Scan starten. Dies ermöglicht Ihnen herauszufinden, welche Dienste auf den jeweiligen Maschinen laufen. \textbf{Achtung:} Nutzen sie \emph{nmap} nur innerhalb ihres eigenen Netzwerkes. Port-Scanning kann bei fremden Geräten und Netzen zu rechtlichen Schwierigkeiten führen: s. \url{https://de.wikipedia.org/wiki/Portscanner#Rechtliche_Aspekte}\\
+	Starten sie einen Port-Scan auf gefundene Maschinen. Die Ausgabe liefert Ihnen einige Informationen -- offene Ports sind Dienste die das System im Netzwerk für andere Teilnehmer anbietet. Manche können auch direkt im Webbrowser aufgerufen werden, beispielsweise die Ports 80 und 443 (viele andere auch, diese beiden sind jedoch die Standardports für HTTP(s)-Websites).
+\end{enumerate}
+
+\end{document}
