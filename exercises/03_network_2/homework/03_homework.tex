@@ -13,24 +13,25 @@
 \graphicspath{{pictures/}}%folder to stash all kind of pictures etc
 \usepackage{amssymb}%symbolics for math
 \usepackage{amsfonts}%extra fonts
-\usepackage []{natbib}%citation style
 \usepackage{caption}%captions under everything
 \usepackage{listings}
-\usepackage[titletoc]{appendix}
 \numberwithin{equation}{section} 
-\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
 \usepackage{float}%for garphics and how to let them floating around in the doc
-\usepackage{cclicenses}%license!
 \usepackage{xcolor}%nicer colors, here used for links
-\usepackage{wrapfig}%making graphics floated by text and not done by minipage
 \usepackage{dsfont}
 \usepackage{stmaryrd}
 \usepackage{geometry}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
-\usepackage{menukeys}
 \usepackage{multicol}
 \usepackage{csquotes}
+\usepackage{enumitem}
+
+\usepackage[
+  backend=biber,
+  bibencoding=utf8]
+{biblatex}
+\bibliography{sources.bib}
 
 %settings colors for links
 \hypersetup{
@@ -69,15 +70,6 @@
   %xleftmargin=0.5\linewidth
 }
 
-\newlength\labelwd
-\settowidth\labelwd{\bfseries viii.)}
-\usepackage{tasks}
-\settasks{counter-format =tsk[a].), label-format=\bfseries, label-offset=3em, label-align=right, label-width
-=\labelwd, before-skip =\smallskipamount, after-item-skip=0pt}
-\usepackage[inline]{enumitem}
-\setlist[enumerate]{% (
-labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
-
 
 %%here begins the actual document%%
 \newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
@@ -86,134 +78,110 @@ labelindent = 0pt, leftmargin=*, itemsep=12pt, label={\textbf{\arabic*.)}}}
 
 \begin{document}
 \begin{center}
-\Large{\textbf{Hausaufgaben Laborübung 04 -- Einfache Netzwerke}}
+\Large{\textbf{Hausaufgaben Laborübung 03 -- Statisches Routing}}
 \end{center}
-\begin{center}\Large{\textbf{Aufgabe A - Planung des physischen Netzes}}\end{center}\vskip0.25in
-Sie planen in Vierergruppen die Netzinfrastruktur für ein kleines LAN mit je vier Rechnern.
-\begin{itemize}
-	\item[1.)] Machen Sie sich die Funktion der einzelnen Rechner- \& Netzwerkkomponenten klar.
-\begin{itemize}
-    \item Rechner -- inkl. VM \& Peripherie (Monitor, Tastatur etc.)
-    \item Netzwerkkabel -- Aufgabe im Netzwerk
-    \item Switch -- Aufgabe im NW \& Einordnung ins OSI-Modell
-    \item Ethernet-Port -- physikalisches Netzwerkinterface
-\end{itemize}
-	
-	\item[2.)] Recherchieren Sie entweder mit \cite[S. 461ff]{Kurose2012} oder mithilfe der folgender Links was eine Netzwerktopologie ist.
-	\begin{itemize}
-		\item \url{https://www.elektronik-kompendium.de/sites/net/0503281.htm}
-		\item \url{https://en.wikipedia.org/wiki/Network_topology}
-		\item \url{https://www.lifewire.com/computer-network-topology-817884}
-	\end{itemize}
-	\item[3.)] Wählen Sie eine geeignete Netztopologie und skizzieren Sie diese mit geeigneten Symbolen.\\ \textbf{Hinweis:} Unter \url{http://iacis.org/iis/2008/S2008_967.pdf} finden Sie auf S. 241 eine Möglichkeit, wie dies aussehen könnte.\\
-	Ordnen Sie die Geräte auf der Skizze so an, wie sie auch vor ihnen im Raum bzw. auf dem Tisch angeordnet sein sollten.
-	\item[4.)] Planen Sie die Netzkonfiguration:
-\begin{tasks}[counter-format=(tsk[r])](1)	
-	\task Rekapitulieren Sie kurz was eine IP-Adresse ist. Welche Aufgabe haben diese Adressen in einem Netzwerk?\\
-	\textbf{Hinweis:} Ein guter Start wäre: \cite[S. 331ff]{Kurose2012}
-	\task Momentan werden vor allem \emph{IPv4} und \emph{IPv6} als Netzwerkschichtprotokolle genutzt. Recherchieren Sie einige wichtige Unterschiede zwischen \emph{IPv4} und \emph{IPv6}.
-	\task Recherchieren Sie was eine Subnetzmaske ist und wofür diese gebraucht wird.
-	\task Wie spielen IP-Adresse und Subnetzmaske zusammen?
-	\task Bestimmte IP-Adressbereiche werden nicht ins Internet weitergeleitet, sie werden als private IP-Adressen bezeichnet. Diese Adressen gibt es sowohl unter \emph{IPv4} als auch unter \emph{IPv6}. Recherchieren Sie, welche IP-Adressbereiche nicht ins Internet geroutet werden.
-	\task Wählen Sie beispielhaft eine Netzwerkadresse (IP-Addresse -- ip address) und Subnetzmaske (subnet mask) für einen möglichst kleinen IP-Adressbereich, der genau für vier Rechner ausreicht.
-	\task Sollten Sie die Berechnung von IP-Ranges in der Vorlesung noch nicht behandelt haben, nutzen Sie folgende Links:
-	\begin{itemize}
-		\item \url{https://www.calculator.net/ip-subnet-calculator.html}
-		\item \url{https://www.tunnelsup.com/subnet-calculator/}
-	\end{itemize}
-	Bitte stellen Sie spätestens in der Übung sicher, dass Sie die Berechnung der IP-Ranges anhand der Subnetzmaske verstanden haben.
-\end{tasks} 
-\end{itemize}
-
-\begin{center}\Large{\textbf{Aufgabe B -- Routing}}\end{center}
-
+\begin{center}\Large{\textbf{Aufgabe A - Wiederholung Routing}}
+\end{center}\vskip0.25in
+Nachdem sie im letzten Übungsblatt ihr Netzwerk durch einen Switch (wenn auch nur virtuell) verbunden haben und hierdurch ihre Kommunikation aufgebauten, \enquote{wandern} Sie im kommenden Übungsblatt im OSI-Modell eine Schicht weiter nach oben. Es soll folglich ein Netzwerk geplant und umgesetzt werden, das auf Routing setzt. Der Router ist fortan zentrale Anlaufstelle für die Kommunikation. Diese Umsetzung hat den Vorteil, dass der Router Pakete über Netzgrenzen hinweg vermitteln kann. Ihr kleines, abgeschottetes Netzwerk kann über die bisherigen Grenzen hinweg kommunizieren.
 \begin{enumerate}
+	\item Als Wiederholunh des Vorlesungsstoffes lönnen sie folgenden Kapitel lesen: \cite[Kap. 4.1, 4.3]{Kurose2012}
 	\item Was sind die Aufgaben eines Routers. Wie erfolgt, im Groben, die Umsetzung des Routings?
-	\item Machen Sie sich klar, wie Router und \emph{IP}-Protokoll zusammenhängen.
-	\item In welcher Schicht des OSI-Modells würden Sie einen Router einordnen? (Begründung!)
-	\item Wie haben sich bis jetzt Ihre VMs gefunden? Woher "'wussten" diese, welches Gerät gemeint war?
-	\item Woher weiß ein \textit{Host} (Endknoten), wann er ein Paket direkt adressieren kann und wann er es an Router/Gateway weiter schicken muss?
-	\item Woher weiß ein \textit{Router} (Zwischenknoten), wann er ein Paket weiter schicken soll und wann nicht?
+	\item Nennen Sie einige Routing-Protokolle. Ist Ihnen eines (oder mehrere) dieser Protokolle bereits begegnet?
+	\item Machen Sie sich klar, wie Router und IP-Protokoll zusammenhängen.
+	\item In welche Schicht des OSI-Modells würden Sie einen Router einordnen? (Begründung!)
+	\item Wie haben sich bis jetzt ihre VMs gefunden? Woher \enquote{wussten} sie, an welches Gerät die Ethernet-Frames zu schicken waren? Wie spielt hier Ihre eigene IP-Adresse, Ihre Subnetzmaske mit hinein? Bzw. spielt diese auf Hardwareebene eine Rolle?
+	\item Woher weiß ein Rechner, wann er ein Paket direkt adressieren kann und wann er es an Router/Gateway weiterschicken muss?
+	\item Woher weiß ein Router, wann er ein Paket weiterschicken soll und wann nicht?
 \end{enumerate}
 
-\begin{center}\Large{\textbf{Aufgabe B -- Tools}}\end{center}\vskip0.25in
-Um den Übungsbetrieb etwas effizienter nutzen zu können, sollen Sie sich zunächst mit den Standardwerkzeugen der Netzwerkadministration vertraut machen. Mithilfe der Werkzeugsammlungen \emph{iproute2} sowie \emph{net-tools} wird dies in der Regel unter Linux und Unix-Betriebssystemen bewerkstelligt.
+
+\begin{center}
+\Large{\textbf{Aufgabe B -- Planung des Routing zwischen Netzen}}
+\end{center}
+\vskip0.25in
+Im vorigen Aufgabenblatt haben sie zu den IP-Adressen auch eine Netzwerkmaske konfiguriert. Diese Netzwerkmaske legt fest, welche Rechner im gleichen (Sub-)Netz liegen und somit direkt angesprochen werden können. Daraus folgt aber auch, dass bestimmte Rechner außerhalb ihres Netzes nicht direkt angesprochen werden können. Diese können via Router/Gateway erreicht werden.\\
+Wir wollen in einem ersten Schritt selber einen Router betreiben, um über unsere kleinen Netze hinweg zu kommunizieren. Dazu erweitern sie ihr Wissen aus dem vorigen Übungsblatt, sodass Ihr Netzwerk \enquote{wachsen} kann.
 \begin{enumerate}
-	\item Im ersten Übungsblatt haben Sie bereits das Rechtemodell kennengelernt. Verschiedene Nutzer*innen haben verschiedene Rechte. Für die Konfiguration des Systems soll im allgemeinen nur bestimmte Nutzer*innen zuständig sein. Recherchieren Sie welche Rechte der \emph{root}-User hat und was das Kommando \emph{sudo} in diesem Zusammenhang leistet.
-	\item In Betriebssystemen gibt es verschiedene Dienste/ Hintergrunddienste (Daemons), die die Verwaltung des Systems in Teilen organisieren. Da Debian (bzw. Arch Linux) das Betriebssystem auf den Rechnern ist, kommt Systemd zum Einsatz (Mglw. wird auch FreeBSD eingesetzt). \footnote{Eigentlich war Systemd als Alternative des System-V Init-Daemons gedacht, hat aber über die Zeit immer mehr Funktionalitäten bekommen.}
-	\begin{tasks}
-		\task Recherchieren Sie einige wichtige Dienste, die durch Systemd gesteuert werden.
-		\task Systemd verfügt über die Möglichkeit bestimmte Dienste zu starten, stopen, etc. Recherchieren Sie wie der entsprechende Befehl lautet. Das Wiki bzw. die Man-Page ist eine gute Anlaufstelle!\\
-		Notieren Sie sich die Syntax Wort für Wort, sowie die Bedeutung jedes Wortes (Tokens). 
-		\task Wichtige Dienste für die nächste Laborübungen sind der Networking-Service und DHCP. Notieren Sie sich:
+	\item Früher wurden Klassen von Adressen genutzt, heute das nutzt man \emph{CIDR (Classles Inter Domain Routing)}. Worin unterscheiden sich \emph{CIDR} und klassenbasierten Adressen?
+	\item Recherchieren sie, warum sich dies änderte!
+	\item Recherchieren sie wie die Syntax der klassenbasierten Notation aussieht und geben sie einige Beispiele für die Notation.
+	\item Recherchieren sie wie die Syntax der \emph{CIDR}-Notation aussieht und geben sie einige Beispiele für die Notation.
+	\item In der kommenden Übung soll ihr konfiguriertes Netzwerk umgebaut werden. Aus einem Netzwerk, sollen zwei werden.\\
+	Um zwischen den beiden lokalen Netzwerken kommunizieren zu können, benötigen Sie einen Router. Eine VM soll diese Aufgabe übernehmen. Der Router muss so konfiguriert werden, dass klar ist wohin die Pakete geschickt werden! Das heißt: Pakete die nicht in das eigene lokale Netzwerk gehören werden über den Router in die externen Netzwerke weitergereicht.
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.35]{lan}
+	\caption{Skizze des Netzwerkes bestehend aus zwei LANs und einem Router}
+	\end{figure}
+	\begin{enumerate}
+		\item Unterteilen sie ihr Netzwerk, sodass sich im Idealfall zwei VMs in einen lokalen Netzwerk A und zwei RVMs im lokalen Netzwerk B befinden. Planen sie das Netzwerk zunächst so, falls ihre Rechenressourcen nicht ausreichen, sind auch drei Rechner für die praktische Umsetzung ausreichend.
+		\item Skizzieren sie ihre lokalen Netzwerke, sowie das gesamte Netzwerk (D.h. nutzen sie geeignete Symbole s. letztes Übungsblatt).
+		\item Welche IP-Adressen stehen ihnen für die Umsetzung des Netzwerkes zu Verfügung? Wählen sie eine IPv4 und IPv6 Range, die für die Umsetzung geeignet ist.
+		\item Vergeben sie entsprechende IP-Adressen mit kleinst mögliche Subnetzmasken auf der Skizze.
+		\item Planen sie ebenso den Router mit entsprechenden IP-Adressen auf der Skizze ein. Achten sie darauf, dass der Router als Verbindungsstück (Intermediate-Node/ Zwischenknoten) zwischen Ihren beiden Netzen fungiert und dementsprechend beide Netzwerke kennen muss. Das heißt, der Router muss mindestens zwei IP-Adressen haben, jeweils eine pro Netzwerk. Möglicherweise hat ihr Router auch zusätzliche Adapter und Adressen!
+	\end{enumerate}
+\end{enumerate}
+
+\begin{center}
+\Large{\textbf{Aufgabe C -- Tools \& OS}}
+\end{center}
+\vskip0.25in
+
+\begin{enumerate}
+	\item Seit der letzten Übung kennen Sie schon einige grundlegende Befehle, um das Netzwerkinterface eines unixoiden Betriebssystems zu konfigurieren. Dieses Wissen soll nun erweitert werden. Hierfür schauen wir in die bekannten Werkzeugkästen \emph{iproute2} und \emph{net-tools}.
+	\begin{enumerate}
+	\item Recherchieren sie, welches Tool des \emph{iproute2} genutzt werden kann um Routen zu setzen. Notieren Sie sich die Syntax und was die Parameter bewerkstelligen.
+	\item Analog dazu: Wie werden Routen mithilfe der \emph{net-tools} konfiguriert?
+	\item \url{https://www.freebsd.org/doc/de_DE.ISO8859-1/books/handbook/network-routing.html} bietet ihnen eine gute Anlaufstelle, wie Router und Routing unter \emph{freeBSD} umgesetzt wird.
+	\item Recherchieren sie beispielhaft wie eine persistente Lösung aussähe. Kommentieren sie ihr Beispiel anschließend, sodass Sie wissen was die einzelnen Zeilen bedeuten.
+	\end{enumerate}
+	\item Gateways \& Router -- Gateways sind im allgemeinen nicht das Gleiche wie Router. Auch unter den Gateways gibt es Unterscheidungen.
+	\begin{enumerate}
+	\item Recherchieren sie worin sich Router und Gateways unterscheiden.
+	\item Beim aufsetzen des Netzwerkes kann unterschieden werden zwischen \emph{Gateways} und \emph{Default Gateways}. Recherchieren sie diese Unterscheidung. Erläutern sie die Ursache des Unterschieds.
+	\end{enumerate}
+	\item Im vorigen Übungsblatt arbeitete ihr Netzwerk mithilfe eines Switches. Alle Knoten des Netzwerkes waren innerhalb eines Segments (LAN). Daher konnte sie nur innerhalb Ihres Netzwerkes kommunizieren, darüber hinaus aber nicht. Mithilfe eines Routers erweitern sie die Reichweite ihres Netzwerkes. Jedoch ist Routing ein wesentlich komplexerer Vorgang, da in der Regel Wege zwischen Endknoten durch ein Netzwerk gefunden werden müssen (Route). Aufgrund dieser Tatsache müssen Sie ein wenig tiefer in das Betriebssystem schauen.
+	\begin{enumerate}
+	\item Recherchieren sie mit den vorangegangen Quellen, was ein Routing-Table/Routing-Tabelle ist \footnote{\url{https://docs.freebsd.org/doc/12.1-RELEASE/usr/local/share/doc/freebsd/de_DE.ISO8859-1/books/handbook/network-routing.html}}.
+	\item Recherchieren sie den Unterschied zwischen Forwarding und Routing.
+	\item Wie aktivieren sie unter \emph{freeBSD} das Forwarding? Analog: Wie wird  das Forwarding unter Linux (Arch-Linux) eingeschaltet?
+	\item In welcher Konfigurationsdatei müssen Sie einen Eintrag vornehmen, so das das Routing dauerhaft beim Systemstart aktiviert bleibt? Notieren Sie sich beispielhaft (auszugsweise) wie dies aussehen kann.
+	\end{enumerate}
+	\item Das Internet Control Message Protocol (ICMP) wird in Netzwerken als Diagnosetool zum Austausch von Informations- und Fehlermeldungen verwendet. 
+	\begin{enumerate}
+		\item Recherchieren Sie welchen Hinweis Ihnen dabei die verschiedenen ICMP-Fehlermeldungen geben -- wo wird jeweils der Fehler in der Konfiguration liegen?
+		\begin{enumerate}
+			\item connect: network is unreachable
+			\item Destination Host Unreachable
+			\item Destination Network Unreachable
+			\item keine Antwort auf ein Ping
+		\end{enumerate}  
+	\end{enumerate}
+\end{enumerate}
+
+\begin{center}
+\Large{\textbf{Aufgabe C -- Vorbereitung Laborübung}}
+\end{center}
+\vskip0.25in
+\begin{enumerate}
+	\item Importieren und klonen sie die benötigten VMs!
+	\begin{enumerate}
+		\item Optimal: Zwei Netzwerke mit einer \emph{freeBSD} und einer Linux-VM. (Falls Ressourcen knapp sind, zwei Netzwerke mit einem \emph{freeBSD} und einem Linux). Nutzen sie die VMs ohne grafische Oberfläche! Bei Bedarf können sie die Ressourcen der VMs weiter herunter- oder heraufsetzen.
+		\item Konfigurieren sie die Adapter, sodass ihre VMs in den entsprechenden virtuellen Netzwerken arbeiten (Host-Only Network)
+		\begin{enumerate}
+			\item Tutorial Import unter virtualBox: \url{https://mediathek.htw-berlin.de/video/Import-VM-Image/0e474c72751fc0ae7a9c2808ccf2bc87}
+			\item Tutorial Einstellen der Netzwerkadapter: \url{https://mediathek.htw-berlin.de/video/Virtualbox-Network-Preperations-amp-Cloning/276fab5dbd663d7589d12a30234da003#}
+		\end{enumerate}
+		\item Konfigurieren sie den \emph{freeBSD}-Router -- BSD mit grafischer Oberfläche. Diese VM sollte drei Adapter haben. 
 		\begin{itemize}
-			\item[i] Wie der Status eines Daemons abgefragt werden kann.
-			\item[ii] Wie ein Daemon gestartet, gestoppt werden kann.
-			\item[iii] Wie ein Daemon permanent eingeschaltet bzw. ausgeschaltet werden kann (d.h. auch nach einem Neustart automatisch gestartet werden kann.)
+			\item Bridge-Mode
+			\item Host-Only Network $A$
+			\item Host-Only Network $B$
 		\end{itemize}
-	\end{tasks}
-	\item Übliche Befehle zum Einrichten von Netzwerkadaptern sind \emph{ifconfig} (BSD \emph{net-tools}) oder auch \emph{ip} aus der Werkzeugsammlung \emph{iproute2}. Der Befehl \emph{ifconfig} gilt in manchen Linux-Distributionen als veraltet (In BSD, Solaris etc. ist dies nicht der Fall!). Recherchieren Sie kurz, worin sich beide Tools-Sammlungen unterscheiden und notieren Sie sich wesentliche Unterschiede.\\
-	Digital Ocean hat ein schönes HowTo dazu: \url{goo.gl/w1MN5x}
- 	\item Bringen Sie in Erfahrung, wie Sie die Konfiguration bereits existierende Netzwerkkonfigurationen mit den Tools \emph{ip} und \emph{ifconfig} in Erfahrung bringen.
-	\item Recherchieren und notieren Sie sich, wie mithilfe des Befehls \emph{ip addr} Netzwerkadapter(n) eine (oder mehrere) IP-Adressen und Subnetzmasken zugewiesen wird.\\
-	Wie wird dies mit \emph{ifconfig} gehandhabt.\\
-	(Auch hier gilt: Notieren Sie sich das Kommando sowie dessen Bedeutung Wort/Schrittweise)!
-	\item Recherchieren Sie, wie Sie die IP-Konfiguration in einer Datei festlegen und speichern können, sodass diese weiterhin nach einem Neustart gültig ist.\\
-	\textbf{Achtung:} Bedenken Sie für welches Betriebssystem diese Konfiguration erfolgen soll!
-	\begin{tasks}(1)
-		\task In welcher Datei wird die Konfiguration abgelegt?
-		\task Welcher User kann auf diese Datei zugreifen?
-		\task Notieren Sie sich, wie eine Konfiguration beispielhaft aussieht und was die einzelnen Zeilen bedeuten!
-	\end{tasks}
-	\item Recherchieren Sie wie der Status eines Netzwerkadapters mit den \emph{net-tools} und \emph{iproute2} abgefragt werden kann.\\
-	Welche Stati kann ein Adapter besitzen?\\
-	Wie kann der Status geändert werden?
+	\end{enumerate}
+	\item Lesen sie vorbereitend das Laborübungsblatt! Notieren sie sich bei allen Aufgaben, die ihnen nicht klar sind ihre Fragen. 
+	\item Notieren sie sich alle Fragen zu Aufgaben, bei denen sie kein Lösungsansatz haben.
 \end{enumerate}
 
-\begin{center}\Large{\textbf{Aufgabe C -- Ping}}\end{center}\vskip0.25in
-Um festzustellen ob eine Verbindung funktionstüchtig ist, wird oftmals das Tool \emph{ping} genutzt. D.h. \emph{ping} analysiert ob Datenpakete überhaupt und wie viele Pakete von einem Host (bspw. Ihrem Rechner) zu einem Ziel (wie etwa der Webserver der HTW-Berlin) gelangen. Falls Sie ein wenig mehr zu Ping recherchieren wollen, kann ich Ihnen folgenden Artikel empfehlen: \url{https://openmaniak.com/ping.php}
-\begin{enumerate}
-	\item Recherchieren Sie die Syntax von \emph{ping}. Ein guter Anlaufpunkt wäre die Man-Page (\emph{man ping}) oder \url{https://linux.die.net/man/8/ping}.
-	\item \textbf{Optional:} Arbeiten Sie folgendes Tutorial durch: \url{https://www.thegeekstuff.com/2009/11/ping-tutorial-13-effective-ping-command-examples/}
-\end{enumerate}
-
-\begin{center}\Large{\textbf{Aufgabe D -- Address Resolution Protocol (ARP) \& Neighbor Discovery Protocol (NDP)}}\end{center}\vskip0.25in
-Vielleicht ist Ihnen aufgefallen, dass Ihr Netzwerk in der Planung zwar IP-Adressen nutzt, aber kein Router Verwendung findet (Router/Gateways arbeiten fast immer auf OSI-Layer 3). Der Switch (\texttt{OSI-Layer 2}) benötigt keine IP-Adressen, dieser arbeitet unterhalb des Network-Layers und ist lediglich auf Ethernet-Frames angewiesen. Ihre VMs verlangen jedoch zwingend eine IP-Adresse von Ihnen.\\
-Um den Knoten ein wenig zu lösen, schauen Sie sich das \emph{Address Resolution Protocol (ARP)} an.
-\begin{enumerate}
-		\item Recherchieren Sie im Kurose \cite[S. 461ff, 465]{Kurose2012} oder mithilfe folgenden links: \url{https://en.wikipedia.org/wiki/Address_Resolution_Protocol}, was \emph{ARP} ist und wie dies funktioniert.
-		\item Wie adressiert ein Switch die Pakte zwischen den Endknoten (VMs)?
-		\item Erläutern Sie das Adressschema von \emph{MAC}-Adressen. Kann dieses Adressschema auch zu Problemen führen?
-		\item Da unser Uplink (Gateway des Labors) \enquote{nur} das alte \emph{IPv4} spricht ist \emph{ARP} notwendig. Unter \emph{IPv6} gibt es kein \emph{ARP}, wie wird dies dort gehandhabt?
-		\item Erklären Sie wie die Adressauflösung mittels \emph{NDP} aussieht? Welche Schritten sind hier notwendig?
-		\item Recherchieren Sie wie die Werkzeuge \emph{arp} und \emph{ip neigh} in unixoiden Betriebssystemen genutzt werden können, sowie deren Syntax.
-		\begin{tasks}(1)
-			\task Wie kann der \emph{arp}-Cache ausgelesen werden?
-			\task Wie löscht man \emph{arp} Einträge?
-			\task Wie kann in Wireshark nach ARP-Nachrichten gefiltert werden?
-		\end{tasks}
-\end{enumerate}
-
-\begin{center}\Large{\textbf{Aufgabe E -- MITM \& ARP-Cache}}\end{center}\vskip0.25in
-\emph{ARP} besitzt keinerlei Mechanismen, um die Nutzer vor Angriffen zu schützen. Mit der folgende Aufgabe sollen Sie herausfinden, wie hoch der Aufwand für eine solche Manipulation ist.\\
-\textbf{Hinweis:} Die hier vorgestellten Techniken sollen Ihnen ermöglichen Angriffsszenarien zu verstehen. Nicht diese in fremder Infrastrukturen anzuwenden. Die Skripte sollten Sie nur im Labor oder dem eigenen Netzwerk testen! 
-\begin{enumerate}
-	\item Recherchieren Sie, wie die Datenstruktur \enquote{Cahce} funktioniert. Was sind die Eigenschaften eines Caches?
-	\item Anschließend daran: Recherchieren Sie was es mit dem ARP-Cache auf sich hat.
-	\item Erläutern Sie wie der ARP-Cache-Mechanismus funktioniert.
-	\item Recherchieren Sie was ein Man-In-The-Middle-Angriff (\emph{MITM}) ist.
-	\item Da der ARP-Cache keinerlei Validierungsmöglichkeiten hat, ist ein Manipulation des ARP-Caches möglich. Überlegen Sie sich zunächst, welche Schritte hierfür notwendig wären, wenn Sie als Angreifer den Cache eines anderen Systems verändern wollen.
-	\begin{itemize}
-		\item Welche Voraussetzungen müssen gegeben sein?
-		\item Welche Informationen über das Angriffsziel benötigen Sie?
-		\item Welche Schritten müssen für den Angriff erfolgen. Denken Sie zunächst abstrakt darüber nach. 
-		\item \textbf{Anmerkung:} Falls Sie die vorige Aufgabe nicht bewerkstelligen konnten, lesen Sie ein Tutorial zu ARP-Cache-Poisoning.\\
-		Bspw.: \url{https://www.tutorialspoint.com/ethical_hacking/ethical_hacking_arp_poisoning.htm}
-	\end{itemize}
-	\item Im Moodle (sowie auf den VMs) steht ein Angriffstool für das sogenannte ARP-Spoofing bzw. ARP-Cache-Poisoning bereit. Lesen dieses Skript und versuchen Sie diese weitestgehend zu verstehen.\\
-	Notieren Sie sich den Ablauf! Notieren Sie sich Fragen zum Quellcode, die Sie nicht verstehen.
-\end{enumerate}
-
-\bibliographystyle{plain}
-\bibliography{sources}
+\printbibliography
 \end{document}

@@ -1,0 +1,178 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+		
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{stmaryrd}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{csquotes}
+\usepackage{enumitem}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+%Header & Footers
+\pagestyle{fancy}
+\lhead{Netzwerke -- Übung\\Wintersemester 2020/21}
+\rhead{FB 4 -- Angewandte Informatik\\Hochschule für Technik und Wirtschft Berlin}
+\lfoot{Übungsblatt 03 -- Routed LAN}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+  upquote=true,
+  columns=fullflexible,
+  literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}
+
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+
+\DeclareMathOperator{\id}{id}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Übungsblatt 4}
+}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 03 -- Netzwerkgrundlagen}}
+\end{center}
+\begin{center}\Large{\textbf{Aufgabe A -- Umsetzung des Routings}}\end{center}\vskip0.25in
+%\setlist[enumerate, 1]{itemsep=\baselineskip}
+Setzen sie das aus der Planung hervorgegangene Netzwerk (bzw. die Netzwerke) mit den ihn bekannten Tools um.\\
+Ihr Netzwerk besteht aus insgesamt fünf VMs (falls Ihre Ressourcen knapp sind, reichen drei VMs). Optimal sollten zwei VMs im Netzwerk A und B sein, ein minimales \emph{freeBSD} und ein Linux. Zwischen beiden Netzwerken \enquote{sitzt} der Router (\emph{freeBSD} mit GUI).
+\begin{enumerate}
+	\item \textbf{Für die Hosts:}\\
+	\begin{enumerate}
+		\item Bevor sie das Netzwerk umsetzen: Legen sie fest welche Netzwerkadapter zu welchem Netzwerk gehören! Ordnen sie entsprechend den Adaptern den Netzwerken zu.
+		\item Wie in der vorigen Übung: Legen sie zu jedem Adapter IPv4 Adresse und Subnetzmaske fest. Die Netze sollten minimal sein!
+		\item Überprüfen sie, ob auf allen Adaptern dar \emph{DHCP}-Dienst ausgeschaltet ist.
+		\item Setzen sie für alle benötigten Adapter die gewählten IPv4 Adressen und Subnetzmasken.
+		\item Aktivieren sie die Netzwerkadapter und überprüfen sie, ob VMs innerhalb eines LANs sich bereits erreichen können.
+		\item Lassen sie sich den aktuellen Routing-Table anzeigen. Welche Informationen entnehmen sie diesem?
+		\item Fahren sie mit der Konfiguration des Routers fort.
+		\item Nachdem sie den Router aufgesetzt haben:
+		\begin{enumerate}
+			\item Tragen sie für alle Hosts entsprechende Routen ein!
+			\item Überprüfen sie, ob sich die VMs über das LAN hinaus erreichen.
+		\end{enumerate}
+	\end{enumerate}
+	\item \textbf{Für den Router:}\\
+	Der Router benötigt eine etwas andere Konfiguration. 
+	\begin{enumerate}
+		\item Wie bei den Hosts auch benötigt ihr Router IP-Adressen. Für jeden Adapter mindestens eine Adresse samt Subnetzmaske. 
+		\item Konfigurieren sie die Adapter des Routers mit IP-Adresse und Subnetzmaske.
+		\item Der Router sollte anschließend alle Rechner erreichen können. Andersherum sollte natürlich alle VMs den gemeinsamen Router erreichen können.
+		\item Aktivieren sie das Forwarding auf dem Router, sodass Pakete aktiv weitergeleitet werden können.
+		\end{enumerate}
+		\item Sie können mithilfe eines kleine Chats testen, ob Pakete tatsächlich auf dem Router ankommen. Dafür basteln Sie eine kleine  Client-Server-Lösung. Beide Seiten nutzen das Tool \emph{netcat -- nc}. Das Listing \ref{netcat_server} zeigt die Seite des Servers, dieser Stellt den Server bereit, der Client darf sich anschließend mithilfe eines \emph{Sockets (Tupel aus IP-Adresse und Port)} verbinden (s. Listing \ref{netcat_client}). 
+		\begin{lstlisting}[style=Bash, language=Bash, label={netcat_server}]
+#Server port > 1024 
+nc -l -p <port_number> <ip_of_server>
+#example
+nc -l -p 4711 10.0.0.1
+		\end{lstlisting}
+		
+		\begin{lstlisting}[style=Bash, language=Bash, label={netcat_client}]
+#Client 
+nc <ip_of_server> <port_number>
+#example
+nc 10.0.0.1 4711
+		\end{lstlisting}
+		\item \textbf{Alternativ:} Wenn Sie bereits mit Wireshark gearbeitet haben können Sie auch dies benutzen, um festzustellen, ob die Pakete korrekt ankommen. 
+	\item \textbf{Router: Uplink}\\
+	Alle VMs sollte sich nun erreichen können. Rechner außerhalb dieses Netzwerkes können sie wahrscheinlich noch nicht erreichen.
+	\begin{enumerate}
+		\item Schauen Sie sich die Routing-Tabelle auf Router und Hosts an. Welche Informationen können Sie diesem entnehmen? Welche Art Routen haben sie gesetzt?
+        \item Muss am Router eine Anpassung der Routing-Tabelle vorgenommen werden, so das dieser Rechner außerhalb des Netzes erreicht?
+        \item Falls ihre Hosts keine Default-Route haben, welcher Rechner wäre als Default-Gateway sinnvoll? Setzen sie in der Routing-Tabelle entsprechende Routen.
+        \item Falls ihr Router noch keiner Rechner außerhalb des Netzes erreichen kann:
+        \begin{enumerate}
+        		\item Hat ihr Router ein Default-Gateway? Falls nein, welcher Rechner wäre das passende Gateway?
+        \end{enumerate}
+        \item Setzen sie für den Router eine Default-Route, sodass sie Rechner außerhalb des Netzes erreichen können.
+        \item Überprüfen sie, ob sie Rechner außerhalb erreichen können!
+     	\begin{enumerate}
+     		\item Versuchen sie Rechner innerhalb ihres physischen LANs via IP-Adresse zu erreichen -- bspw. Smartphone, Toaster etc. Die IP-Adressen können sie entweder über den Router oder das Gerät selbst in Erfahrung bringen. Sie können auch die Werkzeuge \emph{arp-ping}, \emph{arp-scan} oder \emph{nmap} nutzen.
+     		\item Versuchen sie einen Rechner des Internets via IP-Adresse zu erreichen (bspw.: $1.1.1.1$).
+     		\item Versuchen sie einen Rechner des Internets über seinen Domainnamen zu erreichen (bspw. htw-berlin.de)
+     	\end{enumerate}
+	\end{enumerate}
+	\item Konfiguration der \emph{resolv.conf}
+	\begin{enumerate}
+		\item Wahrscheinlich könnten ihre Hosts noch keine Rechner über den Domainnamen erreichen. Daher müssen sie diese noch konfigurieren. Tragen sie alle notwendigen Einträge in die Datei \path{/etc/resolv.conf} ein.
+		\item Überprüfen sie, ob sie nun Rechner auch via Domainnamen ansprechen können.
+	\end{enumerate}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- IPv6}}\end{center}\vskip0.25in
+Da \emph{IPv4} ein etwas betagteres Protokoll ist und sie fit für die Zukunft sein sollen, sollen sie abschließend ihr Netzwerk mittels \emph{IPv6} umsetzen. Da \emph{IPv6} eine wesentlich größere IP-Range besitzt ist in der Nachfolgenden Tabelle ein mögliches Adressschema aufgezeigt. Auch hier gilt: \emph{IPv6} hat mehr Adressen, dies sollte sie jedoch nicht dazu verleiten verschwenderisch damit umzugehen!
+\begin{table}[H]
+\centering
+\begin{tabular}{ll}
+ Prefix/L & fd  \\
+ Global ID & 0da5a0170a \\
+ Subnet ID &  5fd7\\
+ Combined/CID & fd0d:a5a0:170a:5fd7::/64 \\
+ IPv6 addresses & fd0d:a5a0:170a:5fd7:xxxx:xxxx:xxxx:xxxx 
+\end{tabular}
+\end{table}
+Sie sollen im Folgenden ein statisches \emph{IPv6}-Netzwerk umsetzen. Ein Routing außerhalb ihrer lokalen Infrastruktur ist kein muss, da es immer noch Anbieter (oder Hardware) gibt, die keinen \emph{IPv6} unterstützt.
+\begin{enumerate}
+	\item Portieren sie ihren \emph{IPv4}-Netzwerkaufbau auf \emph{IPv6}. D.h. der grundsätzliche Aufbau des Netzwerkes soll nicht verändert werden. Sie fügen den Adaptern lediglich \emph{IPv6}-Adressen hinzu.
+	\item Vergeben sie in Ihrem Netzwerk entsprechende Adressen. Vergessen sie nicht entsprechende Adressen für den Router zu setzen.
+	\item Tragen sie für alle Teilnehmer entsprechende Routen ein.
+	\item Testen Sie Ihre Netzwerke mit \emph{ping6}.
+	\item Falls ihr lokale Infrastruktur es zulässt, können sie auch ein Default-Gateway konfigurieren, sodass die VMs via \emph{IPv6} ins Internet kommen.
+	\item Müssen sie Einträge in ihre \emph{resolv.conf} ändern? Falls ja: Ändern sie dies entsprechend.
+\end{enumerate}
+
+\end{document}
