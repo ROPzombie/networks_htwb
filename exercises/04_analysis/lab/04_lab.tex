@@ -1,0 +1,163 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+
+\usepackage{amsmath}%get math done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{multicol}
+\usepackage{tasks}
+\usepackage{csquotes}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+%Header & Footers
+\pagestyle{fancy}
+\lhead{Netzwerke -- Übung\\Wintersemester 2020/21}
+\rhead{FB 4 -- Angewandte Informatik\\Hochschule für Technik und Wirtschft Berlin}
+\lfoot{Übungsblatt 04 -- Routing \& Traffic Analysis}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  %linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 04 -- Routing \& Traffic Analysis}}\\
+\end{center}
+
+\begin{center}\Large{\textbf{Aufgabe A -- TCP: 3-Way-Handshake}}\end{center}\vskip0.2in
+Nachdem sie sich bereits theoretisch mit dem 3-Way-Handshake auseinandergesetzt haben, sollen sie nun schauen, ob der TCP-Handshake tatsächlich wie theoretisch beschrieben arbeitet.
+\begin{enumerate}
+	\item Überlegen sie sich eine Anfragen an eine Website (dies sollte TCP nutzen, etwa durch ein HTTP-Request!), die sie noch nicht von der VM aus getätigt haben.
+	\item Starten sie Wireshark, richten sie Interface und Protokoll-Type ein. Filtern sie nur auf eine speziellen Request!
+	\item Lösen sie den Handshake durch aufrufen der Website (oder Ressource) aus, während Wireshark den Netzverkehr mitschneidet.
+	\item Analysieren sie den 3-Way-Handshake!
+	\item Zum Vergleich: Analysieren Sie ihren Mitschnitt mit folgender Aufzeichnung: \url{https://wiki.wireshark.org/TCP_3_way_handshaking?action=AttachFile&do=view&target=3-way+handshake.pcap}
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- ICMP}}\end{center}\vskip0.2in
+Da die Befehle \emph{ping} und \emph{traceroute} \emph{ICMP} nutzen, sollen Sie mit Wireshark solche Request mitverfolgen.
+\begin{enumerate}
+	\item Setzen sie alle notwendigen Parameter um Wireshark mitlaufen zu lassen, sodass Sie die ICMP-Nachrichten mitverfolgen können.
+	\item Pingen sie einen Rechner mit seinem Namen an (bspw.: \url{mi.fu-berlin.de}).
+	\item Ping auf eine IP-Adresse (bspw.: 160.45.117.199).
+	\item Ping auf die IP-Adresse Ihres Routers. \\\textbf{Hinweis:} Sie können diese durch \emph{ip r} oder \emph{route} in Erfahrung bringen. 
+	\begin{lstlisting}[style=Bash, language=Bash]
+ip r
+default via XXX.XXX.XXX dev DEVICE proto dhcp src YOU.RIP.ADD metric VALUE
+#or
+route -n
+Destination     	Gateway         	Genmask		Flags 	Metric 		Ref    	Use 	Iface
+0.0.0.0          	XXX.XXX.XXX   	0.0.0.0         	UG    	VALUE    	0        	0 		DEVICE
+	\end{lstlisting}
+	\item Ping auf meine eigene IP-Adresse.
+	\item Ping auf die Loopback-Adresse.
+	\item Starten sie eine Routenverfolgung via \emph{traceroute} auf eine beliebige Adresse. Verfolgen sie dabei den Ausgabe auf der Konsole als auch in Wireshark (Filtern Sie in Wireshark entsprechend). Spiegeln sich die Einträge in Wireshark mit denen auf der Kommandozeile?
+	\item Erläutern sie die Ergebnisse ihrer vorigen Aufgabe. Wie funktioniert \emph{traceroute} und wie hängt dies mit \emph{ICMP} zusammen?
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- Routing \& Traceroute}}\end{center}\vskip0.25in
+Nachdem sie recherchiert haben, wie \emph{traceroute} arbeitet, welche Kritik an Traceroute geäußert wurde und wie diese mit dem Tool Paris-Traceroute abgestellt wurden, sollen beide Tools hier kurz erprobt werden.
+\begin{enumerate}
+	\item Überlegen sie sich zunächst anhand Ihrer Recherche was \emph{traceroute} in etwa ausgeben müsste, wenn sie auf der VM eine Route von einem Rechner $A$ zu einem Rechner $B$ verfolgen würden. Wobei beide Rechner zu unterschiedlichen LANs gehören. 
+	\item Nutzen Sie anschließend \emph{traceroute} um sich die Router zwischen zwei VMs anzeigen zu lassen. Stimmen Ihre theoretische Überlegungen mit denen von \emph{traceroute} überein? Falls nicht, sollten Sie analysieren woran dies liegen könnte.
+	\item Vergleichen Sie die Ausgaben von \emph{traceroute} und \emph{paris-traceroute} für folgende IP-Adressen:
+	\begin{enumerate}
+		\item 41.231.21.44
+		\item 91.198.174.192
+		\item 37.220.21.130
+		\item 80.239.142.229
+	\end{enumerate}
+	\textbf{Hinweis}: Für \emph{paris-traceroute} sollten Sie den \enquote{exhaustive algorithm} Nutzen (in machen Versionen als Parameter: \texttt{-na exhaustive})
+	\item Analysieren sie anschließend die Ausgabe beider Tools.
+	\item Warum wurde Ihnen eine Liste von IP-Adressen genannt anstelle von Domainnamen? Nennen Sie mindestens zwei Gründe!
+\end{enumerate}
+
+\begin{center}
+\Large{\textbf{Aufgabe C - Bestimmung des physischen Rechners zu einer IP-Adresse -- ARP}}
+\end{center}\vskip0.25in
+Sie haben bereits theoretisch recherchiert, wie die Zuordnung von physischer Adresse zu einer IP-Adresse vonstatten geht. Im Folgenden sollen sie herausfinden, ob die Auflösung von IP-Adresse auf physische Adresse wirklich analog zu ihren theoretischen Recherchen abläuft.
+\begin{enumerate}
+	\item Finden sie mithilfe Wiresharks heraus, wie die Adressauflösung funktioniert.
+		\begin{enumerate}
+			\item Leeren sie zunächst den ARP-Cache.
+			\item Pingen sie nun einen Rechner an, den Sie vorhin noch nicht \enquote{angepingt} haben. Die dafür ausgetauschten Pakete (und wahrscheinlich einige mehr) werden \enquote{gesnifft}.
+			\item Beenden sie das Mitschneiden des Netzwerksverkehrs und setzen sie als Filtern die MAC-Adresse ihres Adapters.
+			\item Versuchen sie über den Mitschnitt herauszufinden, wie die Bestimmung des zugehörigen Netzadapters und die MAC-Adresse erfolgt.
+		\end{enumerate}1)
+	\item Damit ihr Rechner nicht jedes mal eine Auflösung veranlassen muss, werden die ARP-Informationen lokal in einem Cache zwischengespeichert (\enquote{cached}).
+\begin{enumerate}
+	\item Lassen sie sich Ihren aktuellen ARP-Cache anzeigen. Welche Informationen können sie diesem entnehmen?
+	\item Schauen sie kurz nach, wie lange der ARP-Cache Einträge vorhält.
+	\item Lassen sie zwei VMs die IP-Adressen tauschen. Dies sollte möglichst schnell umgesetzt werden!
+	\item Versuchen sie nun durch eine dritte VM eine \enquote{alte} IP-Adresse zu erreichen. Werden die Daten an den richtigen Knoten übermittelt?
+	\item Verfolgen sie die Datenübermittlung per Wireshark mit.
+\end{enumerate}
+\end{enumerate}
+
+\begin{center}
+\Large{\textbf{Aufgabe D - Packet Analysis}}
+\end{center}\vskip0.25in
+
+Im Moodle-Kurs liegt eine Zip-Datei \path{network_packets.zip}. Diese enthält verschiedene Dateien die sie auf verschiedene Arten in Wireshark öffnen können. Sie sollen diese Pakete analysieren. Teilweise sind in diesen Paketen Passwörter und Zugangsdaten zu finden, in einigen Fällen können ganze Nachrichten oder Geräteinformationen gefunden werden.
+\begin{enumerate}
+	\item Die Datei \path{ftp.pcap} ist eine FTP-Session mit Passwort Authentifizierung. Finden sie das Paket sowie Passwort.
+	\item Die Datei \path{telnet.pcap} ist eine Telnet-Session mit Passwort Authentifizierung. Finden sie das Paket sowie Passwort.
+	\item Die Datei \path{raw_ethernet_frame} ist ein Ethernet Frame in Hex-Format. Das heißt, sie müssen einen Hex-Dump auswerten. Finden Sie heraus, was im Ethernet-Frame enthalten ist.
+	\item Die Datei \path{twitter.pcap} ist eine Twitter-Session welche die Authentifizierung enthält. Finden sie heraus, wie diese umgesetzt wurde und finden sie das Passwort.
+	\item Die Datei \path{bt.bin} für die Authentisierung von Bluetooth-Geräten gedacht. Im wesentlichen benötigen sie die MAC-Adresse des Gerätes und den Gerätenamen. Beides ist in der Datei enthalten. Die Authentisierung erfolgt die Hashing mit SHA1 (eine kryptografische Hashfunktion \footnote{Mehr dazu demnächst. SHA1 gilt seit Jahren als unsicher!}). Finden sie das Tupel aus MAC-Adresse und Gerätenamen heraus und lassen Sie die SHA1 Funktion darüber laufen.
+	\begin{lstlisting}[style=Bash, language=Bash]
+echo "XXXXXXXXXXXXXXXXXXX" | sha1sum
+\end{lstlisting}
+\end{enumerate}
+\end{document}

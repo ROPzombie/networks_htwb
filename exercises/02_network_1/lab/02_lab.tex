@@ -71,14 +71,14 @@
 
 \begin{document}
 \begin{center}
-\Large{\textbf{Übungsblatt 03 -- Netzwerkinfrastruktur Teil 1}}\\
+\Large{\textbf{Übungsblatt 02 -- Netzwerkinfrastruktur Teil 1}}\\
 \end{center}
 
 \begin{center}\Large{\textbf{Aufgabe A - Setup}}\end{center}
 Bevor es richtig losgeht müssen sie folgende Vorbereitungen treffen.
 \begin{enumerate}
 	\item Sie benötigen drei VMs. Hierfür sollten sie ein minimales \emph{freeBSD}, ein minimales \emph{Linux} \footnote{Minimal heißt hier: ohne grafische Oberfläche/Headless} und das \emph{freeBSD} mit grafischer Oberfläche (GUI) bereithalten. \\
-Importieren Sie die VMs. Hierfür habe ich ein kurzes Video vorbereitet: \url{https://mediathek.htw-berlin.de/video/Virtualbox-Network-Preperations-amp-Cloning/276fab5dbd663d7589d12a30234da003} \footnote{Anmeldung in der Mediathek nicht vergessen!}
+Importieren sie die VMs. Hierfür habe ich ein kurzes Video vorbereitet: \url{https://mediathek.htw-berlin.de/video/Virtualbox-Network-Preperations-amp-Cloning/276fab5dbd663d7589d12a30234da003} \footnote{Anmeldung in der Mediathek nicht vergessen!}
 	\item Ändern sie die Hostname der VMs! Jede VM sollte einen individuellen Namen bekommen. Später empfiehlt es sich die Namen den Funktionalitäten zuzuordnen oder ein festes Namensschema zu nutzen. 
 	 \item Für \emph{freeBSD}: \url{https://www.cyberciti.biz/faq/howot-freebsd-change-hostname-without-reboot/}
 	 \item Für Linux: \url{https://www.cyberciti.biz/faq/linux-change-hostname/}
@@ -91,8 +91,8 @@ Bevor sie ein eigenes kleines Netzwerk einrichten, sollen sie sich mit den dafü
 Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen Rechnern in einem Netzwerk. Jeder Rechner muss hierfür eine passende IP-Adresse haben, mit der er andere Rechner bzw. Zwischenknoten im Netz erreichen kann. Wenn Sie dem Tutorial gefolgt sind, haben die VMs jeweils drei Interfaces. Eines davon hat Zugang zu einem DHCP-Netzwerk. Somit auch eine automatisch zugeordnete IP-Adresse.
 \begin{enumerate}
 	\item Starten sie eine \emph{freeBSD} und Linux VM. 
-	\item Nutzen Sie für die nachfolgende Aufgabe beide Tools (ip addr (Linux) als auch ifconfig (\emph{freeBSD}))
-	\item Lassen Sie sich die aktuelle IP-Adresskonfiguration anzeigen.
+	\item Nutzen sie für die nachfolgende Aufgabe beide Tools \emph{ip addr} (Linux) als auch \emph{ifconfig} (\emph{freeBSD}))
+	\item Lassen sie sich die aktuelle IP-Adresskonfiguration anzeigen.
 	\item Wo finden Sie in der Ausgabe die folgenden Informationen:
 	\begin{enumerate}
 		\item \emph{MAC}-Adresse der Netzwerkkarte
@@ -102,24 +102,26 @@ Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen
 		\item Anzahl fehlerhafter Pakete?
 		\item Übertragene und empfangene Datenmenge?
 	\end{enumerate}
-	\item Überprüfen Sie, ob ein Netzwerkverbindung besteht. Zum Prüfen können Sie folgende Aktionen durchführen:
+	\item Überprüfen sie, ob ein Netzwerkverbindung besteht. Zum Prüfen können Sie folgende Aktionen durchführen:
 	\begin{enumerate}
 		\item Auf der Kommandozeile einen Rechner mit seinem Namen anpingen (bspw.: \url{mi.fu-berlin.de}).
-		\item Ping auf eine IP-Adresse (bspw.: 160.45.117.199).
+		\item Ping auf eine IP-Adresse (bspw.: $160.45.117.199$).
 		\item Ping auf die IP-Adresse in Ihrem Netzwerk. Bspw. lokale Router (oft IP: $192.168.172.1$ oder$192.168.0.1$ ) -- funktioniert die Kommunikation im lokalen Netz (LAN)?
 		\item Ping auf die eigene IP-Adresse -- wurde der lokale Netzwerkstack richtig gestartet?
 	\end{enumerate}
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe C -- Umsetzung des statischen Netzwerkes}}\end{center}\vskip0.25in
-Setzen Sie das aus der Planung hervorgegangene Netzwerk um. Drei VMs befinden sich im sleben \emph{LAN} und sollen miteinander kommunizieren.
+Setzen sie das aus der Planung hervorgegangene Netzwerk um. Drei VMs befinden sich innerhalb eines \emph{LAN}s und sollen miteinander kommunizieren.
 \begin{enumerate}
-	\item Schalten sie auf allen VMs für die \emph{DHCP}-Netzwerke, falls eingeschaltet, die automatische Adressvergabe aus.
+	\item Überlegen sie zunächst auf welchen Adapter das Netzwerk konfiguriert werden soll. Hinweis: Es sollte nicht der \emph{Bridged Adapter} sein, sondern ein \emph{Host Network}.
+	\item Überprüfen sie, ob auf ihren VMs das DHCP eingeschaltet ist. Wie können sie feststellen, ob das DHCP auf dem Adapter aktiv ist?
+	\item Schalten sie auf allen VMs für den entsprechenden Adapter ihr \emph{DHCP}-Dienst aus.
 	\item Auf jeder VM:
 	\begin{enumerate}
 		\item Legen sie eine \emph{IPv4}-Adresse fest.
 		\item Ordnen sie der  \emph{IPv4}-Adresse einer Subnetzmaske zu. Diese sollte minimal sein, d.h. nur so groß, dass zumindest drei Rechner Platz finden.
-		\item Konfigurieren sie das Netzwerkgerät mit den oben genannten Werten. Achten sie darauf, dass sie das korrekte Gerät konfiguriert wird. Nutzen sie hierfür die üblichen Tools: \emph{ifconfig} und \emph{ip addr}
+		\item Konfigurieren sie den Netzwerkadapter mit den oben genannten Werten. Achten sie darauf, dass sie das korrekte Gerät konfigurieren! Nutzen sie hierfür die üblichen Tools: \emph{ifconfig} und \emph{ip addr}
 	\end{enumerate}
 	\item Testen sie, ob ihr Netzwerk funktioniert. Nutzen sie \emph{ping} oder \emph{netcat} um dies zu testen.
 	\item Haben ihre VMs einen Zugang zu anderen Rechnern? Können diese Maschinen außerhalb des LANs oder gar Rechner im Internet erreichen? Erläutern sie ihre Befunde!
