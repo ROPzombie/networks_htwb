@@ -78,7 +78,7 @@
 
 \title{	
 \normalfont \normalsize 
-\textsc{Übungsblatt 4}
+\textsc{Übungsblatt 03}
 }
 
 \begin{document}
@@ -88,7 +88,7 @@
 \begin{center}\Large{\textbf{Aufgabe A -- Umsetzung des Routings}}\end{center}\vskip0.25in
 %\setlist[enumerate, 1]{itemsep=\baselineskip}
 Setzen sie das aus der Planung hervorgegangene Netzwerk (bzw. die Netzwerke) mit den ihn bekannten Tools um.\\
-Ihr Netzwerk besteht aus insgesamt fünf VMs (falls Ihre Ressourcen knapp sind, reichen drei VMs). Optimal sollten zwei VMs im Netzwerk A und B sein, ein minimales \emph{freeBSD} und ein Linux. Zwischen beiden Netzwerken \enquote{sitzt} der Router (\emph{freeBSD} mit GUI).
+Ihre Netzwerke bestehen aus mindestens drei VMs (Fünf VMs wäre optimal). Optimal sollten zwei VMs im Netzwerk $A$ und $B$ sein -- also ein minimales \emph{freeBSD} und ein Linux je LAN. Zwischen beiden Netzwerken \enquote{sitzt} der Router (\emph{freeBSD} mit GUI).
 \begin{enumerate}
 	\item \textbf{Für die Hosts:}\\
 	\begin{enumerate}
@@ -157,19 +157,21 @@ nc 10.0.0.1 4711
 Da \emph{IPv4} ein etwas betagteres Protokoll ist und sie fit für die Zukunft sein sollen, sollen sie abschließend ihr Netzwerk mittels \emph{IPv6} umsetzen. Da \emph{IPv6} eine wesentlich größere IP-Range besitzt ist in der Nachfolgenden Tabelle ein mögliches Adressschema aufgezeigt. Auch hier gilt: \emph{IPv6} hat mehr Adressen, dies sollte sie jedoch nicht dazu verleiten verschwenderisch damit umzugehen!
 \begin{table}[H]
 \centering
-\begin{tabular}{ll}
- Prefix/L & fd  \\
- Global ID & 0da5a0170a \\
- Subnet ID &  5fd7\\
- Combined/CID & fd0d:a5a0:170a:5fd7::/64 \\
- IPv6 addresses & fd0d:a5a0:170a:5fd7:xxxx:xxxx:xxxx:xxxx 
+\begin{tabular}{cll}
+ &\textbf{Netzwerk 1} & \textbf{Netzwerk 2} \\
+ Prefix/L & fd & fd\\
+ Global ID & 0da5a0170a & ac26d7d170\\
+ Subnet ID &  5fd7 & f78c\\
+ Combined/CID & fd0d:a5a0:170a:5fd7::/64 & fdac:26d7:d170:f78c::/64 \\
+ IPv6 addresses & fd0d:a5a0:170a:5fd7:xxxx:xxxx:xxxx:xxxx & fdac:26d7:d170:f78c:xxxx:xxxx:xxxx:xxxx
 \end{tabular}
 \end{table}
 Sie sollen im Folgenden ein statisches \emph{IPv6}-Netzwerk umsetzen. Ein Routing außerhalb ihrer lokalen Infrastruktur ist kein muss, da es immer noch Anbieter (oder Hardware) gibt, die keinen \emph{IPv6} unterstützt.
 \begin{enumerate}
-	\item Portieren sie ihren \emph{IPv4}-Netzwerkaufbau auf \emph{IPv6}. D.h. der grundsätzliche Aufbau des Netzwerkes soll nicht verändert werden. Sie fügen den Adaptern lediglich \emph{IPv6}-Adressen hinzu.
-	\item Vergeben sie in Ihrem Netzwerk entsprechende Adressen. Vergessen sie nicht entsprechende Adressen für den Router zu setzen.
+	\item Adaptieren sie ihren \emph{IPv4}-Netzwerkaufbau auf \emph{IPv6}. D.h. der grundsätzliche Aufbau des Netzwerkes soll nicht verändert werden. Sie fügen den Adaptern lediglich \emph{IPv6}-Adressen hinzu.
+	\item Vergeben sie in ihrem Netzwerk entsprechende Adressen. Vergessen sie nicht entsprechende Adressen für den Router zu setzen.
 	\item Tragen sie für alle Teilnehmer entsprechende Routen ein.
+	\item Denken sie daran das Forwarding für IPv6 zu aktivieren!
 	\item Testen Sie Ihre Netzwerke mit \emph{ping6}.
 	\item Falls ihr lokale Infrastruktur es zulässt, können sie auch ein Default-Gateway konfigurieren, sodass die VMs via \emph{IPv6} ins Internet kommen.
 	\item Müssen sie Einträge in ihre \emph{resolv.conf} ändern? Falls ja: Ändern sie dies entsprechend.

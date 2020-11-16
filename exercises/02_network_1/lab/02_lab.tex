@@ -78,7 +78,7 @@
 Bevor es richtig losgeht müssen sie folgende Vorbereitungen treffen.
 \begin{enumerate}
 	\item Sie benötigen drei VMs. Hierfür sollten sie ein minimales \emph{freeBSD}, ein minimales \emph{Linux} \footnote{Minimal heißt hier: ohne grafische Oberfläche/Headless} und das \emph{freeBSD} mit grafischer Oberfläche (GUI) bereithalten. \\
-Importieren sie die VMs. Hierfür habe ich ein kurzes Video vorbereitet: \url{https://mediathek.htw-berlin.de/video/Virtualbox-Network-Preperations-amp-Cloning/276fab5dbd663d7589d12a30234da003} \footnote{Anmeldung in der Mediathek nicht vergessen!}
+Importieren sie die VMs. Hierfür habe ich ein kurzes Video im Moodle-Kurs hinterlegt (s. Hausaufgabenblatt).
 	\item Ändern sie die Hostname der VMs! Jede VM sollte einen individuellen Namen bekommen. Später empfiehlt es sich die Namen den Funktionalitäten zuzuordnen oder ein festes Namensschema zu nutzen. 
 	 \item Für \emph{freeBSD}: \url{https://www.cyberciti.biz/faq/howot-freebsd-change-hostname-without-reboot/}
 	 \item Für Linux: \url{https://www.cyberciti.biz/faq/linux-change-hostname/}
@@ -90,7 +90,7 @@ Importieren sie die VMs. Hierfür habe ich ein kurzes Video vorbereitet: \url{ht
 Bevor sie ein eigenes kleines Netzwerk einrichten, sollen sie sich mit den dafür Notwendigen Tools vertraut machen. Daher soll zunächst die bestehende Netzwerkkonfiguration untersucht werden.\\
 Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen Rechnern in einem Netzwerk. Jeder Rechner muss hierfür eine passende IP-Adresse haben, mit der er andere Rechner bzw. Zwischenknoten im Netz erreichen kann. Wenn Sie dem Tutorial gefolgt sind, haben die VMs jeweils drei Interfaces. Eines davon hat Zugang zu einem DHCP-Netzwerk. Somit auch eine automatisch zugeordnete IP-Adresse.
 \begin{enumerate}
-	\item Starten sie eine \emph{freeBSD} und Linux VM. 
+	\item Starten sie \emph{freeBSD} mit grafischer Oberfläche und das Linux Betriebssystem. 
 	\item Nutzen sie für die nachfolgende Aufgabe beide Tools \emph{ip addr} (Linux) als auch \emph{ifconfig} (\emph{freeBSD}))
 	\item Lassen sie sich die aktuelle IP-Adresskonfiguration anzeigen.
 	\item Wo finden Sie in der Ausgabe die folgenden Informationen:
@@ -125,6 +125,8 @@ Setzen sie das aus der Planung hervorgegangene Netzwerk um. Drei VMs befinden si
 	\end{enumerate}
 	\item Testen sie, ob ihr Netzwerk funktioniert. Nutzen sie \emph{ping} oder \emph{netcat} um dies zu testen.
 	\item Haben ihre VMs einen Zugang zu anderen Rechnern? Können diese Maschinen außerhalb des LANs oder gar Rechner im Internet erreichen? Erläutern sie ihre Befunde!
+	\item Ihre VMs unterstützen auch IPv6. Was müssen sie für ein geswitchtes Netzwerk noch konfigurieren?
+	\item Testen sie, ob sich ihre VMs auch via IPv6 erreichen können.
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe D - Fakultativ: Here be Dragons... Network-Discovery}}\end{center}\vskip0.25in
