@@ -43,7 +43,7 @@
 
 %Header & Footers
 \pagestyle{fancy}
-\lhead{Netzwerke -- Übung\\Wintersemester 2020/21}
+\lhead{Netzwerke -- Übung\\Sommersemester 2021}
 \rhead{FB 4 -- Angewandte Informatik\\Hochschule für Technik und Wirtschft Berlin}
 \lfoot{Übungsblatt 03 -- Routed LAN}
 \cfoot{}
@@ -94,14 +94,14 @@ Ihre Netzwerke bestehen aus mindestens drei VMs (Fünf VMs wäre optimal). Optim
 	\begin{enumerate}
 		\item Bevor sie das Netzwerk umsetzen: Legen sie fest welche Netzwerkadapter zu welchem Netzwerk gehören! Ordnen sie entsprechend den Adaptern den Netzwerken zu.
 		\item Wie in der vorigen Übung: Legen sie zu jedem Adapter IPv4 Adresse und Subnetzmaske fest. Die Netze sollten minimal sein!
-		\item Überprüfen sie, ob auf allen Adaptern dar \emph{DHCP}-Dienst ausgeschaltet ist.
+		\item Überprüfen sie, ob auf allen Adaptern die für das statische Netzwerk der \emph{DHCP}-Dienst ausgeschaltet ist.
 		\item Setzen sie für alle benötigten Adapter die gewählten IPv4 Adressen und Subnetzmasken.
 		\item Aktivieren sie die Netzwerkadapter und überprüfen sie, ob VMs innerhalb eines LANs sich bereits erreichen können.
-		\item Lassen sie sich den aktuellen Routing-Table anzeigen. Welche Informationen entnehmen sie diesem?
+		\item Lassen sie sich die aktuelle Routing-Tabelle anzeigen. Welche Informationen entnehmen sie dieser?
 		\item Fahren sie mit der Konfiguration des Routers fort.
 		\item Nachdem sie den Router aufgesetzt haben:
 		\begin{enumerate}
-			\item Tragen sie für alle Hosts entsprechende Routen ein!
+			\item Tragen sie auf den Hosts entsprechende Routen ein!
 			\item Überprüfen sie, ob sich die VMs über das LAN hinaus erreichen.
 		\end{enumerate}
 	\end{enumerate}
@@ -113,7 +113,7 @@ Ihre Netzwerke bestehen aus mindestens drei VMs (Fünf VMs wäre optimal). Optim
 		\item Der Router sollte anschließend alle Rechner erreichen können. Andersherum sollte natürlich alle VMs den gemeinsamen Router erreichen können.
 		\item Aktivieren sie das Forwarding auf dem Router, sodass Pakete aktiv weitergeleitet werden können.
 		\end{enumerate}
-		\item Sie können mithilfe eines kleine Chats testen, ob Pakete tatsächlich auf dem Router ankommen. Dafür basteln Sie eine kleine  Client-Server-Lösung. Beide Seiten nutzen das Tool \emph{netcat -- nc}. Das Listing \ref{netcat_server} zeigt die Seite des Servers, dieser Stellt den Server bereit, der Client darf sich anschließend mithilfe eines \emph{Sockets (Tupel aus IP-Adresse und Port)} verbinden (s. Listing \ref{netcat_client}). 
+		\item Sie können mithilfe eines kleine Chats testen, ob Pakete tatsächlich auf dem Router ankommen. Mithilfe des Tools \emph{netcat} kann getestet werden, ob Pakete im anderen Netzwerk ankommen. Beide Seiten nutzen das Tool \emph{netcat -- nc}. Das Listing \ref{netcat_server} zeigt die Seite des Servers, dieser Code stellt den Server bereit. Der Client darf sich anschließend mithilfe eines \emph{Sockets (Tupel aus IP-Adresse und Port)} verbinden (s. Listing \ref{netcat_client}). 
 		\begin{lstlisting}[style=Bash, language=Bash, label={netcat_server}]
 #Server port > 1024 
 nc -l -p <port_number> <ip_of_server>
@@ -127,11 +127,11 @@ nc <ip_of_server> <port_number>
 #example
 nc 10.0.0.1 4711
 		\end{lstlisting}
-		\item \textbf{Alternativ:} Wenn Sie bereits mit Wireshark gearbeitet haben können Sie auch dies benutzen, um festzustellen, ob die Pakete korrekt ankommen. 
+		\item \textbf{Alternativ:} Wenn sie bereits mit Wireshark gearbeitet haben, können sie auch dies benutzen, um festzustellen, ob die Pakete korrekt ankommen. 
 	\item \textbf{Router: Uplink}\\
-	Alle VMs sollte sich nun erreichen können. Rechner außerhalb dieses Netzwerkes können sie wahrscheinlich noch nicht erreichen.
+	Alle VMs sollten sich nun erreichen können. Rechner außerhalb dieser Netzwerke können sie wahrscheinlich noch nicht erreichen. Beispielsweise Maschinen im Internet.
 	\begin{enumerate}
-		\item Schauen Sie sich die Routing-Tabelle auf Router und Hosts an. Welche Informationen können Sie diesem entnehmen? Welche Art Routen haben sie gesetzt?
+		\item Schauen sie sich die Routing-Tabellen des Routers und der Hosts an. Welche Informationen können sie diesen entnehmen? Welche Art Routen haben sie gesetzt?
         \item Muss am Router eine Anpassung der Routing-Tabelle vorgenommen werden, so das dieser Rechner außerhalb des Netzes erreicht?
         \item Falls ihre Hosts keine Default-Route haben, welcher Rechner wäre als Default-Gateway sinnvoll? Setzen sie in der Routing-Tabelle entsprechende Routen.
         \item Falls ihr Router noch keiner Rechner außerhalb des Netzes erreichen kann:
@@ -146,9 +146,17 @@ nc 10.0.0.1 4711
      		\item Versuchen sie einen Rechner des Internets über seinen Domainnamen zu erreichen (bspw. htw-berlin.de)
      	\end{enumerate}
 	\end{enumerate}
+	\item Da ihre einfachen Hosts wahrscheinlich noch keine Rechner außerhalb des LANs erreichen können, muss der Router nun um eine \emph{NAT}-Funktionalität erweitert werde. Der Router muss neben dem Forwarding die Option des NAT-Gateways spendiert bekommen. Diese muss in der \path{/etc/rc.conf} bereitstehen. Tragen sie die \emph{NAT}-Option ein. Legen sie hier ebenfalls das Interface für \emph{NAT} fest. Es müssen keine speziellen \emph{NAT}-Flags gesetzt werden.
+	\item Da wir \emph{NAT} nutzen, muss die Firewall entsprechend gesetzt werden. Sie können entweder \emph{pf} oder die Standard-Firewall nutzen.
+	\begin{itemize}
+		\item Allgemein: \url{https://docs.freebsd.org/de_DE.ISO8859-1/books/handbook/firewalls.html}
+		\item Für \emph{pf}: \url{https://docs.freebsd.org/de_DE.ISO8859-1/books/handbook/firewalls-pf.html}
+		\item Für \emph{IPFW}: \url{https://docs.freebsd.org/de_DE.ISO8859-1/books/handbook/firewalls-ipfw.html} Abschnitt 30.4.4 In-Kernel NAT
+	\end{itemize}
+	\item Prüfen sie erneut, ob ihre VMs ohne grafische Oberfläche Rechner via IP-Adresse außerhalb des LANs, ihres Heimnetzes und des Internets erreichen können.
 	\item Konfiguration der \emph{resolv.conf}
 	\begin{enumerate}
-		\item Wahrscheinlich könnten ihre Hosts noch keine Rechner über den Domainnamen erreichen. Daher müssen sie diese noch konfigurieren. Tragen sie alle notwendigen Einträge in die Datei \path{/etc/resolv.conf} ein.
+		\item Wahrscheinlich könnten ihre Hosts noch keine Rechner über den Domainnamen erreichen. Daher müssen sie diese noch konfigurieren. Tragen sie alle notwendigen Einträge in die Datei \path{/etc/resolv.conf} ein. Lesen sie entsprechend hier nach: \url{https://docs.freebsd.org/de_DE.ISO8859-1/books/handbook/configtuning-configfiles.html}
 		\item Überprüfen sie, ob sie nun Rechner auch via Domainnamen ansprechen können.
 	\end{enumerate}
 \end{enumerate}

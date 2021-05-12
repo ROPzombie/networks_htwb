@@ -42,7 +42,7 @@
 \definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
 \pagestyle{fancy}
-\lhead{Netzwerke -- Übung\\Wintersemester 2020/21}
+\lhead{Netzwerke -- Übung\\Sommersemester 2021}
 \rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
 \lfoot{Übungsblatt 02 -- Netzwerkinfrastruktur Teil 1}
 \cfoot{}
@@ -75,22 +75,21 @@
 \end{center}
 
 \begin{center}\Large{\textbf{Aufgabe A - Setup}}\end{center}
-Bevor es richtig losgeht müssen sie folgende Vorbereitungen treffen.
+Bevor es richtig losgeht, müssen sie folgende Vorbereitungen treffen.
 \begin{enumerate}
-	\item Sie benötigen drei VMs. Hierfür sollten sie ein minimales \emph{freeBSD}, ein minimales \emph{Linux} \footnote{Minimal heißt hier: ohne grafische Oberfläche/Headless} und das \emph{freeBSD} mit grafischer Oberfläche (GUI) bereithalten. \\
+	\item Sie benötigen drei VMs. Hierfür sollten sie ein minimales \emph{freeBSD}, ein minimales \emph{Linux} \footnote{Minimal heißt hier: ohne grafische Oberfläche -- Headless} und das \emph{freeBSD} mit grafischer Oberfläche (GUI) bereithalten. \\
 Importieren sie die VMs. Hierfür habe ich ein kurzes Video im Moodle-Kurs hinterlegt (s. Hausaufgabenblatt).
-	\item Ändern sie die Hostname der VMs! Jede VM sollte einen individuellen Namen bekommen. Später empfiehlt es sich die Namen den Funktionalitäten zuzuordnen oder ein festes Namensschema zu nutzen. 
-	 \item Für \emph{freeBSD}: \url{https://www.cyberciti.biz/faq/howot-freebsd-change-hostname-without-reboot/}
-	 \item Für Linux: \url{https://www.cyberciti.biz/faq/linux-change-hostname/}
+	\item Ändern sie die Hostnamen der VMs! Jede VM sollte einen individuellen Namen bekommen. Später empfiehlt es sich die Namen den Funktionalitäten zuzuordnen oder ein festes Namensschema zu nutzen.
 \end{enumerate}
 	
 \begin{center}
 \Large{\textbf{Aufgabe B - Anzeige der bestehenden Netzwerkkonfiguration}}
 \end{center}
 Bevor sie ein eigenes kleines Netzwerk einrichten, sollen sie sich mit den dafür Notwendigen Tools vertraut machen. Daher soll zunächst die bestehende Netzwerkkonfiguration untersucht werden.\\
-Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen Rechnern in einem Netzwerk. Jeder Rechner muss hierfür eine passende IP-Adresse haben, mit der er andere Rechner bzw. Zwischenknoten im Netz erreichen kann. Wenn Sie dem Tutorial gefolgt sind, haben die VMs jeweils drei Interfaces. Eines davon hat Zugang zu einem DHCP-Netzwerk. Somit auch eine automatisch zugeordnete IP-Adresse.
+Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen Rechnern in einem Netzwerk. Jeder Rechner muss hierfür eine passende IP-Adresse haben mit der andere Rechner bzw. Zwischenknoten im Netz erreichbar sind. Wenn sie dem Tutorial gefolgt sind, hat die VM mit grafischer Oberfläche jeweils drei Interfaces. Eines davon hat Zugang zu einem DHCP-Netzwerk. Somit auch eine automatisch zugeordnete IP-Adresse.\\
+Das Linux kann automatisch eine IP-Adresse beziehen, der Adapter muss hierfür in der Einstellung auf Bridged-Mode oder NAT stehen.
 \begin{enumerate}
-	\item Starten sie \emph{freeBSD} mit grafischer Oberfläche und das Linux Betriebssystem. 
+	\item Starten sie \emph{freeBSD} mit grafischer Oberfläche und das Linux Betriebssystem.
 	\item Nutzen sie für die nachfolgende Aufgabe beide Tools \emph{ip addr} (Linux) als auch \emph{ifconfig} (\emph{freeBSD}))
 	\item Lassen sie sich die aktuelle IP-Adresskonfiguration anzeigen.
 	\item Wo finden Sie in der Ausgabe die folgenden Informationen:
@@ -102,7 +101,7 @@ Eine aktive Netzwerkverbindung ist Voraussetzung für die Kommunikation zwischen
 		\item Anzahl fehlerhafter Pakete?
 		\item Übertragene und empfangene Datenmenge?
 	\end{enumerate}
-	\item Überprüfen sie, ob ein Netzwerkverbindung besteht. Zum Prüfen können Sie folgende Aktionen durchführen:
+	\item Überprüfen sie, ob ein Netzwerkverbindung besteht. Zum Prüfen können sie folgende Aktionen durchführen:
 	\begin{enumerate}
 		\item Auf der Kommandozeile einen Rechner mit seinem Namen anpingen (bspw.: \url{mi.fu-berlin.de}).
 		\item Ping auf eine IP-Adresse (bspw.: $160.45.117.199$).
@@ -116,10 +115,10 @@ Setzen sie das aus der Planung hervorgegangene Netzwerk um. Drei VMs befinden si
 \begin{enumerate}
 	\item Überlegen sie zunächst auf welchen Adapter das Netzwerk konfiguriert werden soll. Hinweis: Es sollte nicht der \emph{Bridged Adapter} sein, sondern ein \emph{Host Network}.
 	\item Überprüfen sie, ob auf ihren VMs das DHCP eingeschaltet ist. Wie können sie feststellen, ob das DHCP auf dem Adapter aktiv ist?
-	\item Schalten sie auf allen VMs für den entsprechenden Adapter ihr \emph{DHCP}-Dienst aus.
-	\item Auf jeder VM:
+	\item Schalten sie auf allen VMs für den entsprechenden Adapter den \emph{DHCP}-Dienst aus. Also für das Linux und \emph{freeBSD} ohne grafische Oberfläche. Das \emph{freeBSD} mit grafischer Oberfläche kann die Option für den Bridge-Adapter behalten.
+	\item Vorbereitend für den Adapter jeder VM im LAN:
 	\begin{enumerate}
-		\item Legen sie eine \emph{IPv4}-Adresse fest.
+		\item Legen sie eine \emph{IPv4}-Adresse fest. Es sollte eine private IPv4-Adresse sein ($172.16.X.X$).
 		\item Ordnen sie der  \emph{IPv4}-Adresse einer Subnetzmaske zu. Diese sollte minimal sein, d.h. nur so groß, dass zumindest drei Rechner Platz finden.
 		\item Konfigurieren sie den Netzwerkadapter mit den oben genannten Werten. Achten sie darauf, dass sie das korrekte Gerät konfigurieren! Nutzen sie hierfür die üblichen Tools: \emph{ifconfig} und \emph{ip addr}
 	\end{enumerate}
@@ -134,7 +133,7 @@ Nachdem sie ihr erstes Netzwerk umgesetzt haben, könne sie schauen, ob noch and
 \begin{enumerate}
 	\item Ein Tool um Informationen über Geräte im LAN zu sammeln sind \emph{arping} und \emph{arp-scan}. Schauen sie in der \emph{Manpage} oder in der Hilfe nach, wie diese Tools zu nutzen sind, wenn sie alle lokal erreichbaren Rechner ermitteln wollen
 	\item Erstellen sie sich eine kurze Übersicht über die aktiven Maschinen im Netzwerk.
-	\item Sie könmnen noch mehr über die dubiosen Maschinen in Erfahrung bringen. Mit dem Tool \emph{nmap} können Sie einen Port-Scan starten. Dies ermöglicht Ihnen herauszufinden, welche Dienste auf den jeweiligen Maschinen laufen. \textbf{Achtung:} Nutzen sie \emph{nmap} nur innerhalb ihres eigenen Netzwerkes. Port-Scanning kann bei fremden Geräten und Netzen zu rechtlichen Schwierigkeiten führen: s. \url{https://de.wikipedia.org/wiki/Portscanner#Rechtliche_Aspekte}\\
+	\item Sie können noch mehr über die dubiosen Maschinen in Erfahrung bringen. Mit dem Tool \emph{nmap} können Sie einen Port-Scan starten. Dies ermöglicht Ihnen herauszufinden, welche Dienste auf den jeweiligen Maschinen laufen. \textbf{Achtung:} Nutzen sie \emph{nmap} nur innerhalb ihres eigenen Netzwerkes. Port-Scanning kann bei fremden Geräten und Netzen zu rechtlichen Schwierigkeiten führen: s. \url{https://de.wikipedia.org/wiki/Portscanner#Rechtliche_Aspekte}\\
 	Starten sie einen Port-Scan auf gefundene Maschinen. Die Ausgabe liefert Ihnen einige Informationen -- offene Ports sind Dienste die das System im Netzwerk für andere Teilnehmer anbietet. Manche können auch direkt im Webbrowser aufgerufen werden, beispielsweise die Ports 80 und 443 (viele andere auch, diese beiden sind jedoch die Standardports für HTTP(s)-Websites).
 \end{enumerate}
 

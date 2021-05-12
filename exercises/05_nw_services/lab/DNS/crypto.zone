@@ -1,0 +1,19 @@
+$TTL 2D
+cyrpto.all.	IN SOA		mceliece   root.localhost. (
+				2001091300	; serial
+				1D		; refresh
+				2H		; retry
+				1W		; expiry
+				2D )		; minimum
+
+		IN NS		diffie
+		IN MX		10 hellman
+
+diffie		IN A		172.16.0.1
+hellman	    IN A		172.16.0.24
+peikerts		IN A		172.16.0.23
+bernstein		IN A		172.16.0.25
+
+www		IN CNAME	mceliece
+ftp		IN CNAME	www
+

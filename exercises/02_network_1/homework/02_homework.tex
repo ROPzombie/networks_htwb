@@ -43,7 +43,7 @@
 \definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
 \pagestyle{fancy}
-\lhead{Netzwerke -- Übung\\Wintersemester 2020/21}
+\lhead{Netzwerke -- Übung\\Sommersemester 2021}
 \rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
 \lfoot{Übungsblatt 02 -- Netzwerkinfrastruktur Teil 1}
 \cfoot{}
@@ -83,7 +83,7 @@ Sie planen ein kleines Netzwerk, bestehend aus drei Rechnern (also drei VMs). Hi
 	\item  \textbf{Wiederholung:} Lesen Sie Kapitel 5.4 in \cite[S. 461]{Kurose2012} zum Thema Switched Local Area Networks.
 	\item \textbf{Wiederholung:} Lesen Sie Kapitel 4.3 in \cite[S. 320ff]{Kurose2012} zum Thema Routing und Router.
 	\item Ihr Netzwerk soll aus drei Rechnern bestehen. Diese drei Rechner sind über einen Switch verbunden. In der Virtualisierung haben sie keinen physischen Switch, wir konfigurieren lediglich die Virtualisierungsumgebung, sodass das Netzwerk, wie ein Switched Network arbeitet.
-	Wählen Sie eine geeignete Netztopologie und skizzieren Sie diese mit geeigneten Symbolen.\\ 
+	Wählen Sie eine geeignete Netztopologie und skizzieren sie diese mit geeigneten Symbolen.\\ 
 	\textbf{Hinweis:} Unter \url{http://iacis.org/iis/2008/S2008_967.pdf} finden Sie auf S. 241 eine Möglichkeit, wie dies aussehen könnte.\\
 	\item Planen Sie die Netzkonfiguration:
 	\begin{enumerate}
@@ -124,23 +124,27 @@ Mithilfe der Werkzeugsammlungen \emph{iproute2} sowie \emph{net-tools} wird dies
  	\item Bringen sie in Erfahrung, wie sie die Konfiguration bereits existierender Netzwerkkonfigurationen mit den Tools \emph{ip} und \emph{ifconfig} in Erfahrung bringen.
 	\item Recherchieren und notieren sie sich, wie mithilfe des Befehls \emph{ip addr} Netzwerkadapter(n) eine (oder mehrere) IP-Adressen und Subnetzmasken zugewiesen wird.\\
 	Wie wird dies mit \emph{ifconfig} gehandhabt? \footnote{\url{http://linux-ip.net/linux-ip/linux-ip.pdf} Appendix C: S 108}\\
-	(Auch hier gilt: Notieren Sie sich das Kommando sowie dessen Bedeutung Wort/Schrittweise)!
-	\item Recherchieren sie, wie die IP-Konfiguration in einer Datei festlegen und speichern können, sodass diese weiterhin nach einem Neustart gültig ist.  \footnote{\url{https://www.freebsd.org/doc/de_DE.ISO8859-1/articles/linux-users/network.html}, \url{http://linux-ip.net/linux-ip/linux-ip.pdf} Kapitel 1 S 4.}
+	(Auch hier gilt: Notieren Sie sich das Kommando sowie deren Bedeutung Wort/Schrittweise)!
+	\item Recherchieren sie, wie die IP-Konfiguration in einer Datei festlegen und speichern können, sodass diese weiterhin nach einem Neustart gültig ist.  \footnote{\url{https://www.freebsd.org/doc/de_DE.ISO8859-1/articles/linux-users/network.html}.}
 	\begin{enumerate}
 		\item In welcher Datei wird unter \emph{freeBSD} die Konfiguration abgelegt?
-		\item Welcher User kann auf diese Datei zugreifen?
+		\item Welcher User können diese Datei verändern?
 		\item Notieren sie sich, wie eine Konfiguration beispielhaft aussieht und was die einzelnen Zeilen bedeuten!
 	\end{enumerate}
 	\item Recherchieren sie wie der Status eines Netzwerkadapters mit den \emph{net-tools} und \emph{iproute2} abgefragt werden kann.\\
-	Welche Stati kann ein Adapter besitzen und wie kann der Status geändert werden?
-	\item Recherchieren Sse beispielhaft wie eine persistente Lösung aussieht. Kommentieren sie 	Ihr Beispiel anschließend, sodass Sie wissen was die einzelnen Wörter/Token bedeuten. Dies ist im wesentlich die Lösung für die Umsetzung im Labor.
-	\item \emph{ICMP} ist ein Diagnose-Protokoll, dass Sie bei der Wartung/Nutzung von Netzwerken unterstützt. Recherchieren Sie welchen Hinweis Ihnen dabei die Folgenden \emph{ICMP}-Messages geben. Wo wird jeweils der Fehler in der Konfiguration liegen?
+	Welche Status kann ein Adapter besitzen und wie kann der Status geändert werden?
+	\item Recherchieren sie beispielhaft, wie eine persistente Lösung aussieht. Kommentieren sie ihr Beispiel anschließend, sodass sie wissen was die einzelnen Wörter/Token bedeuten.\\
+	Dies ist im wesentlich die Lösung für die Umsetzung im Labor.
+	\item \emph{ICMP} ist ein Diagnose-Protokoll, dass sie bei der Wartung/Nutzung von Netzwerken unterstützt.
+	\item Auf welchen Layer des OSI-Modells ordnen sie \emph{ICMP} ein? Begründen sie ihre Wahl.
+	\item Recherchieren sie welchen Hinweis ihnen die Folgenden \emph{ICMP}-Messages geben sollen.
 	\begin{enumerate}
 		\item Connect: network is unreachable
 		\item Destination Host Unreachable
 		\item Destination Network Unreachable
 		\item keine Antwort auf ein Ping
 	\end{enumerate}
+	Die Nachrichten sind wichtig für das Labor, falls ihr Netzwerk nicht funktioniert!
 	\item Zwei weitere bekannte Netzwerkanalyse-Tools sind \emph{netstat} (aus \emph{net-tools}) und \emph{ss} (aus der \emph{iproute2}-Werkzeugsammlung).
 	\begin{enumerate}
 		\item Recherchieren sie die wesentliche Funktionen von \emph{netstat}, sowie \emph{ss} \footnote{\url{http://linux-ip.net/linux-ip/linux-ip.pdf} Kapitel 4, S 151ff; für \emph{ss} \url{https://www.linux.com/topic/networking/introduction-ss-command/}}.
@@ -149,10 +153,11 @@ Mithilfe der Werkzeugsammlungen \emph{iproute2} sowie \emph{net-tools} wird dies
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe C -- Ping}}\end{center}
-Um festzustellen ob eine Verbindung funktionstüchtig ist, wird oftmals das Tool \emph{ping} genutzt. D.h. \emph{ping} analysiert, ob Datenpakete überhaupt und wie viele Pakete von einem Host (bspw. Ihrem Rechner) zu einem Ziel (wie etwa der Webserver der HTW-Berlin) gelangen. Falls sie ein wenig mehr zu Ping recherchieren wollen, kann ich Ihnen folgenden Artikel empfehlen: \url{https://openmaniak.com/ping.php}
+Um festzustellen ob eine Verbindung funktionstüchtig ist, wird oftmals das Tool \emph{ping} genutzt. D.h. \emph{ping} analysiert, ob Datenpakete überhaupt und wie viele Pakete von einem Host (bspw. ihrem Rechner) zu einem Ziel (wie etwa der Webserver der HTW-Berlin) gelangen. Falls sie ein wenig mehr zu Ping recherchieren wollen, kann ich Ihnen folgenden Artikel empfehlen: \url{https://openmaniak.com/ping.php}
 \begin{enumerate}
 	\item Recherchieren sie die Syntax von \emph{ping}. Ein guter Anlaufpunkt wäre die Man-Page (\emph{man ping}) oder \url{https://linux.die.net/man/8/ping}.
 \end{enumerate}
+
 \begin{center}\Large{\textbf{Aufgabe D -- Laborblatt}}\end{center}
 \begin{enumerate}
 	\item Lesen sie vorbereitend das Laborübungsblatt einmal komplett durch.

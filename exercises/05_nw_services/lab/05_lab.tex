@@ -1,0 +1,174 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{csquotes}
+\usepackage{enumitem}
+
+\usepackage[backend=biber,style=alphabetic,
+citestyle=alphabetic]{biblatex} %biblatex mit biber laden
+\addbibresource{sources.bib}
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+%Header & Footers
+\pagestyle{fancy}
+\lhead{Netzwerke -- Übung\\Sommersemester 2021}
+\rhead{FB 4 -- Angewandte Informatik\\Hochschule für Technik und Wirtschft Berlin}
+\lfoot{Übungsblatt 05 -- Netzwerkdienste}
+\cfoot{}
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\DeclareMathOperator{\id}{id}
+
+\begin{document}
+\begin{center}
+\Large{\textbf{Übungsblatt 5 -- Netzwerkdienste}}
+\end{center}
+
+
+\begin{center}\Large{\textbf{Aufgabe A -- DHCP}}\end{center}\vskip0.25in
+
+\begin{enumerate}
+	\item Auf dem \emph{freeBSD} mit grafischer Oberfläche läuft bereits DHCP für das Interface \emph{em0} im Bridge bzw. NAT-Mode. Dies nutzen wird für den ersten Teil.\\
+	Überprüfen sie, ob der DHCP-Client auf diesem System ordnungsgemäß läuft.
+	\item Lassen sie sich vom DHCP-Server für das \emph{freeBSD} eine neue IP-Adresse geben. Beobachten sie zeitgleich via Wireshark welche Nachrichten hierfür via BOOTP ausgetauscht werden.
+	\begin{enumerate}[label=(\alph*)]
+		\item Wie lautet die Sender-Adresse des DHCP-Client?
+		\item Warum nutzt der DHCP-Cleint seine Sender-Adresse?
+		\item An welche Ziel-IP-Adresse hat der DHCP-Client seine Nachrichten versandt?
+		\item An welche Ziel-MAC-Adresse sendet der DHCP-Client seine Nachrichten?
+		\item An welche Ziel-IP-Adresse hat der DHCP-Server seine Nachrichten versandt?
+		\item An welche Ziel-MAC-Adresse sendet der DHCP-Server seine Nachrichten?
+		\item Welche IP-Adresse wurde dem Client vom Server angeboten?
+		\item Welche Lease-Time wurde durch den DHCP-Server angeboten?
+		\item Welche IP-Adresse wählte und sendete der Client für die Antworten des DHCP-Servers?
+		\item Welcher IP-Adresse bestätigte (acknowledges) der DHCP-Server dem DHCP-Client?
+	\end{enumerate}
+	\item Zeichen sie ein Sequenzdiagramm der IP-Adressvergabe die sie via Wireshark aufgezeichnet haben.
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe B -- DHCP II}}\end{center}\vskip0.25in
+Im Folgenden soll ein weiteres Netzwerk unseren zwei bestehenden hinzugefügt werden. Das neueste Netzwerk soll jedoch dynamisch und automatisch IP-Adressen vergeben. Demnach haben wir zwei statische Netzwerke und ein durch DHCP organisiertes Netzwerk.
+\begin{enumerate}
+	\item Vorbereitend:
+	\begin{enumerate}[label=(\alph*)]
+		\item Legen sie ein weiteres \emph{Host-Only-Network} in virtualBox an. Dies soll ebenfalls in der IPv4-Range $172.16.X.Y$ liegen und maximal $/24$ sein.\\
+		\textbf{Achtung:} Beim Erstellen nicht das Feld DHCP Server aktivieren, wir bauen einen eigenen DHCP-Server.
+		\item Fügen sie dem \emph{freeBSD}-Router eine weitere Netzwerkschnittstelle für das eben angelegte Netzwerk hinzu.
+		\item Klonen sie mindestens ein \emph{freeBSD} ohne grafische Oberfläche und geben dieser Maschine ebenfalls Zugang zum neu erstellten Netzwerk.
+	\end{enumerate}
+	\item Der DHCP-Server ist bereits vorinstalliert, d.h. wir können direkt mit der Konfiguration starten. Kopieren sie zunächst die die Datei \path{/usr/local/etc/dhcpd.conf.example} nach \emph{/usr/local/etc/dhcpd.conf.example}
+	\item Passen diese Datei für ihre Bedürfnisse an, sodass dieser Rechner als DHCP-Server arbeitet.
+	\item Passen sie den DHCP-Client entsprechend an, sodass die VM ohne grafische Oberfläche eine IP-Adresse beziehen kann.
+	\item Starten sie den DHCP-Server als Daemon.
+	\item Testen sie, ob der DHCP-Client eine IP-Adresse bekommt und Zugang ins Internet hat. Schneiden sie den Traffic in Wireshark mit, um dies zu überprüfen.
+	\item Falls alles funktioniert hat, tragen sie den DHCP-Server persistent in die \emph{rc.conf} ein!
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe C -- Domain Name System (DNS) I}}\end{center}\vskip0.25in
+\begin{enumerate}
+	\item DNS-Requests:
+\begin{enumerate}[label=(\alph*)]
+		\item Fragen Sie mit jedem der Kommando der Hausaufgaben jeweils einmal einen Hostnamen (bspw. \url{www.htw-berlin.de}), einen Domainnamen (htw-berlin.de) und eine IP-Adresse (141.45.5.100) ab.
+		\item Schauen Sie sich die Ausgabe von \emph{dig} bei der Abfrage der IP-Adresse genauer an -- dort werden Sie in der \enquote{Question Section} sehen, das nach dem A-Resource-Record mit dem Namen 141.45.5.100 gefragt wurde. Wenn Sie den Namen zu dieser IP-Adresse suchen -- welchen Resource-Record müssen Sie dann anstelle des A-Records erfragen? 
+		\item In welcher Form müssen Sie dann die IP-Adresse angeben? (Test mit dig -t <record-type> <richtiges-format-ip-adresse>).
+		\item Denken Sie sich einen Domainnamen aus, den es wahrscheinlich geben könnte, aber den noch niemand vom Netzwerk der HTW-Berlin aus innerhalb der letzten Stunden angefragt hat (z.B. \url{www.uriminzokkiri.com} oder \url{www.northkoreatech.org}). Erfragen Sie diesen Namen zweimal kurz hintereinander via \emph{dig} und vergleichen Sie die beiden Ausgaben. Worin unterscheiden sich beide Einträge? Begründen Sie diese Unterschiede!
+		\item Erfragen Sie mit \emph{dig} und \emph{nslookup} den zuständigen Mail-Server für die Domain \url{htw-berlin.de}.
+		\item Erzwingen Sie mit \emph{dig} und \emph{nslookup}, das die Namensauflösung nicht mit dem Standard-Nameserver des Betriebssystems, sondern mit einem öffentlichen Nameserver (bspw.: 9.9.9.9) erfolgt. Testen Sie am Besten zuerst mit dig, da dies Ihnen immer sagt, welche Nameserver sie genutzt haben.
+	\end{enumerate}
+	\item DNS-Resolver: Das Listing zeigt die \enquote{resolv.conf} eines Servers. 
+	\begin{lstlisting}[style=Bash, language=Bash]
+# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)
+#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+nameserver 141.45.3.100
+search f4.htw-berlin.de
+\end{lstlisting} \label{dns}
+Was bedeuten die Einträge mit den Schlüsselwörtern: \enquote{nameserver} und \enquote{search}?
+\end{enumerate}
+
+\begin{center}\Large{\textbf{Aufgabe D -- Domain Name System (DNS) II}}\end{center}\vskip0.25in
+Im Folgenden soll ein DNS-Server für eine eigene Domain aufgesetzt werden.
+\begin{enumerate}
+	\item Sichern sie zunächst ihre VM als Snapshot an, falls etwas schiefgehen sollte!
+	\item Im Moodle-Kurs sind einige Beispieldateien hinterlegt, wie eine Zone konfiguriert werden kann hinterlegt. Passen sie diese bei Bedarf entsprechend an!
+	\item Der Bind-Server ist bereits vorinstalliert. Mit der Zeile \texttt{named\_enable="YES"} in der \path{rc.conf} kann dieser aktiviert werden.
+	\item Die Konfigurationen liegen unter \path{/usr/local/etc/namedb}. Legen sie einen Symlink wie folgt an:
+	\begin{lstlisting}[style=Bash, language=Bash]
+ln -s /usr/local/etc/namedb /etc/namedb
+		\end{lstlisting}
+		Kopieren sie alle bestehenden Verzeichnisse:
+		\begin{lstlisting}[style=Bash, language=Bash]
+cd /etc/namedb
+mv named.conf named.conf-dist
+cp -pr /etc/namedb/* ~
+chown -R bind:wheel * 
+		\end{lstlisting}
+		\item Passen sie die Beispieldatei von \emph{named} an (\path{/etc/namedb/config/named.conf.template}).
+		\item Generieren sie mithilfe des Shell-Skripts \path{/etc/namedb/config/generate-zones.sh} ihre Zones.
+		\item Überprüfen sie, ob die generierten Dateien stimmen, passen sie diese an, falls das nicht der Fall ist.
+		\item Wenn alles passt, können sie den DNS-Server starten!
+		\item Tragen sie den DNS-Server in der \emph{/etc/resolv.conf} als weiteren Name-Server ein.
+		\item Ein Rechner eines anderen Netzes sollte nun VMs ihrer Zone via namen auflösen können. D.h. statt:
+		\begin{lstlisting}[style=Bash, language=Bash]
+ping -c 1 172.16.0.25 
+		\end{lstlisting}
+		können sie nun:
+		\begin{lstlisting}[style=Bash, language=Bash]
+ping -c 1 bernstein.cyrpto.all
+		\end{lstlisting}
+		ausführen.
+\end{enumerate}
+
+
+\end{document}

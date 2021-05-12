@@ -27,11 +27,9 @@
 \usepackage{csquotes}
 \usepackage{enumitem}
 
-\usepackage[
-  backend=biber,
-  bibencoding=utf8]
-{biblatex}
-\bibliography{sources.bib}
+\usepackage[backend=biber,style=alphabetic,
+citestyle=alphabetic]{biblatex} %biblatex mit biber laden
+\addbibresource{sources.bib}
 
 %settings colors for links
 \hypersetup{
@@ -48,7 +46,7 @@
 
 %Header & Footers
 \pagestyle{fancy}
-\lhead{Netzwerke -- Übung\\Wintersemester 2020/21}
+\lhead{Netzwerke -- Übung\\Sommersemester 2021}
 \rhead{FB 4 -- Angewandte Informatik\\Hochschule für Technik und Wirtschft Berlin}
 \lfoot{Übungsblatt 03 -- Routed LAN}
 \cfoot{}
@@ -87,8 +85,8 @@ Es soll folglich ein Netzwerk geplant und umgesetzt werden, das auf Routing setz
 \begin{enumerate}
 	\item Als Wiederholung des Vorlesungsstoffs können sie folgenden Kapitel lesen: \cite[Kap. 4.1, 4.3]{Kurose2012}
 	\item Was sind die Aufgaben eines Routers. Wie erfolgt, im Groben, die Umsetzung des Routings?
-	\item Nennen Sie einige Routing-Protokolle. Ist Ihnen eines (oder mehrere) dieser Protokolle bereits begegnet?
-	\item Machen Sie sich klar, wie Router und IP-Protokoll zusammenhängen.
+	\item Nennen sie einige Routing-Protokolle. Ist ihnen eines (oder mehrere) dieser Protokolle bereits begegnet?
+	\item Machen sie sich klar, wie Router und IP-Protokoll zusammenhängen.
 	\item In welche Schicht des OSI-Modells würden sie einen Router einordnen? (Begründung!)
 	\item Wie haben sich bis jetzt ihre VMs gefunden? Woher \enquote{wussten} sie, an welches Gerät die Ethernet-Frames zu schicken waren? Wie spielt hier Ihre eigene IP-Adresse, Ihre Subnetzmaske mit hinein? Bzw. spielt diese auf Hardwareebene eine Rolle?
 	\item Woher weiß ein Rechner, wann er ein Paket direkt adressieren kann und wann er es an Router/Gateway weiterschicken muss?
@@ -101,30 +99,47 @@ Es soll folglich ein Netzwerk geplant und umgesetzt werden, das auf Routing setz
 \end{center}
 \vskip0.25in
 Im vorigen Aufgabenblatt haben sie zu den IP-Adressen auch eine Netzwerkmaske konfiguriert. Diese Netzwerkmaske legt fest, welche Rechner im gleichen (Sub-)Netz liegen und somit direkt angesprochen werden können. Daraus folgt aber auch, dass bestimmte Rechner außerhalb ihres Netzes nicht direkt angesprochen werden können. Diese können via Router/Gateway erreicht werden.\\
-Wir wollen in einem ersten Schritt selber einen Router betreiben, um über unsere kleinen Netze hinweg zu kommunizieren. Dazu erweitern sie ihr Wissen aus dem vorigen Übungsblatt, sodass Ihr Netzwerk \enquote{wachsen} kann.
+Wir wollen in einem ersten Schritt selber einen Router betreiben, um über unsere kleinen Netze hinweg zu kommunizieren. Dazu erweitern sie ihr Wissen aus dem vorigen Übungsblatt, sodass ihr Netzwerk \enquote{wachsen} kann.
 \begin{enumerate}
+	\item Eläutern sie was klassenbasierte IPv4-Adressen sind. Wie sind diese Klassen definiert? Woran kann die Klassenzuordnung auf Bitebene festgemacht werden?
 	\item Früher wurden Klassen von Adressen genutzt, heute das nutzt man \emph{CIDR (Classles Inter Domain Routing)}. Worin unterscheiden sich \emph{CIDR} und klassenbasierten Adressen?
 	\item Recherchieren sie, warum sich dies änderte!
 	\item Recherchieren sie wie die Syntax der klassenbasierten Notation aussieht und geben sie einige Beispiele für die Notation.
 	\item Recherchieren sie wie die Syntax der \emph{CIDR}-Notation aussieht und geben sie einige Beispiele für die Notation.
-	\item In der kommenden Übung soll ihr konfiguriertes Netzwerk umgebaut werden. Aus einem Netzwerk, sollen zwei werden.\\
+	\item In der kommenden Übung soll ihr konfiguriertes Netzwerk umgebaut werden. Aus einem Netzwerk sollen zwei werden.\\
 	Um zwischen den beiden lokalen Netzwerken kommunizieren zu können, benötigen sie einen Router. Eine VM soll diese Aufgabe übernehmen. Der Router muss so konfiguriert werden, dass klar ist wohin die Pakete geschickt werden. Das heißt: Pakete die nicht in das eigene, lokale Netzwerk gehören, werden über den Router in die externen Netzwerke weitergereicht.
 	\begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.35]{lan}
-	\caption{Skizze des Netzwerkes bestehend aus zwei LANs und einem Router}
+	\caption{Skizze des Netzwerkes bestehend aus zwei LANs und einem Router. Ignorieren sie das dort noch Linux-Router steht!}
 	\end{figure}
 	\begin{enumerate}
-		\item Unterteilen sie ihr Netzwerk, sodass sich im Idealfall zwei VMs in einen lokalen Netzwerk A und zwei VMs im lokalen Netzwerk B befinden. Zwischen beiden Netzen vermittelt ein Router. Falls ihre Rechenressourcen nicht ausreichen, sind auch drei Rechner für die praktische Umsetzung ausreichend.
+		\item Unterteilen sie ihr Netzwerk, sodass sich im Idealfall zwei VMs in einen lokalen Netzwerk $A$ und zwei VMs im lokalen Netzwerk $B$ befinden. Zwischen beiden Netzen vermittelt ein Router. Falls ihre Rechenressourcen nicht ausreichen, sind auch drei Rechner für die praktische Umsetzung ausreichend.
 		\item Skizzieren sie ihre lokalen Netzwerke, sowie das gesamte Netzwerk (D.h. nutzen sie geeignete Symbole s. letztes Übungsblatt).
-		\item Welche IP-Adressen stehen ihnen für die Umsetzung des Netzwerkes zu Verfügung? Wählen sie eine IPv4 und IPv6 Range, die für die Umsetzung geeignet ist.
+		\item Wir nutzen für die Umsetzung private IPv4-Adressen. Welche IPv4-Adressen stehen ihnen für die Umsetzung des Netzwerkes zu Verfügung? Wählen sie eine IPv4 und IPv6 Range, die für die Umsetzung geeignet ist.
 		\item Vergeben sie entsprechende IPv4-Adressen mit kleinst mögliche Subnetzmasken auf der Skizze. Vergeben sie ebenso IPv6-Adressen. Gilt für IPv6 die gleiche Voraussetzung bezüglich der Netzgröße?
-		\item Planen sie ebenso den Router mit entsprechenden IP-Adressen auf der Skizze ein. Achten sie darauf, dass der Router als Verbindungsstück (Intermediate-Node/ Zwischenknoten) zwischen Ihren beiden Netzen fungiert und dementsprechend beide Netzwerke kennen muss. Das heißt, der Router muss mindestens zwei IP-Adressen haben, jeweils eine pro Netzwerk. Möglicherweise hat ihr Router auch zusätzliche Adapter und Adressen, beispielsweise für den Uplink ins Internet.
+		\item Planen sie ebenso den Router mit entsprechenden IP-Adressen auf der Skizze ein. Achten sie darauf, dass der Router als Verbindungsstück (Intermediate-Node/Zwischenknoten) zwischen Ihren beiden Netzen fungiert und dementsprechend beide Netzwerke kennen muss. Das heißt, der Router muss mindestens zwei IP-Adressen haben, jeweils eine pro Netzwerk. Möglicherweise hat ihr Router auch zusätzliche Adapter und Adressen, beispielsweise für den Uplink ins Internet.
 	\end{enumerate}
 \end{enumerate}
 
 \begin{center}
-\Large{\textbf{Aufgabe C -- Tools \& OS}}
+\Large{\textbf{Aufgabe C -- NAT}}
+\end{center}
+\vskip0.25in
+
+In der Vorlesung haben sie zunächst den allgemein Aufbau von IP-Adressen besprochen. Auch das es private IP-Adressbereiche gibt. Diese wurden aus den Gesamtraum der IP-Adressen gelöst, um für den privaten Gebrauch verfügbar zu sein. D.h. diese Adressen können nicht geroutet werden. Da unsere VMs jedoch auch mit dem Internet kommunizieren können sollen benötigen wir noch eine weitere Technologie -- \emph{NAT}. Mithilfe von \emph{NAT} (Network Address Translation) können private IPv4-Adressen auf global routbare Adressen abgebildet werden.
+
+\begin{enumerate}
+	\item Lesen sie \cite[S. 349ff]{Kurose2012} oder \cite{fall2011tcp} als Einführung zum Thema \emph{NAT}. Ihnen sollte klar sein, welche Aufgabe \emph{NAT} erledigt und wie \emph{NAT} im Groben umgesetzt wird.
+	\item Unser Router bekommt eine zusätzliche Funktion, er wird ein \emph{NAT}-Gateway -- genau gesagt ein \emph{PAT}-Gateway. Recherchieren sie, was unter Port Address Translation verstanden wird. Wo liegt der wesentliche Unterschied zum gewöhnlichem \emph{NAT}?
+	\item Erklären sie was ein \emph{NAT}-Table ist. Was wird in dieser Tabelle hinterlegt? Was wird hier beim \emph{PAT} hinterlegt?
+	\item Erklären sie ganz grob die Idee einer Firewall.
+	\item Lesen sie folgenden Eintrag im \emph{freeBSD}-Handbuch: \url{https://www.freebsd.org/doc/de_DE.ISO8859-1/books/handbook/firewalls-pf.html}. Dieser Eintrag hilft ihnen bei der Umsetzung des \emph{NAT}s.
+\end{enumerate}
+
+
+\begin{center}
+\Large{\textbf{Aufgabe D -- Tools \& OS}}
 \end{center}
 \vskip0.25in
 
@@ -134,7 +149,8 @@ Wir wollen in einem ersten Schritt selber einen Router betreiben, um über unser
 	\item Recherchieren sie, welches Tool aus \emph{iproute2} genutzt werden kann um Routen zu setzen. Notieren sie sich die Syntax und was die Parameter bewerkstelligen.
 	\item Analog dazu: Wie werden Routen mithilfe der \emph{net-tools} konfiguriert?
 	\item \url{https://www.freebsd.org/doc/de_DE.ISO8859-1/books/handbook/network-routing.html} bietet ihnen eine gute Anlaufstelle, wie Router und Routing unter \emph{freeBSD} umgesetzt wird.
-	\item Recherchieren sie beispielhaft wie eine persistente Lösung aussähe.\footnote{Persistent heißt in diesem Kontext, wie die Konfiguration dauerhaft im Betriebssystem festgehalten wird -- im wesentlich in welche Konfigurationsdateien.} Kommentieren sie ihr Beispiel anschließend, sodass sie wissen was die einzelnen Zeilen bedeuten.
+	\item Recherchieren sie beispielhaft wie eine persistente Lösung aussähe.\footnote{Persistent heißt in diesem Kontext, wie die Konfiguration dauerhaft im Betriebssystem festgehalten wird -- im wesentlich in welche Konfigurationsdateien muss geschrieben werden.}\\
+	Kommentieren sie ihr Beispiel anschließend, sodass sie wissen was die einzelnen Zeilen bedeuten.
 	\end{enumerate}
 	\item Gateways \& Router -- Gateways sind im allgemeinen nicht das Gleiche wie Router. Auch unter den Gateways gibt es Unterscheidungen.
 	\begin{enumerate}
@@ -150,7 +166,7 @@ Wir wollen in einem ersten Schritt selber einen Router betreiben, um über unser
 	\end{enumerate}
 	\item Das Internet Control Message Protocol (ICMP) wird in Netzwerken als Diagnosetool zum Austausch von Informations- und Fehlermeldungen verwendet. 
 	\begin{enumerate}
-		\item Recherchieren sie welchen Hinweis Ihnen dabei die verschiedenen ICMP-Fehlermeldungen geben -- wo wird jeweils der Fehler in der Konfiguration liegen?
+		\item \textbf{Wiederholung:} Recherchieren sie welchen Hinweis Ihnen dabei die verschiedenen ICMP-Fehlermeldungen geben -- wo wird jeweils der Fehler in der Konfiguration liegen?
 		\begin{enumerate}
 			\item Connect: network is unreachable
 			\item Destination Host Unreachable
@@ -161,7 +177,7 @@ Wir wollen in einem ersten Schritt selber einen Router betreiben, um über unser
 \end{enumerate}
 
 \begin{center}
-\Large{\textbf{Aufgabe C -- Vorbereitung Laborübung}}
+\Large{\textbf{Aufgabe E -- Vorbereitung Laborübung}}
 \end{center}
 \vskip0.25in
 \begin{enumerate}
@@ -175,7 +191,7 @@ Wir wollen in einem ersten Schritt selber einen Router betreiben, um über unser
 			\item Tutorial Einstellen der Netzwerkadapter im Moodle
 			\begin{itemize}
 				\item Die VMs die nur Hosts sind haben einen aktiven Adapter für ein Host-Only-Network.
-				\item Der Router hat drei aktive Adapter, ein Bridge und zwei Host-Only-Network.
+				\item Der Router hat drei aktive Adapter, ein Bridge und zwei Host-Only-Network.Adapter.
 			\end{itemize}
 		\end{enumerate}
 		\item Konfigurieren sie den \emph{freeBSD}-Router. Diese VM hat drei aktive Adapter: 

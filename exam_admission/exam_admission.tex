@@ -1,0 +1,74 @@
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage{german}
+		
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage[pdftex,hidelinks]{hyperref}%for links to web
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage[table]{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{multirow}
+\usepackage{eurosym}
+\usepackage{enumitem}
+\usepackage{uhrzeit}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{csquotes}
+
+\newcommand*{\SignatureAndDate}[1]{%
+    \par\noindent\makebox[3.5in]{\hrulefill} \hfill\makebox[2.0in]{\hrulefill}%
+    \par\noindent\makebox[3.5in][l]{#1}      \hfill\makebox[2.0in][l]{Ort, Datum}%
+}%
+
+\pagestyle{fancy}
+\lhead{Sommersemester 2021\\Netzwerke}
+\rhead{Angewandte Informatik\\HTW Berlin}
+\lfoot{Klausurzulassung}
+\cfoot{}
+\fancyfoot[R]{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%%here begins the actual document%%
+
+%%starts with title page%%
+\begin{document}
+
+\begin{center}~\\
+\Large{\textbf{Klausurzulassung}}
+\end{center}
+\begin{center}\Large{Abgabedatum 1./2.Zug, 2. Gruppe: 21.06.2021\\
+Abgabedatum 1./2.Zug, 1. Gruppe: 28.06.2021}
+\end{center}
+Dieses Semester gibt es eine Klausurzulassung für alle Studierenden, die an der Klausur teilnehmen möchten. Die Klausurzulassung muss spätestens am obigen Datum erworben werden. Nach diesen Terminen ist keine Klausurzulassung für das Semester mehr möglich.\\
+
+Die Klausurzulassung beinhaltet die Übungsaufgabe (Labor- \& Hausaufgabe) der Übungszettel 3,4,5. D.h. sie müssen die technischen Anforderung (Aufgaben) der Laboraufgaben vorzeigen und erklären können. Kleine Änderungen und Verständnisfragen werden ebenfalls geprüft -- jedoch nicht auf dem Niveau der Prüfung. Die Zulassung erfolgt undifferenziert und hat keinen Anteil an der Endnote.\\
+
+Anforderungen für die Klausurzulassung:
+\begin{itemize}
+	\item Router mit zwei statischen Netzwerken und Routen
+	\item Erläuterung der zentralen Konfigurationsdateien
+	\item Erläuterung der IP-Adressierung, Netzmaske, Routing-Tables (IPv4 \& IPv6)
+	\item NAT, Firewall-Regeln für NAT
+	\item DHCP-Server mit eigenem Netz, DHCP-Client, Funktion, Konfiguration, Umsetzung
+	\item DNS-Resolver, eigene DNS-Zone, Namensauflösung
+	\item Paketanalyse \& Wireshark -- Aufbau von Netzwerkpaketen im OSI-Layer 2,3,4,5
+\end{itemize}
+
+Die Klausurzulassung soll lediglich sicherstellen, dass sie sich ausreichend mit den Inhalten der Vorlesung und Übung beschäftigt haben, da dies der Prüfungsstoff sein wird.
+\end{document}
