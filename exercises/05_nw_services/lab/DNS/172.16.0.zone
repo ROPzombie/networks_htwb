@@ -1,0 +1,15 @@
+$TTL 2D
+0.16.172.in-addr.arpa.  IN SOA  mceliece.cyrpto.all.  root.localhost. (
+				2001091300	; serial
+				1D		; refresh
+				2H		; retry
+				1W		; expiry
+				2D )		; minimum
+
+		IN NS		mceliece.cyrpto.all.
+
+11		IN PTR		diffie.cyrpto.all.
+24		IN PTR		hellman.cyrpto.all.
+23		IN PTR		peikerts.cyrpto.all.
+25		IN PTR  	bernstein.cyrpto.all.
+

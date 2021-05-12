@@ -8,22 +8,26 @@
 \setdefaultlanguage[spelling=new, babelshorthands=true]{german}
 
 \usepackage{amsmath}%get math done
-\usepackage{amssymb}%symbolics for math
-\usepackage{amsfonts}%extra fonts
 \usepackage{amsthm}%get theorems and proofs done
 \usepackage{graphicx}%get pictures & graphics done
 \graphicspath{{pictures/}}%folder to stash all kind of pictures etc
-\usepackage []{natbib}%citation style
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
 \usepackage{caption}%captions under everything
 \usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
 \usepackage{float}%for garphics and how to let them floating around in the doc
-\usepackage{geometry}
-\usepackage{fancyhdr}
-\usepackage{multicol}
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
 \usepackage{hyperref}
+\usepackage{fancyhdr}
 \usepackage{xcolor}%nicer colors, here used for links
 \usepackage{csquotes}
 \usepackage{enumitem}
+
+\usepackage[backend=biber,style=alphabetic,
+citestyle=alphabetic]{biblatex} %biblatex mit biber laden
+\addbibresource{sources.bib}
 
 %settings colors for links
 \hypersetup{
@@ -38,10 +42,11 @@
 \definecolor{pred}{rgb}{0.9,0,0}
 \definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
+%Header & Footers
 \pagestyle{fancy}
-\lhead{Netzwerke Übung (SoSe 2020)}
-\rhead{FB 4 -- Angewandte Informatik\\ HTW-Berlin}
-\lfoot{Übungsblatt 05 -- Netzwerksicherheit}
+\lhead{Netzwerke -- Übung\\Sommersemester 2021}
+\rhead{FB 4 -- Angewandte Informatik\\Hochschule für Technik und Wirtschft Berlin}
+\lfoot{Übungsblatt 06 -- Netzwerksicherheit}
 \cfoot{}
 \fancyfoot[R]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
@@ -68,8 +73,9 @@
 
 \begin{document}
 \begin{center}
-\Large{\textbf{Übungsblatt 05 -- Netzwerksicherheit}}
+\Large{\textbf{Übungsblatt 6 -- Netzwerksicherheit}}
 \end{center}
+
 
 \begin{center}\Large{\textbf{Aufgabe A -- Kryptografie Grundlagen}}\end{center}
 Da Sie mit großer Wahrscheinlichkeit keine ausgebildeten Mathematiker*innen sind, beginnen Sie zunächst mit einer kurzen Recherchephase. Dies soll Ihnen helfen Licht ins Dunkel zu bringen.\\
@@ -142,36 +148,13 @@ Nützliche Links:
 	\end{enumerate}
 \end{itemize}
 
-\begin{center}\Large{\textbf{Aufgabe D -- TLS}}\end{center}\vskip0.25in
-Ein Großteil der von Ihnen genutzten Verbindungen nutzen \emph{TLS} (früher \emph{SSL}), sodass Ihr Datenverkehr absichert zwischen den Sockets fließen kann. In der vorigen Übung haben Sie schon einige male \emph{TLS} genutzt, nun sollen Sie dazu ein wenig mehr in Erfahrung bringen.
-\begin{enumerate}
-	\item Der englische Wikipedia-Artikel ist ein guter Einstieg in das \emph{TLS}-Protokoll.\\
-	\url{https://en.wikipedia.org/wiki/Transport_Layer_Security}
-	\begin{enumerate}
-		\item Für welche Zwecke kann \emph{TLS} genutzt werden?
-		\item Auf welcher Schicht des OSI-Modells würden Sie \emph{TLS} einordnen und welche Schicht soll dieses Protokoll absichern?
-	\item Beschreiben Sie kurz den wesentlichen Aufbau von \emph{TLS}.
-	\item Vollziehen Sie alles Schritte einer \emph{TLS}-Session nach!\\
-	\textbf{Hinweis:} unter \url{https://tls.ulfheim.net/} gibt es eine schöne Illustration.
-	\end{enumerate}
-\end{enumerate}
+\begin{center}\Large{\textbf{Aufgabe D -- Spoofing}}\end{center}\vskip0.25in
+ARP Spoofing
+DNS-Poisoning
 
-\begin{center}\Large{\textbf{Aufgabe E -- VPN via Wireguard}}\end{center}\vskip0.25in
-Virtual Private Networks (VPN) sind in sich geschlossene Kommunikationsnetze, die wie der Name schon sagt, virtuell sind. Sinn eines solches Netzwerkes ist es physisch nicht lokale Teilnehmer in die eigene Netzwerkinfrastruktur aufzunehmen. Somit ist es den VPN Teilnehmern möglich die Infrastruktur trotz entfernten Zugriff zu nutzen.
-\begin{itemize}
-	\item \url{https://emanuelduss.ch/2018/09/wireguard-vpn-road-warrior-setup/}
-	\item \url{https://www.linux-magazin.de/ausgaben/2018/01/wireguard/}
-	\item \url{https://www.linux.org/threads/how-to-create-a-vpn-tunnel-with-wireguard.21496/}
-\end{itemize}
-\begin{enumerate}
-	\item Unter den oben gelisteten Links befinden sich einige Tutorials für den Einstieg in Wireguard.
-	\begin{enumerate}
-		\item Der Installationsschritt kann ausgelassen werden, da Wireguard bereits vorinstalliert ist.
-		\item Recherchieren Sie, wie die privaten und öffentlichen Schlüssel zu generieren sind und welche Besonderheiten zu beachten sind.
-		\item Was wird unter einen virtuellen Interface verstanden? Warum muss ein solches für das VPN konfiguriert werden?
-		\item Darauf aufbauend: Wie müssen die virtuellen Interfaces konfiguriert werden? Notieren Sie sich alle notwendigen Schritte!
-		\item Recherchieren Sie wie eine \emph{Wireguard}-Konfiguration automatisiert werden könnte.
-	\end{enumerate}
-\end{enumerate}	
+\begin{center}\Large{\textbf{Aufgabe F -- DoS ICMP}}\end{center}\vskip0.25in
+SYN Flood
+Amplification etc
+Smurf Attack,
 
 \end{document}
