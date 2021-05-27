@@ -109,11 +109,11 @@ Für die statisch gerouteten Netzwerke wurden bis jetzt jedem Rechner manuell IP
 	\end{figure}
 	Beschreiben sie mithilfe der Abbildung, wie ein Client zu einer dynamisch vergebenen IP-Adresse kommt.
 	\item Was passiert, wenn nach dem \emph{OFFER} oder \emph{REQUEST} die dynamische IP-Adresse nicht vergeben werden konnte?
-	\item Da DHCP auf der Applikationsebene des ISO-OSI-Modells liegt, wie kann dieses Protokokll dennoch IP-Adressen organisieren? D.h. DHCP kann nicht auf IP-Adressen zurückgreifen. Schlimmer noch, ein Client hat initial gar keine IP-Adresse. Erläutern sie dieses Henne-Ei-Problem. 
+	\item Da DHCP auf der Applikationsebene des ISO-OSI-Modells liegt, wie kann dieses Protokokll dennoch IP-Adressen organisieren? D.h. DHCP kann nicht auf IP-Adressen zurückgreifen. Schlimmer noch, ein Client hat initial gar keine IP-Adresse \footnote{Wenn ihr Rechner hochfährt hat dieser beim Bootvorgang noch keine IP-Adresse, ihr Rechner kennt nur seine physikalischen Geräte.}. Erläutern sie dieses Henne-Ei-Problem. 
 \end{enumerate}
 
 \begin{center}
-\Large{\textbf{Aufgabe A -- DHCP II}}
+\Large{\textbf{Aufgabe B -- DHCP II}}
 \end{center}
 \vskip0.25in
 
@@ -133,17 +133,17 @@ Für die statisch gerouteten Netzwerke wurden bis jetzt jedem Rechner manuell IP
 
 
 \begin{center}
-\Large{\textbf{Aufgabe B -- DNS}}
-Literatur:  Gute Anlaufstellen sind \cite[Kap. 2.5, S. 130ff]{Kurose2012}, \cite[Kap. 11, S. 511ff]{fall2011tcp}, \cite[Kap. 50, S. 825ff]{kozierok2005tcp}.
+\Large{\textbf{Aufgabe C -- DNS I}}
 \end{center}
+Literatur:  Gute Anlaufstellen sind \cite[Kap. 2.5, S. 130ff]{Kurose2012}, \cite[Kap. 11, S. 511ff]{fall2011tcp}, \cite[Kap. 50, S. 825ff]{kozierok2005tcp}.
 Das Domain Name System ist ein dezentrales System (verteilte Datenbank nach der Client-Server-Architektur), dessen primäre Aufgabe die Adressauflösung von Domain Name(n) zu IP-Adresse(n) ist.
 \begin{enumerate}
 	\item DNS 101 -- Grundsätzliches zu DNS\\
-	Schauen Sie folgendes Video: \url{https://youtu.be/XondVs0hJ8U}
+	Schauen sie folgendes Video: \url{https://youtu.be/XondVs0hJ8U}
 	\begin{enumerate}
-		\item Beschreiben Sie mit eigenen Worten, was das DNS leistet.
+		\item Beschreiben sie mit eigenen Worten, was das DNS leistet.
 	\end{enumerate}
-	\item Nennen und Erklären Sie die folgenden Komponenten des DNS-Systems.
+	\item Nennen und Erklären sie die folgenden Komponenten des DNS-Systems.
 	\begin{enumerate}
 		\item Was wird unter dem Begriff Resolver verstanden?
 		\item Was ist ein DNS-Root-Server, was ist ein Top-Level-Domain-Server (TLD) und was ein Second-Level-Domain-Server?
@@ -154,21 +154,26 @@ Das Domain Name System ist ein dezentrales System (verteilte Datenbank nach der 
 		\item Was wird unter dem Begriff Authoritative-Name-Server verstanden?
 	\end{enumerate}
 	\item Rechner können die unterschiedlichsten Dienste bereitstellen, auf einem Rechner laufen zumeist mehrere Dienste. Entsprechend gibt es diverse DNS-Record-Types die dies realisieren.\\
-	Recherchieren Sie welche Typen von Records es gibt.
-	\item Erläutern Sie die Auflösung einer DNS-Anfrage.
+	Recherchieren sie welche Typen von Records es gibt.
+	\item Erläutern sie die Auflösung einer DNS-Anfrage.
 	\begin{enumerate}
 		\item Welche beiden Möglichkeiten einer Namensauflösung gibt es? D.h. welche Variante gibt einen Namen aufzulösen.
 		\item Wie erfolgt die jeweilige Auflösung eines DNS-Requests?
-		\item Verdeutlichen Sie sich anhand eines Beispiels, wie ein DNS-Request bearbeitet wird.
-		\item In der Praxis wird eine Mischung aus den beiden obrigen Verfahren angewandt. Recherchieren Sie, wie diese Auflösung \enquote{in the wild} aussieht.
+		\item Verdeutlichen sie sich anhand eines Beispiels, wie ein DNS-Request bearbeitet wird.
+		\item In der Praxis wird eine Mischung aus den beiden obrigen Verfahren angewandt. Recherchieren sie, wie diese Auflösung \enquote{in the wild} aussieht.
 	\end{enumerate}
-	\item Durchlaufen Sie folgende Tutorials:
+	\item Durchlaufen sie folgende Tutorials:
 	\begin{itemize}
 	\item \url{https://www.madboa.com/geek/dig/}
-	\item \url{https://www.poftut.com/nslookup-commands-tutorial-with-examples/}
 	\end{itemize}
-	Notieren Sie sich wie vorgegangen wird! Diese Tools nutzen Sie in der nächsten Laborübung.	
-\item Namensauflösung am praktischen Beispiel.
+	Notieren sie sich wie vorgegangen wird! Diese Tools nutzen Sie in der nächsten Laborübung.
+\end{enumerate}
+\begin{center}
+\Large{\textbf{Aufgabe D -- DNS II}}
+\end{center}
+
+\begin{enumerate}
+	\item Namensauflösung am praktischen Beispiel.
 \begin{table}[h]
 \caption{Adressen für DNS-Auflösung.}
 \label{dns_mail}
@@ -183,7 +188,7 @@ Das Domain Name System ist ein dezentrales System (verteilte Datenbank nach der 
 \end{tabular}
 \end{table}
 	\begin{enumerate}
-		\item Nehmen Sie an Bob möchte eine E-Mail an Alice senden. Um eine Verbindung mit dem SMTP-Server aufzubauen, muss der Name des Servers via DNS in eine IP-Adresse aufgelöst werden. Erläutern Sie welche Nachrichten ausgetauscht werden müssen und zwischen welchen Hosts. Die Auflösung des Domainnamen ist rein rekursive.\\
+		\item Nehmen sie an Bob möchte eine E-Mail an Alice senden. Um eine Verbindung mit dem SMTP-Server aufzubauen, muss der Name des Servers via DNS in eine IP-Adresse aufgelöst werden. Erläutern Sie welche Nachrichten ausgetauscht werden müssen und zwischen welchen Hosts. Die Auflösung des Domainnamen ist rein rekursive.\\
 		Nehmen Sie weiter an, dass nur der Nameserver der für die Domäne server.org zuständig ist, die Anfrage beantworten kann. (Alle Adressen sind in Tabelle \ref{dns_mail} zu sehen!) Skizzieren Sie den Ablauf der Namensauflösung!
 		\item Nun ist Alice am Zug um Bob zu antworten. Erläutern Sie den Nachrichtenaustausch, wenn eine rein iterative Namensauflösung genutzt wird. Nehmen Sie wie in der vorigen Aufgabe an, dass das nur der Namensserver der zuständig für die Domäne server.org die Anfrage beantworten kann. Skizzieren Sie den Ablauf der Namensauflösung!
 		\item Erläutern Sie, wie Bobs SMTP-Server den für Alice verantwortlichen Mail-Transfer-Agent (MTA) findet.
@@ -191,7 +196,7 @@ Das Domain Name System ist ein dezentrales System (verteilte Datenbank nach der 
 \end{enumerate}
 
 \begin{center}
-\Large{\textbf{Aufgabe B -- DNS II}}
+\Large{\textbf{Aufgabe E -- DNS III}}
 \end{center}
 Eine erste Anlaufstelle rund um das Domain Name System ist auch hier das \emph{freeBSD}-Handbuch: \url{https://www.freebsd.org/doc/de_DE.ISO8859-1/books/handbook/network-dns.html}
 \begin{enumerate}

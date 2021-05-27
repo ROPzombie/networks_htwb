@@ -44,15 +44,16 @@
   <internal package="biblatex" priority="9" active="0">
     <generic>latex</generic>
     <provides type="dynamic">
-      <file>05_homework.bcf</file>
+      <file>04_homework.bcf</file>
     </provides>
     <requires type="dynamic">
-      <file>05_homework.bbl</file>
+      <file>04_homework.bbl</file>
     </requires>
     <requires type="static">
       <file>blx-dm.def</file>
       <file>blx-unicode.def</file>
       <file>blx-compat.def</file>
+      <file>blx-case-expl3.def</file>
       <file>biblatex.def</file>
       <file>standard.bbx</file>
       <file>alphabetic.bbx</file>
@@ -66,19 +67,19 @@
     <generic>biber</generic>
     <cmdline>
       <binary>biber</binary>
-      <infile>05_homework</infile>
+      <infile>04_homework</infile>
     </cmdline>
     <input>
-      <file>05_homework.bcf</file>
+      <file>04_homework.bcf</file>
     </input>
     <output>
-      <file>05_homework.bbl</file>
+      <file>04_homework.bbl</file>
     </output>
     <provides type="dynamic">
-      <file>05_homework.bbl</file>
+      <file>04_homework.bbl</file>
     </provides>
     <requires type="dynamic">
-      <file>05_homework.bcf</file>
+      <file>04_homework.bcf</file>
     </requires>
     <requires type="editable">
       <file>sources.bib</file>

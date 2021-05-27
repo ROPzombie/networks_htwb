@@ -2359,8 +2359,7 @@
     <bcf:citekey order="7">Kurose2012</bcf:citekey>
     <bcf:citekey order="8">Kurose2012</bcf:citekey>
     <bcf:citekey order="9">Kurose2012</bcf:citekey>
-    <bcf:citekey order="10">Augustin2006ATA</bcf:citekey>
-    <bcf:citekey order="11">Kurose2012</bcf:citekey>
+    <bcf:citekey order="10">Kurose2012</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="anyt">
