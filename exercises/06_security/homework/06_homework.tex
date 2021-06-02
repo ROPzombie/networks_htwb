@@ -78,48 +78,48 @@ citestyle=alphabetic]{biblatex} %biblatex mit biber laden
 
 
 \begin{center}\Large{\textbf{Aufgabe A -- Kryptografie Grundlagen}}\end{center}
-Da Sie mit großer Wahrscheinlichkeit keine ausgebildeten Mathematiker*innen sind, beginnen Sie zunächst mit einer kurzen Recherchephase. Dies soll Ihnen helfen Licht ins Dunkel zu bringen.\\
+Da Sie mit großer Wahrscheinlichkeit keine ausgebildeten Mathematiker*innen sind, beginnen sie zunächst mit einer kurzen Recherchephase. Bei allen Aufgaben reicht ein grobes Verständnis, die mathematischen Formalismen können sie überspringen!
 Hilfreiche Links:
 \begin{itemize}
 	\item \url{https://de.wikipedia.org/wiki/Kryptologie}
 	\item \url{https://en.wikipedia.org/wiki/Cryptography}
-	\item \url{https://www.cryptool.org} $\rightarrow$ sehr schönes Tool! Zeigt \& visualisiert Chiffren \& Verfahren etc.
+	\item \url{https://www.cryptool.org} $\rightarrow$ sehr schönes Tool! Visualisiert Chiffren, Verfahren etc.
 \end{itemize}
 \begin{enumerate}
 	\item Begriffsklärung Kryptografie \& Chiffren:
 	\begin{enumerate}
-		\item Erläutern Sie die grundlegende Sicherheitszielklassen CIA (Confidentiality, Integrity, Availability) und Authenticity im Bereich der IT-Security.
-		\item Recherchieren Sie was sich hinter den Begriffen Kryptologie, Kryptografie und Kryptoanalyse verbirgt.
+		\item Erläutern sie die grundlegende Sicherheitseigenschaften CIA (Confidentiality, Integrity, Availability) und Authenticity im Bereich der IT-Security.
+		\item Recherchieren sie was sich hinter den Begriffen Kryptologie, Kryptografie und Kryptoanalyse verbirgt.
 		\item Worin besteht der maßgebliche Unterschied zwischen symmetrischen und asymmetrischen Kryptosystemen?
 		\item Welche Aufgaben könne kryptografisch per symmetrischen Chiffren bewältigt werden?
 		\item Welche Aufgaben könne kryptografisch per asymmetrischen Chiffren bewältigt werden?
-		\item Recherchieren Sie \textbf{kurz} welche Aufgabe der Diffie-Hellmann-Algorithmus und der Elgamal-Algorithmus haben? Wozu werden diese Verfahren für gewöhnlich genutzt?
-		\item Recherchieren Sie zunächst was unter einer Hashfunktion verstanden wird. Im Anschluss daran: Was wird unter einer kryptografischen Hashfunktion verstanden?
-		\item  Was ist die Aufgabe einer kryptografischen Hashfunktion?
+		\item Recherchieren Sie \textbf{kurz} welche Aufgabe der Diffie-Hellmann-Algorithmus (DH) und der Elgamal-Algorithmus haben? Wozu werden diese Verfahren für gewöhnlich genutzt? (Manschmal auch mit dem Zusatz EC für Elliptic-Curve).
+		\item Recherchieren sie zunächst was unter einer Hashfunktion verstanden wird. Im Anschluss daran: Was wird unter einer kryptografischen Hashfunktion verstanden?
+		\item Was ist die Aufgabe einer kryptografischen Hashfunktion?
 	\end{enumerate}
 	\item Kryptografische Zertifikate \& Public-Key-Infrastruktur
 	\begin{enumerate}
 		\item Was wird unter einem kryptografische Zertifikat verstanden? Welchen Nutzen hat dieses Zertifikat?
-		\item Recherchieren Sie was unter einer Public-Key-Infrastruktur \emph{PKI} verstanden wird.
-		\item Recherchieren Sie was im Zusammenhang mit \emph{PKI}s unter dem Namen \emph{Chain-Of-Trust} verstanden wird.
+		\item Recherchieren sie was unter einer Public-Key-Infrastruktur \emph{PKI} verstanden wird.
+		\item Recherchieren sie was im Zusammenhang mit \emph{PKI}s unter dem Namen \emph{Chain-Of-Trust} verstanden wird.
 	\end{enumerate}
 \end{enumerate}
 
 \begin{center}\Large{\textbf{Aufgabe B -- Grundlagen: Secure Shell (SSH) mit openSSH}}\end{center}\vskip0.25in
-Das gesamte Semester über haben Sie überwiegend lokal auf der Kommandozeile gearbeitet, also relativ nah an der eigentlich Hardware. Viele Netzwerk- und Serverkomponenten sind jedoch nicht lokal verfügbar (d.h. direkt, physisch), da diese oft in Rechenzentren unter besonderen Bedingungen ihren Dienst verrichten.\footnote{Sie würden bestimmt nicht direkt in einem Rechenzentrum Ihre Arbeit als Administrator ausführen! Da die Temperaturen oft unangenehm und die Lautstärke recht hoch ist. Auch die Sicherheitsbestimmungen sind enorm hoch.} Die Administration der Rechner muss also auch entfernt möglich sein -- remote.\\
-Früher haben dies die sogenannten \emph{r-Tools} ermöglicht, dies jedoch ohne kryptografische Schutzmaßnahmen. Heute übernehmen gesicherte Tools wie \emph{SSH} mit verschiedensten Implementierungen, wie \emph{openSSH}, diese Aufgabe.
+Das gesamte Semester über haben sie überwiegend lokal auf der Kommandozeile gearbeitet, also relativ nah an der eigentlich Hardware. Viele Netzwerk- und Serverkomponenten sind jedoch nicht lokal verfügbar (d.h. direkt, physisch), da diese oft in Rechenzentren unter besonderen Bedingungen ihren Dienst verrichten.\footnote{Sie würden bestimmt nicht direkt in einem Rechenzentrum ihre Arbeit als Administrator ausführen! Da die Temperaturen oft unangenehm und die Lautstärke recht hoch ist. Auch die Sicherheitsbestimmungen sind enorm hoch.} Die Administration der Rechner muss also auch entfernt möglich sein -- remote.\\
+Früher haben dies die sogenannten \emph{r-Tools} ermöglicht, dies jedoch ohne kryptografische Schutzmaßnahmen. Heute übernehmen gesicherte Tools wie \emph{ssh} mit verschiedensten Implementierungen, wie \emph{openSSH}, diese Aufgabe.
 	\begin{enumerate}
-		\item Lesen Sie folgendes SSH-Tutorial: \url{https://support.suso.com/supki/SSH_Tutorial_for_Linux}
-		\item Welche vier Aufgaben, d.h. Zusicherungen in Bezug auf die Sicherheit von Daten, kann \emph{SSH} mithilfe von kryptografischen Verfahren gewährleisten?	
-		\item Notieren Sie sich an welchen Orten die verschiedenen Konfigurationsdateien für Server und Client im Normalfall (default) unter einem Debian-Linux liegen. Notieren sie sich deren Zweck.
-		\item Recherchieren Sie, was ein \enquote{Fingerprint} im Sinne von \emph{SSH} ist und welche Aufgabe dieser übernimmt. 
+		\item Lesen Sie folgendes SSH-Tutorial: \url{https://docs.freebsd.org/de_DE.ISO8859-1/books/handbook/openssh.html}
+		\item Welche vier Aufgaben, d.h. Zusicherungen in Bezug auf die Sicherheit von Daten, kann \emph{SSH} mithilfe von kryptografischen Verfahren gewährleisten? M.a.W. welche Sicherheitseigenschaften gewährleistet ihnen die Nutzung von \emph{SSH}?	
+		\item Notieren sie sich an welchen Orten die verschiedenen Konfigurationsdateien für Server und Client im Normalfall (default) unter einem \emph{freeBSD} liegen. Notieren sie sich deren Zweck.
+		\item Recherchieren sie, was ein \enquote{Fingerprint} im Sinne von \emph{SSH} ist und welche Aufgabe dieser übernimmt. 
 		\item \emph{SSH} kommt ohne Passwörter aus, es können Public-Key-Verfahren genutzt werden. D.h. Sie können \emph{SSH} auch ohne Zugangspasswort nutzen.\footnote{Eigentlich ist es ratsam auf Passwörter zu verzichten, da das Brechen von kryptografischen Schlüsseln momentan fast unmöglich ist.}\\
-		Recherchieren Sie welche Verfahren \emph{openSSH} hierfür anbietet.
-		\item Recherchieren Sie, wie die Schlüsselgenerierung in openSSH erfolgt. Wie sind Verfahren, Schlüsselgröße und zu speichernden Ort zu wählen? Notieren Sie sich die entsprechende Syntax!
-		\item Welche Schlüssellänge und welche Schlüsselarten sind für Ihren Einsatz im Labor sinnvoll?\\
+		Recherchieren sie welche Verfahren \emph{openSSH} hierfür anbietet -- Stichwort Schlüsselbasierte Authentifizierung!
+		\item Recherchieren sie, wie die Schlüsselgenerierung in openSSH erfolgt. Wie sind Verfahren, Schlüsselgröße und zu speichernden Ort zu wählen? Notieren Sie sich die entsprechende Syntax!
+		\item Welche Schlüssellänge und welche Schlüsselarten sind für Ihren Einsatz im Labor(zu Hause) sinnvoll? Ist die maximale Schlüssellänge angebracht?\\
 		Wie hängen Schlüssellänge und Sicherheit zusammen?
 		\item Lassen sich die \emph{SSH}-Schlüssel zwischen verschiedenen Clients (Windows, Linux, Solaris,...) weiterverwenden/konvertieren? Oder muss andernfalls für jeden Client ein eigener Schlüssel generiert werden?
-		\item Recherchieren Sie die Bedeutung der Passphrase. Ist die Passphrase mit dem Passwort gleichzusetzen?
+		\item Recherchieren sie die Bedeutung der Passphrase. Ist die Passphrase mit dem Nutzer-Passwort gleichzusetzen?
 		\item Wie kann aus Sicherheitsgründen ein Login ohne Passwort eingeschränkt werden, so das nur bestimmte Kommandos via \emph{SSH} ausgeführt werden können?
 		\item In manchen Fällen ist es ratsam den Zugriff via \emph{SSH} nur auf einige Nutzer zu beschränken. Wie muss dies unter \emph{openSSH} anhand eines Beispiels aussehen.
 	\end{enumerate}
@@ -149,12 +149,54 @@ Nützliche Links:
 \end{itemize}
 
 \begin{center}\Large{\textbf{Aufgabe D -- Spoofing}}\end{center}\vskip0.25in
-ARP Spoofing
-DNS-Poisoning
+Einige Protokolle stammen aus einer Zeit bzw. in einem Kontext in der Sicherheit in Rechnernetzen anders gedacht wurde. Sicherungsmaßnahmen wurden in diesen Protokollen nicht eingebaut. Im  Folgenden betrachten wir verschiedene Spoofing Angriffe.
 
-\begin{center}\Large{\textbf{Aufgabe F -- DoS ICMP}}\end{center}\vskip0.25in
-SYN Flood
-Amplification etc
-Smurf Attack,
+\begin{enumerate}
+	\item Recherchieren sie zunächst was unter Spoofing verstanden wird.
+	\item Welche Sicherheitseigenschaft wird durch das Spoofing gebrochen?
+	\item Im vierten Übungsblatt hatten sie bereits einen Einblick in das \emph{ARP}-Protokoll erhalten. Rekapitulieren sie die Begriffe Cache und ARP-Cache!
+	\item Rekapitulieren sie was ein Man-In-The-Middle-Angriff (\emph{MITM}) ist.
+	\item Als Vorbereitung auf die Durchführung eines \emph{MITM}-Angriffs:
+	\begin{enumerate}
+		\item Ist es möglich IP-Pakete zu fälschen, sodass Adressen in den Paketen enthalten sind, die nicht ihre sind? M.a.W. hat IP eine Sicherungsmaßnahme für das Spoofen von IP-Adressen?
+		\item Rekapitulieren sie wie der ARP-Table befüllt wird.
+	\end{enumerate}
+	\item Folgendes Szenario: Drei Rechner befinden sich in einem gemeinsamen Netzwerk. Einer der Rechner ist ein Router. Sie sind der Angreifer und wollen den Verkehr über sich selbst laufen lassen. Dazu greifen sie den übrigen Rechner an und fluten dessen ARP-Cache mit gefälschten Einträgen -- sie annoncieren Ihren Rechner als Default-Gateway gegenüber den angegriffenen Rechner.\\
+	Zunächst müssen sie die IP-Adressen des Routers und des anzugreifenden Ziels kennen.
+	\begin{enumerate}
+		\item Wie können sie diese herausfinden?
+		\item Welcher Mechanismus des ARP-Protokolls kann für das Spoofen genutzt werden?
+\end{enumerate}
+	\item Auch das DNS-Protokoll hatte anfänglich keine Sicherungsmaßnahmen. Recherchieren sie was unter DNS-Spoofing verstanden wird.
+	\item Erläutern sie wie ein DNS-Spoofing abläuft!
+\end{enumerate}
 
+
+
+\begin{center}\Large{\textbf{Aufgabe F -- ICMP \& TCP}}\end{center}\vskip0.25in
+Neben den Spoofing-Angriffen sind auch Denial-of-Service-Angriffe für Netzwerke ein echtes Problem. Im Folgenden betrachten wir einige DoS-Techniken.
+\begin{enumerate}
+	\item Recherchieren sie zunächst was unter einem DoS verstaden wird.
+	\item Welche Sicherheitseigenschaft wird bei dieser Art Bedrohung gebrochen?
+	\item Rekapitulieren sie kurz ihr Wissen zu ICMP. Anschließend:
+	\begin{enumerate}
+		\item Was wird unter dem Begriff \emph{Ping-Flood} verstanden? Wie kann dieser im Groben umgesetzt werden?
+		\item Was wird unter einem \emph{Smurf-Attack} verstanden? Wie läuft dieser ab?
+		\item Was wird unter einem \emph{Teardrop}-Angriff verstanden?
+	\end{enumerate}
+	\item Darüber hinaus ist ICMP ein nützliches Protokoll für die Aufklärung fremder Netze (Reconnaissance).
+	\begin{enumerate}
+		\item Was verbirgt sich hinter dem Begriff \emph{Ping Sweep}? Welcher Nachrichtentyp wird hier genutzt?
+		\item Was verbirgt sich hinter dem Begriff \emph{ICMP Tunneling}? Wie ist dieser Angriff möglich?
+	\end{enumerate}
+	\item Rekapitulieren sie kurz ihr Wissen zu ICMP. Anschließend:
+	\begin{enumerate}
+		\item Was wird unter einem \emph{SYN-Flood}-Angriff verstanden? Welcher Mechanismus von TCP ermöglicht diesen? Wie ist eine einfache Mitigation möglich?
+		\item Was wird unter einem \emph{TCP Reset}-Angriff verstanden?
+		\item Was wird unter einem \emph{TCP Session Hijacking}-Angriff verstanden?
+	\end{enumerate}
+\end{enumerate}
+
+
+\printbibliography
 \end{document}

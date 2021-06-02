@@ -124,17 +124,19 @@ Zunächst sollen Sie sich mit dem Umgang mit \emph{SSH} vertraut machen, anschli
 	\end{enumerate}
 \end{enumerate}
 
-\begin{center}\Large{\textbf{Aufgabe C -- VPN via Wireguard}}\end{center}\vskip0.25in
-In den Hausaufgaben haben Sie sich bereits mit dem Wireguard-Tutorial auseinandergesetzt. Nun ist es an der Zeit ein eigenes VPN aufzusetzen.
+\begin{center}\Large{\textbf{Aufgabe C -- ARP-Cache-Poisoning}}\end{center}\vskip0.25in
+Wie in den Hausaufgaben bereits zu erahnen war, dürfen sie nun ein wenig Unruhe in Ihren Netzwerken stiften!\\
+Sie sollen in diesem Teil der Laborübung ein ARP-Spoofing des Routers übernehmen. Um dies zu erreichen, sollen sie den ARP-Cache so manipulieren, das sämtlicher Verkehr nicht mehr über den eigentlichen Router geleitet wird, sondern über einen Angreifenden Host.
 \begin{enumerate}
-	\item Setzen Sie mithilfe Wireguards ein eigenes VPN um. Ihr Router sollte die Aufgabe des VPN-Servers übernehmen. Somit können sich die VMs beim VPN-Server anmelden und sind anschließend Teil dieses VPNs.
-	\item 
-	\begin{itemize}
-		\item Als Server müssen Sie einen entsprechenden VPN-Server aufsetzten. Im wesentlichen müssen Sie dem Tutorial folgen.
-		\item Nehmen Sie entsprechen die Konfiguration der Clients vor, sodass Sie sich mit dem Server verbinden können.
-	\end{itemize}
-	\item Finden Sie heraus, ob Sie tatsächlich Teil des VPN-Netzwerkes sind. Wie können Sie überprüfen, ob Sie tatsächlich Teilnehmer eines virtuellen Netzwerkes sind?
-	\item Untersuchen Sie via \emph{Wireshark} wie der Traffic aussieht. Können Sie den kryptografischen Handshake ausfindig machen?
+	\item Zunächst müssen sie Angreifen und Opfer in ihren Netzwerk auswählen. Der Angreifer kann nicht der Router sein. 
+	\item Analysieren sie den ARP-Cache des anzugreifenden Systems.
+	\item Klonen sie den \emph{freeBSD} Router, da dieser schon die meisten Voreinstellungen hat und über Wireshark verfügt!
+	\item Da der angreifende Host (geklonter Router) als \enquote{MITM-Router} fungiert, muss auch hier das Routing aktiviert sein und eine Default-Route existieren. D.h. im Idealfall bekommt die angreifende Maschine noch ein zusätzliches Interface (Bridge-Mode oder NAT). Daher muss auf diesem Rechner neben Forwarding auch NAT umgesetzt werden.
+	\item Im Moodle liegt ein Python-Skript (C, Perl ebenso), welche für den Angriff genutzt werden kann. Bevor sie dies einsetzen: Schauen sie sich das Skript an. Wie muss dieses Skript ausgeführt werden? D.h. mit welchen Rechten und welchen Argumenten muss das Skript aufgeführt werden?
+	\item Führen sie das ARP-Cache-Poisoning mithilfe des Skripts durch.
+	\item Lassen sie sowohl auf dem angreifenden als auch angegriffenen System Wireshark mitlaufen.
+	\item Betrachten sie den ARP-Cache während des Angriffs, sowie einige Zeit nachdem Angriff.
+	\item Ziehen sie ein Fazit aus dem eben durchgeführten Angriff!
 \end{enumerate}
 
 \end{document}
