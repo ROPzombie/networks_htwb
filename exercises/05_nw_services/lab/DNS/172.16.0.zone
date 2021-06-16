@@ -8,8 +8,8 @@ $TTL 2D
 
 		IN NS		mceliece.cyrpto.all.
 
-11		IN PTR		diffie.cyrpto.all.
-24		IN PTR		hellman.cyrpto.all.
-23		IN PTR		peikerts.cyrpto.all.
-25		IN PTR  	bernstein.cyrpto.all.
+11		IN PTR		diffie.crypto.all.
+24		IN PTR		hellman.crypto.all.
+23		IN PTR		peikerts.crypto.all.
+25		IN PTR  	bernstein.crypto.all.
 

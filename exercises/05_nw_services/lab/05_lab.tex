@@ -171,13 +171,13 @@ controls {
 };
 \end{lstlisting}
 Falls der DNS-Server von außen administriert werden soll, können an dieser Stelle auch andere IPs hinterlegt werden.			
-	\item Der DNS-Server ist nun vorbereitet! Jetzt müssen die Zonen angelegt werden. Im Moodl-Kurs habe ich eine kleinere Beispielkonfiguration hinterlegt.\\
+	\item Der DNS-Server ist nun vorbereitet! Jetzt müssen die Zonen angelegt werden. Im Moodle-Kurs habe ich eine kleinere Beispielkonfiguration hinterlegt.\\
 	Bevor sie die Einträge ihrer \texttt{named.conf} anpassen, machen sie sich die Bedeutung Folgender Einträge klar:
 	\begin{enumerate}
 		\item ~\\
 \begin{lstlisting}[style=Bash, language=Bash]
 options { 
-	directory "/usr/local/etc/maned/working"; 
+	directory "/usr/local/etc/named/working"; 
 	forwarders { 62.104.191.241; 62.104.196.134; };
 	listen-on port 53 { 127.0.0.1; 172.16.0.1; };
 	allow-query { 127.0/16;  };
@@ -201,7 +201,7 @@ zone "0.0.127.in-addr.arpa" in {
 \end{lstlisting}
 	\item ~\\
 \begin{lstlisting}[style=Bash, language=Bash]
-zone "cyrpto.all." in {
+zone "crypto.all." in {
 	type master;
 	file "crypto.zone";
 };
@@ -237,7 +237,7 @@ $TTL 2D
 
 \begin{lstlisting}[style=Bash, language=Bash]
 $TTL 2D
-cyrpto.all.	IN SOA		mceliece   root.localhost. (
+crypto.all.	IN SOA		mceliece   root.localhost. (
 				2001091300	; serial
 				1D		; refresh
 				2H		; retry
@@ -258,7 +258,7 @@ ftp		IN CNAME	www
 
 \begin{lstlisting}[style=Bash, language=Bash]
 $TTL 2D
-0.16.172.in-addr.arpa.  IN SOA  mceliece.cyrpto.all.  root.localhost. (
+0.16.172.in-addr.arpa.  IN SOA  mceliece.crypto.all.  root.localhost. (
 				2001091300	; serial
 				1D		; refresh
 				2H		; retry
@@ -267,15 +267,15 @@ $TTL 2D
 
 		IN NS		mceliece.cyrpto.all.
 
-11		IN PTR		diffie.cyrpto.all.
-24		IN PTR		hellman.cyrpto.all.
-23		IN PTR		peikerts.cyrpto.all.
-25		IN PTR  	bernstein.cyrpto.all.
+11		IN PTR		diffie.crypto.all.
+24		IN PTR		hellman.crypto.all.
+23		IN PTR		peikerts.crypto.all.
+25		IN PTR  	bernstein.crypto.all.
 \end{lstlisting}
 Wie sind diese Dateien zu interpretieren?
 	\item Anhand des obigen Beispiels können sie sich eine eigene Zone ausdenken, oder mein Beispiel anpassen. Das heißt die Zonen des Beispiel für die \path{named.conf} müssen angepasst oder ähnlich erstellt werden.
 	\item Tragen sie die nun erstellten Zonen in die \path{named.conf} Datei ein!
-	\item Legen sie die Dateien entsprechend ihrer Konfiguration im richtigen Ordner ab (bspw. unter \path{/usr/local/etc/maned/working}).
+	\item Legen sie die Dateien entsprechend ihrer Konfiguration im richtigen Ordner ab (bspw. unter \path{/usr/local/etc/named/working}).
 	\item Überprüfen sie den Status des DNS-Servers mit dem Kommando \texttt{rndc status}. Gibt es Fehlermeldungen?
 	\item Mit dem Kommando \texttt{rndc reload} können sie den Server die neuen Konfigurationen geben, sodass dieser den Server neu lädt.
 		\item Tragen sie ihren DNS-Server in der \emph{/etc/resolv.conf} als weiteren Name-Server ein.

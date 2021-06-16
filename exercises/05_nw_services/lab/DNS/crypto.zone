@@ -1,5 +1,5 @@
 $TTL 2D
-cyrpto.all.	IN SOA		mceliece   root.localhost. (
+crypto.all.	IN SOA		mceliece   root.localhost. (
 				2001091300	; serial
 				1D		; refresh
 				2H		; retry
